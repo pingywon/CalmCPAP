@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>CalmCPAP — 0.17-alpha</title>
+  <title>CalmCPAP — 0.19-alpha</title>
 
   <!-- Unzip -->
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -109,6 +109,10 @@
       padding:14px;
       overflow:hidden;
     }
+
+    body.left-collapsed main{ grid-template-columns: 1fr; }
+    body.left-collapsed #leftPanelCard{ display:none; }
+
     @media (max-width: 1050px){
       body{ overflow:auto; }
       main{ grid-template-columns:1fr; height:auto; overflow:visible; }
@@ -240,6 +244,13 @@
     }
     .kv .row b{ color: rgba(231,246,246,.93); font-weight:850; }
 
+    .drawer{ margin-top:10px; border:1px solid rgba(255,255,255,.10); border-radius:14px; background:rgba(11,42,49,.35); overflow:hidden; }
+    .drawer > summary{ cursor:pointer; list-style:none; padding:10px 12px; font-size:12.5px; color:var(--muted); font-weight:800; display:flex; align-items:center; justify-content:space-between; }
+    .drawer > summary::-webkit-details-marker{ display:none; }
+    .drawer > summary::after{ content:'▾'; color:var(--muted2); font-size:12px; }
+    .drawer:not([open]) > summary::after{ content:'▸'; }
+    .drawerBody{ padding:0 10px 10px; }
+
     .picker{
       display:flex; gap:10px; align-items:center; flex-wrap:wrap;
       padding:10px;
@@ -275,7 +286,8 @@
     .day{ min-height:32px; border-radius:10px; border:1px solid rgba(255,255,255,.08); font-size:12px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.03); color:var(--muted); }
     .day.muted{ opacity:.45; }
     .day.hasData{ color:var(--text); border-color:rgba(97,212,195,.45); }
-    .day.selected{ background:linear-gradient(135deg, rgba(97,212,195,.25), rgba(122,167,255,.26)); color:var(--text); border-color:rgba(97,212,195,.72); }
+    .day.selected{ background:linear-gradient(135deg, rgba(255,204,102,.42), rgba(255,107,122,.34)); color:#ffffff; border-color:rgba(255,204,102,.95); box-shadow: inset 0 0 0 1px rgba(255,255,255,.24); font-weight:900; }
+    .day.boundary{ background:linear-gradient(135deg, rgba(255,107,122,.62), rgba(122,167,255,.62)); border-color:#ffffff; color:#ffffff; box-shadow:0 0 0 2px rgba(255,255,255,.24); }
     .rangeHint{ font-size:11.5px; color:var(--muted2); }
     .picker input[type="date"], .picker select{
       background: rgba(255,255,255,.06);
@@ -564,7 +576,7 @@
     <div class="brand">
       <div class="logo" aria-hidden="true"></div>
       <div>
-        <h1>CalmCPAP <span class="badge">0.17-alpha</span></h1>
+        <h1>CalmCPAP <span class="badge">0.19-alpha</span></h1>
         <div class="subtitle">AirSense 11 SD ZIP → unzip → Identification.json + EDF → DATALOG/YYYYMMDD sessions → charts + explanations.</div>
       </div>
     </div>
@@ -572,13 +584,14 @@
     <div class="top-actions">
       <span class="badge" id="statusBadge">Waiting</span>
       <span class="badge" id="fileBadge">No file</span>
+      <button class="btn ghost" id="toggleLeftBtn" aria-pressed="false">Hide Sidebar</button>
       <button class="btn ghost" id="clearBtn">Clear</button>
     </div>
   </header>
 
   <main>
     <!-- LEFT -->
-    <section class="card">
+    <section class="card" id="leftPanelCard">
       <div class="hd">
         <h2>Upload & Session</h2>
         <span class="badge">Local only ✔️</span>
@@ -638,15 +651,23 @@
 
         <div class="hr"></div>
 
-        <div class="tiny"><b>Device & Profile (Identification.json)</b></div>
-        <div class="kv" id="idArea" style="margin-top:10px;">
-          <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
-        </div>
+        <details class="drawer" open>
+          <summary>Device & Profile (Identification.json)</summary>
+          <div class="drawerBody">
+            <div class="kv" id="idArea" style="margin-top:0;">
+              <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
+            </div>
+          </div>
+        </details>
 
-        <div class="tiny" style="margin-top:10px;"><b>Current Settings (CurrentSettings.json)</b></div>
-        <div class="kv" id="settingsArea" style="margin-top:10px;">
-          <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
-        </div>
+        <details class="drawer" open>
+          <summary>Current Settings (CurrentSettings.json)</summary>
+          <div class="drawerBody">
+            <div class="kv" id="settingsArea" style="margin-top:0;">
+              <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
+            </div>
+          </div>
+        </details>
 
         <div class="rangeControls disabled" id="rangeControls">
           <div class="calendarWrap">
@@ -689,7 +710,7 @@
     </section>
 
     <!-- RIGHT -->
-    <section class="card">
+    <section class="card" id="rightPanelCard">
       <div class="tabs" role="tablist" aria-label="Report sections" id="tablist">
         <button class="tab active" role="tab" aria-selected="true" tabindex="0" data-tab="overview" id="tab-overview" aria-controls="panel-overview">Overview</button>
         <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="leaks" id="tab-leaks" aria-controls="panel-leaks">Leaks</button>
@@ -773,7 +794,7 @@
 
 <script>
 /* ============================
-   CalmCPAP 0.17-alpha (AirSense 11 SD)
+   CalmCPAP 0.19-alpha (AirSense 11 SD)
    ✔️ Robust ZIP indexing + EDF parsing + charts
    ============================ */
 
@@ -785,6 +806,7 @@ const els = {
   fileBadge: document.getElementById('fileBadge'),
   zipStats: document.getElementById('zipStats'),
 
+  toggleLeftBtn: document.getElementById('toggleLeftBtn'),
   clearBtn: document.getElementById('clearBtn'),
   demoBtn: document.getElementById('demoBtn'),
 
@@ -927,9 +949,22 @@ function humanizeWords(s){
     .replace(/[._\-]+/g, ' ')
     .replace(/([a-z])([A-Z])/g, '$1 $2')
     .replace(/FG Identification Profiles/gi, '')
+    .replace(/\bEpr\b/g, 'EPR')
+    .replace(/\bAhi\b/g, 'AHI')
+    .replace(/\bCpap\b/g, 'CPAP')
+    .replace(/\bAutoSet\b/g, 'AutoSet')
     .replace(/\s+/g, ' ')
     .trim();
 }
+
+function formatSettingsLabel(s){
+  let t = humanizeWords(s);
+  t = t.replace(/\bFeature\b/g, 'Features');
+  t = t.replace(/\bFeatures\s+Features\b/gi, 'Features');
+  t = t.replace(/\b(\w+)\s+\1\b/gi, '$1');
+  return t;
+}
+
 function newJob(){ state.jobId++; return state.jobId; }
 function assertActive(jobId){
   if (jobId !== state.jobId) {
@@ -1124,6 +1159,16 @@ els.zipInput.addEventListener('change', ()=>{
   if (f) handleZip(f);
 });
 els.clearBtn.addEventListener('click', ()=>{ resetAll(); toast('Cleared.'); });
+els.toggleLeftBtn.addEventListener('click', ()=>{
+  const collapsed = document.body.classList.toggle('left-collapsed');
+  els.toggleLeftBtn.textContent = collapsed ? 'Show Sidebar' : 'Hide Sidebar';
+  els.toggleLeftBtn.setAttribute('aria-pressed', collapsed ? 'true' : 'false');
+  setTimeout(()=>{
+    [els.plotOverview, els.plotLeak, els.plotPressure, els.plotFlow, els.plotSnore, els.plotRespRate, els.plotEvents, els.plotExplore].forEach(p=>{
+      if (p) Plotly.Plots.resize(p);
+    });
+  }, 40);
+});
 
 /* ---------- Picker ---------- */
 els.modeNight.addEventListener('click', ()=> applyRangeMode('night'));
@@ -1684,7 +1729,7 @@ function renderCurrentSettings(obj){
   if (activeName) rows.push(`<div class="row"><span>Active Therapy Profile</span><span><b>${escapeHtml(activeName)}</b></span></div>`);
   if (activeTherapy){
     for (const [k,v] of Object.entries(activeTherapy)){
-      rows.push(`<div class="row"><span>${escapeHtml(humanizeWords(k))}</span><span><b>${escapeHtml(shortValue(v))}</b></span></div>`);
+      rows.push(`<div class="row"><span>${escapeHtml(formatSettingsLabel(k))}</span><span><b>${escapeHtml(shortValue(v))}</b></span></div>`);
     }
   }
 
@@ -1692,8 +1737,8 @@ function renderCurrentSettings(obj){
   for (const name of featureNames.slice(0,10)){
     const cfg = featureProfiles[name];
     if (!cfg || typeof cfg !== 'object') continue;
-    const vals = Object.entries(cfg).slice(0,2).map(([k,v])=>`${humanizeWords(k)}: ${shortValue(v)}`).join(' • ');
-    rows.push(`<div class="row" title="${escapeHtml(vals)}"><span>${escapeHtml(name)}</span><span><b>${escapeHtml(vals || 'Configured')}</b></span></div>`);
+    const vals = Object.entries(cfg).slice(0,2).map(([k,v])=>`${formatSettingsLabel(k)}: ${shortValue(v)}`).join(' • ');
+    rows.push(`<div class="row" title="${escapeHtml(vals)}"><span>${escapeHtml(formatSettingsLabel(name))}</span><span><b>${escapeHtml(vals || 'Configured')}</b></span></div>`);
   }
 
   if (!rows.length){
@@ -2121,6 +2166,7 @@ function renderCalendar(){
     if (dates.has(iso)) b.classList.add('hasData');
     if (state.selectedRange.startISO && state.selectedRange.endISO && iso >= state.selectedRange.startISO && iso <= state.selectedRange.endISO){
       b.classList.add('selected');
+      if (iso === state.selectedRange.startISO || iso === state.selectedRange.endISO) b.classList.add('boundary');
     }
     b.textContent = String(d.getDate());
     b.disabled = !dates.has(iso);
@@ -2288,7 +2334,8 @@ function autoMapSignals(){
       'snore2s', 'snore', 'snore index'
     ],
     respRate: [
-      'resprate2s', 'resp rate', 'respiratory rate', 'breath rate', 'breaths min'
+      'resprate2s', 'resprate.2s', 'resp rate 2s', 'resp rate2s', 'resprate 2s',
+      'resp rate', 'respiratory rate', 'breath rate', 'breaths min'
     ],
     annotations: [
       'edf annotations', 'annotations', 'annotation'
@@ -2800,7 +2847,6 @@ function renderPlotsAndText(){
     const ranked = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
     const topCats = ranked.slice(0, 10).map(x=>x[0]);
     const catIndex = new Map(topCats.map((c,i)=>[c,i]));
-    const y = ev.type.map(t => catIndex.has(t) ? catIndex.get(t) : topCats.length);
 
     const colors = [
       'rgba(122,167,255,.92)','rgba(97,212,195,.92)','rgba(255,204,102,.90)',
@@ -2816,25 +2862,62 @@ function renderPlotsAndText(){
       ticktext: [...topCats.map(c=>cleanEventLabel(c)), 'Other'],
     };
 
-    const traces = [{
-      x: ev.t, y, type:'scatter', mode:'markers',
-      marker:{ size:9, color: y.map(i => colors[i % colors.length]), line:{width:1,color:'rgba(0,0,0,.35)'} },
-      text: ev.type,
-      hovertemplate:'%{x|%Y-%m-%d %H:%M:%S}<br><b>%{text}</b><extra></extra>',
-      name:'Timeline'
-    }];
+    const traces = [];
+    for (let i=0;i<topCats.length;i++){
+      const rawCat = topCats[i];
+      const cleanCat = cleanEventLabel(rawCat);
+      const xVals = [];
+      const yVals = [];
+      for (let j=0;j<ev.t.length;j++){
+        if (ev.type[j] !== rawCat) continue;
+        xVals.push(ev.t[j]);
+        yVals.push(i);
+      }
+      traces.push({
+        x: xVals,
+        y: yVals,
+        type:'scatter',
+        mode:'markers',
+        marker:{ size:9, color: colors[i % colors.length], line:{width:1,color:'rgba(0,0,0,.35)'} },
+        name: cleanCat,
+        text: xVals.map(() => cleanCat),
+        hovertemplate:'%{x|%Y-%m-%d %H:%M:%S}<br><b>%{text}</b><extra></extra>'
+      });
+    }
+
+    const otherX = [];
+    const otherY = [];
+    const otherText = [];
+    for (let j=0;j<ev.t.length;j++){
+      if (catIndex.has(ev.type[j])) continue;
+      otherX.push(ev.t[j]);
+      otherY.push(topCats.length);
+      otherText.push(cleanEventLabel(ev.type[j]));
+    }
+    if (otherX.length){
+      traces.push({
+        x: otherX,
+        y: otherY,
+        type:'scatter',
+        mode:'markers',
+        marker:{ size:8, color:'rgba(180,188,198,.88)', line:{width:1,color:'rgba(0,0,0,.35)'} },
+        name:'Other',
+        text: otherText,
+        hovertemplate:'%{x|%Y-%m-%d %H:%M:%S}<br><b>%{text}</b><extra></extra>'
+      });
+    }
 
     Plotly.newPlot(els.plotEvents, traces, layout, plotConfig);
 
     const legendItems = topCats.slice(0,6).map((cat, i)=>`<span class="eventLegendItem" title="${escapeHtml(cleanEventLabel(cat))}: annotation category from EDF events"><span class="dot" style="display:inline-block;width:10px;height:10px;border-radius:999px;background:${colors[i % colors.length]};margin-right:6px;vertical-align:middle;"></span>${escapeHtml(cleanEventLabel(cat))}</span>`).join(' ');
-    els.eventsLegend.innerHTML = `<b>Legend:</b> ${legendItems || 'No categories'}<div class="tiny" style="margin-top:6px">Hover any dot in the chart to see timestamp + event label.</div>`;
+    els.eventsLegend.innerHTML = `<b>Legend:</b> ${legendItems || 'No categories'}<div class="tiny" style="margin-top:6px">Dots are labeled by parsed event category. Hover a dot to see exact timestamp and label.</div>`;
 
     const top = ranked.slice(0,5)
       .map(([k,v])=>`• ${escapeHtml(cleanEventLabel(k))}: <b>${v}</b>`).join('<br/>');
     const rangeLabel = state.selectedRange?.startISO && state.selectedRange?.endISO ? `${state.selectedRange.startISO} → ${state.selectedRange.endISO}` : (state.current.session?.label || 'Selected session');
     const perHour = st.usageHrs && st.usageHrs > 0 ? (ev.t.length / st.usageHrs) : null;
     els.eventsNarrative.innerHTML = `
-      <b>Events explained:</b> each dot is one annotation event in the selected timeframe.<br/><br/>
+      <b>Events explained:</b> each dot is one parsed annotation event, grouped by category.<br/><br/>
       • Range: <b>${escapeHtml(rangeLabel)}</b><br/>
       • Total events: <b>${ev.t.length}</b><br/>
       • Events/hour (raw): <b>${perHour != null ? perHour.toFixed(2) : '—'}</b><br/>
