@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>CalmCPAP — 0.21-alpha</title>
+  <title>CalmCPAP — 0.22-alpha</title>
 
   <!-- Unzip -->
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -354,6 +354,10 @@
     .panel{ display:none; padding:14px; }
     .panel.active{ display:block; }
 
+    #floatingSidebarBtn{ box-shadow: var(--shadow); border:1px solid rgba(255,255,255,.2); background:rgba(11,42,49,.92); }
+    body.left-collapsed #floatingSidebarBtn{ display:inline-flex !important; }
+    #exploreSelect{ width:100%; max-width:640px; min-height:44px; font-size:14px; font-weight:700; border:1px solid rgba(97,212,195,.5); background:rgba(8,36,43,.8); color:var(--text); border-radius:12px; padding:10px 12px; box-shadow:0 8px 16px rgba(0,0,0,.22); }
+
     .explain{
       display:grid;
       grid-template-columns: 1.15fr .85fr;
@@ -576,7 +580,7 @@
     <div class="brand">
       <div class="logo" aria-hidden="true"></div>
       <div>
-        <h1>CalmCPAP <span class="badge">0.21-alpha</span></h1>
+        <h1>CalmCPAP <span class="badge">0.22-alpha</span></h1>
         <div class="subtitle">AirSense 11 SD ZIP → unzip → Identification.json + EDF → DATALOG/YYYYMMDD sessions → charts + explanations.</div>
       </div>
     </div>
@@ -721,6 +725,7 @@
         <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="flow" id="tab-flow" aria-controls="panel-flow">Flow</button>
         <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="snore" id="tab-snore" aria-controls="panel-snore">Snore</button>
         <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="resprate" id="tab-resprate" aria-controls="panel-resprate">Respiratory Rate</button>
+        <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="tidal" id="tab-tidal" aria-controls="panel-tidal">Tidal Volume</button>
         <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="events" id="tab-events" aria-controls="panel-events">Events</button>
         <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="explore" id="tab-explore" aria-controls="panel-explore">Explore</button>
         <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="raw" id="tab-raw" aria-controls="panel-raw">Raw</button>
@@ -767,6 +772,11 @@
           <div class="callout" style="margin-top:12px" id="respRateNarrative"></div>
         </div>
 
+        <div class="panel" id="panel-tidal" role="tabpanel" aria-labelledby="tab-tidal">
+          <div class="plot" id="plotTidalVolume"></div>
+          <div class="callout" style="margin-top:12px" id="tidalNarrative"></div>
+        </div>
+
         <div class="panel" id="panel-events" role="tabpanel" aria-labelledby="tab-events">
           <div class="plot" id="plotEvents"></div>
           <div class="callout" id="eventsLegend" style="margin-top:10px"></div>
@@ -774,10 +784,10 @@
         </div>
 
         <div class="panel" id="panel-explore" role="tabpanel" aria-labelledby="tab-explore">
-          <div class="callout" id="exploreNarrative"><b>Explore:</b> choose a custom mapping from the dropdown to see it here.</div>
+          <div class="callout" id="exploreNarrative"><b>Explore:</b> choose a mapped signal from the large dropdown below to display it here.</div>
           <div style="margin:10px 0;">
-            <select id="exploreSelect" disabled style="width:100%; max-width:540px;">
-              <option value="">Choose a mapped signal…</option>
+            <select id="exploreSelect" disabled>
+              <option value="">Choose a mapped signal (large selector)…</option>
             </select>
           </div>
           <div class="plot" id="plotExplore"></div>
@@ -793,11 +803,12 @@
 </div>
 
 <div class="toast" id="toast"></div>
+<button id="floatingSidebarBtn" class="btn ghost" style="display:none; position:fixed; left:14px; top:84px; z-index:30;">Open Sidebar</button>
 
 
 <script>
 /* ============================
-   CalmCPAP 0.21-alpha (AirSense 11 SD)
+   CalmCPAP 0.22-alpha (AirSense 11 SD)
    ✔️ Robust ZIP indexing + EDF parsing + charts
    ============================ */
 
@@ -810,6 +821,7 @@ const els = {
   zipStats: document.getElementById('zipStats'),
 
   toggleLeftBtn: document.getElementById('toggleLeftBtn'),
+  floatingSidebarBtn: document.getElementById('floatingSidebarBtn'),
   clearBtn: document.getElementById('clearBtn'),
   demoBtn: document.getElementById('demoBtn'),
 
@@ -853,6 +865,7 @@ const els = {
   flowNarrative: document.getElementById('flowNarrative'),
   snoreNarrative: document.getElementById('snoreNarrative'),
   respRateNarrative: document.getElementById('respRateNarrative'),
+  tidalNarrative: document.getElementById('tidalNarrative'),
   eventsLegend: document.getElementById('eventsLegend'),
   eventsNarrative: document.getElementById('eventsNarrative'),
 
@@ -865,6 +878,7 @@ const els = {
   plotFlow: document.getElementById('plotFlow'),
   plotSnore: document.getElementById('plotSnore'),
   plotRespRate: document.getElementById('plotRespRate'),
+  plotTidalVolume: document.getElementById('plotTidalVolume'),
   plotEvents: document.getElementById('plotEvents'),
   plotExplore: document.getElementById('plotExplore'),
   exploreSelect: document.getElementById('exploreSelect'),
@@ -892,7 +906,7 @@ const state = {
     session: null,
     edfFiles: [],
     signalCatalog: [],
-    mapping: { leak:null, pressure:null, flow:null, snore:null, respRate:null, annotations:null },
+    mapping: { leak:null, pressure:null, flow:null, snore:null, respRate:null, tidalVolume:null, annotations:null },
     signals: {},
     events: null,
     stats: {},
@@ -1014,7 +1028,7 @@ function CALM_LAYOUT(title){
 const plotConfig = { responsive:true, displayModeBar:true, modeBarButtonsToRemove:['autoScale2d'] };
 
 function purgePlots(){
-  [els.plotOverview, els.plotLeak, els.plotPressure, els.plotFlow, els.plotSnore, els.plotRespRate, els.plotEvents, els.plotExplore].forEach(p => Plotly.purge(p));
+  [els.plotOverview, els.plotLeak, els.plotPressure, els.plotFlow, els.plotSnore, els.plotRespRate, els.plotTidalVolume, els.plotEvents, els.plotExplore].forEach(p => Plotly.purge(p));
 }
 function placeholderPlots(){
   const data = [{ x:[0,1,2,3], y:[0,1,0.4,0.8], type:'scatter', mode:'lines', hoverinfo:'skip',
@@ -1025,6 +1039,7 @@ function placeholderPlots(){
   Plotly.newPlot(els.plotFlow, data, {...CALM_LAYOUT('Flow'), xaxis:{visible:false}, yaxis:{visible:false}}, plotConfig);
   Plotly.newPlot(els.plotSnore, data, {...CALM_LAYOUT('Snore'), xaxis:{visible:false}, yaxis:{visible:false}}, plotConfig);
   Plotly.newPlot(els.plotRespRate, data, {...CALM_LAYOUT('Respiratory Rate'), xaxis:{visible:false}, yaxis:{visible:false}}, plotConfig);
+  Plotly.newPlot(els.plotTidalVolume, data, {...CALM_LAYOUT('Tidal Volume'), xaxis:{visible:false}, yaxis:{visible:false}}, plotConfig);
   Plotly.newPlot(els.plotEvents, data, {...CALM_LAYOUT('Events'), xaxis:{visible:false}, yaxis:{visible:false}}, plotConfig);
   Plotly.newPlot(els.plotExplore, data, {...CALM_LAYOUT('Explore'), xaxis:{visible:false}, yaxis:{visible:false}}, plotConfig);
 }
@@ -1044,7 +1059,7 @@ function resetAll(){
   state.calendarView = null;
   state.current = {
     session:null, edfFiles:[], signalCatalog:[],
-    mapping:{ leak:null, pressure:null, flow:null, snore:null, respRate:null, annotations:null },
+    mapping:{ leak:null, pressure:null, flow:null, snore:null, respRate:null, tidalVolume:null, annotations:null },
     signals:{}, events:null, stats:{}, raw:{}
   };
   state.notes = [];
@@ -1076,10 +1091,11 @@ function resetAll(){
   els.flowNarrative.innerHTML = '';
   els.snoreNarrative.innerHTML = '';
   els.respRateNarrative.innerHTML = '';
+  els.tidalNarrative.innerHTML = '';
   els.eventsLegend.innerHTML = '';
   els.eventsNarrative.innerHTML = '';
-  els.exploreNarrative.innerHTML = '<b>Explore:</b> choose a custom mapping from the dropdown to see it here.';
-  els.exploreSelect.innerHTML = '<option value="">Choose a mapped signal…</option>';
+  els.exploreNarrative.innerHTML = '<b>Explore:</b> choose a mapped signal from the large dropdown below to display it here.';
+  els.exploreSelect.innerHTML = '<option value="">Choose a mapped signal (large selector)…</option>';
   els.exploreSelect.disabled = true;
 
   els.rawSummary.innerHTML = '';
@@ -1162,15 +1178,28 @@ els.zipInput.addEventListener('change', ()=>{
   if (f) handleZip(f);
 });
 els.clearBtn.addEventListener('click', ()=>{ resetAll(); toast('Cleared.'); });
-els.toggleLeftBtn.addEventListener('click', ()=>{
-  const collapsed = document.body.classList.toggle('left-collapsed');
-  els.toggleLeftBtn.textContent = collapsed ? 'Show Sidebar' : 'Hide Sidebar';
+
+function updateSidebarToggleUI(collapsed){
+  els.toggleLeftBtn.textContent = collapsed ? 'Open Sidebar' : 'Hide Sidebar';
   els.toggleLeftBtn.setAttribute('aria-pressed', collapsed ? 'true' : 'false');
+  if (els.floatingSidebarBtn){
+    els.floatingSidebarBtn.style.display = collapsed ? 'inline-flex' : 'none';
+    els.floatingSidebarBtn.textContent = 'Open Sidebar';
+  }
   setTimeout(()=>{
-    [els.plotOverview, els.plotLeak, els.plotPressure, els.plotFlow, els.plotSnore, els.plotRespRate, els.plotEvents, els.plotExplore].forEach(p=>{
+    [els.plotOverview, els.plotLeak, els.plotPressure, els.plotFlow, els.plotSnore, els.plotRespRate, els.plotTidalVolume, els.plotEvents, els.plotExplore].forEach(p=>{
       if (p) Plotly.Plots.resize(p);
     });
   }, 40);
+}
+
+els.toggleLeftBtn.addEventListener('click', ()=>{
+  const collapsed = document.body.classList.toggle('left-collapsed');
+  updateSidebarToggleUI(collapsed);
+});
+els.floatingSidebarBtn?.addEventListener('click', ()=>{
+  document.body.classList.remove('left-collapsed');
+  updateSidebarToggleUI(false);
 });
 
 /* ---------- Picker ---------- */
@@ -2237,7 +2266,7 @@ async function loadSessionsAggregate(sessions, label, jobId = state.jobId){
   };
   state.current.edfFiles = [];
   state.current.signalCatalog = [];
-  state.current.mapping = { leak:null, pressure:null, flow:null, snore:null, respRate:null, annotations:null };
+  state.current.mapping = { leak:null, pressure:null, flow:null, snore:null, respRate:null, tidalVolume:null, annotations:null };
   state.current.signals = {};
   state.current.events = null;
   state.current.stats = {};
@@ -2341,6 +2370,9 @@ function autoMapSignals(){
       'resprate2s', 'resprate.2s', 'resp rate 2s', 'resp rate2s', 'resprate 2s',
       'resp rate', 'breath rate', 'breaths min'
     ],
+    tidalVolume: [
+      'tidvol.2s', 'tidvol2s', 'tid vol 2s', 'tidal volume', 'tidal vol', 'tv'
+    ],
     annotations: [
       'edf annotations', 'annotations', 'annotation'
     ]
@@ -2378,6 +2410,7 @@ function autoMapSignals(){
     }
     if (targetKey === 'snore' && (labelN.includes('snore') || unitN.includes('snore'))) score += 16;
     if (targetKey === 'respRate' && (labelN.includes('resp') || labelN.includes('rate') || unitN.includes('/min'))) score += 10;
+    if (targetKey === 'tidalVolume' && (labelN.includes('tid') || labelN.includes('tidal') || labelN.includes('vol'))) score += 20;
     if (targetKey === 'annotations' && (labelN.includes('annot') || labelN.includes('event'))) score += 12;
 
     if (targetKey !== 'annotations'){
@@ -2407,6 +2440,7 @@ function autoMapSignals(){
   state.current.mapping.flow = pickBest('flow');
   state.current.mapping.snore = pickBest('snore');
   state.current.mapping.respRate = pickBest('respRate');
+  state.current.mapping.tidalVolume = pickBest('tidalVolume');
   state.current.mapping.annotations = pickBest('annotations');
 
   log(`Auto-map: ${JSON.stringify(state.current.mapping)}`);
@@ -2443,6 +2477,7 @@ function renderMappingUI(){
     { label:'Flow', key:'flow' },
     { label:'Snore', key:'snore' },
     { label:'Respiratory Rate', key:'respRate' },
+    { label:'Tidal Volume', key:'tidalVolume' },
     { label:'Events', key:'annotations' },
   ];
 
@@ -2474,7 +2509,7 @@ function renderMappingUI(){
 
 function populateExploreOptions(cat){
   if (!els.exploreSelect) return;
-  els.exploreSelect.innerHTML = '<option value="">Choose a mapped signal…</option>';
+  els.exploreSelect.innerHTML = '<option value="">Choose a mapped signal (large selector)…</option>';
   for (const c of cat){
     const opt = document.createElement('option');
     opt.value = c.key;
@@ -2488,7 +2523,7 @@ async function renderExplorePlot(){
   const key = els.exploreSelect?.value;
   if (!key){
     Plotly.newPlot(els.plotExplore, [{x:[0,1],y:[0,0],type:'scatter',mode:'lines',hoverinfo:'skip'}], {...CALM_LAYOUT('Explore (select a signal)')}, plotConfig);
-    els.exploreNarrative.innerHTML = '<b>Explore:</b> choose a custom mapping from the dropdown to see it here.';
+    els.exploreNarrative.innerHTML = '<b>Explore:</b> choose a mapped signal from the large dropdown below to display it here.';
     return;
   }
   const merged = { t:[], y:[], unit:'', label:'' };
@@ -2522,6 +2557,7 @@ function applyMappingFromUI(){
   const flow = document.getElementById('map_flow')?.value || '';
   const snore = document.getElementById('map_snore')?.value || '';
   const respRate = document.getElementById('map_respRate')?.value || '';
+  const tidalVolume = document.getElementById('map_tidalVolume')?.value || '';
   const annotations = document.getElementById('map_annotations')?.value || '';
   state.current.mapping = {
     leak: leak||null,
@@ -2529,6 +2565,7 @@ function applyMappingFromUI(){
     flow: flow||null,
     snore: snore||null,
     respRate: respRate||null,
+    tidalVolume: tidalVolume||null,
     annotations: annotations||null
   };
   log(`Applied manual mapping: ${JSON.stringify(state.current.mapping)}`);
@@ -2548,7 +2585,7 @@ async function extractSignalsAndRender(){
   setStatus('Processing…','neutral');
 
   const mapping = state.current.mapping;
-  const merged = { leak:null, pressure:null, flow:null, snore:null, respRate:null };
+  const merged = { leak:null, pressure:null, flow:null, snore:null, respRate:null, tidalVolume:null };
   let mergedEvents = { t:[], type:[] };
 
   const files = state.current.edfFiles;
@@ -2565,6 +2602,7 @@ async function extractSignalsAndRender(){
     merged.flow = mergeSeriesPickBest(merged.flow, series.flow);
     merged.snore = mergeSeriesPickBest(merged.snore, series.snore);
     merged.respRate = mergeSeriesPickBest(merged.respRate, series.respRate);
+    merged.tidalVolume = mergeSeriesPickBest(merged.tidalVolume, series.tidalVolume);
 
     if (events?.t?.length){
       mergedEvents.t.push(...events.t);
@@ -2589,13 +2627,15 @@ async function extractSignalsAndRender(){
   const clippedFlow = clipSeriesToWindow(merged.flow, state.current.session?.start, state.current.session?.end);
   const clippedSnore = clipSeriesToWindow(merged.snore, state.current.session?.start, state.current.session?.end);
   const clippedRespRate = clipSeriesToWindow(merged.respRate, state.current.session?.start, state.current.session?.end);
+  const clippedTidalVolume = clipSeriesToWindow(merged.tidalVolume, state.current.session?.start, state.current.session?.end);
 
   state.current.signals = {
     leak: clippedLeak,
     pressure: clippedPressure,
     flow: clippedFlow,
     snore: clippedSnore,
-    respRate: clippedRespRate
+    respRate: clippedRespRate,
+    tidalVolume: clippedTidalVolume
   };
   state.current.events = eventsOut;
 
@@ -2773,7 +2813,7 @@ function renderPlotsAndText(){
       'Mostly controlled';
 
     els.leakNarrative.innerHTML = `
-      <b>Leak explained:</b> extra air escaping beyond expected venting.<br/>
+      <b>Leak explained:</b> extra air escaping beyond expected venting. Sampled <b>every 2 seconds</b>.<br/>
       <b>Your reading:</b> <b>${tone}</b><br/>
       • Median: <b>${st.leakP50 != null ? st.leakP50.toFixed(1) : '—'}</b><br/>
       • P95: <b>${st.leakP95 != null ? st.leakP95.toFixed(1) : '—'}</b><br/>
@@ -2795,7 +2835,7 @@ function renderPlotsAndText(){
     }, plotConfig);
 
     els.pressureNarrative.innerHTML = `
-      <b>Pressure explained:</b> the “air support” keeping your airway open.<br/><br/>
+      <b>Pressure explained:</b> the “air support” keeping your airway open.<br/>Sample rate: <b>every 1 second</b>.<br/><br/>
       • Median: <b>${st.p50 != null ? st.p50.toFixed(1) : '—'}</b><br/>
       • P95: <b>${st.p95 != null ? st.p95.toFixed(1) : '—'}</b>
     `;
@@ -2830,7 +2870,7 @@ function renderPlotsAndText(){
       ...CALM_LAYOUT('Snore'),
       yaxis: { ...CALM_LAYOUT('').yaxis, title: { text: s.snore.unit ? `Snore (${s.snore.unit})` : 'Snore' } }
     }, plotConfig);
-    els.snoreNarrative.innerHTML = `<b>Snore:</b> snore-related signal over time. Higher values may indicate increased upper-airway vibration.`;
+    els.snoreNarrative.innerHTML = `<b>Snore:</b> snore-related signal over time (sampled every 2 seconds). Higher values may indicate increased upper-airway vibration.`;
   } else {
     Plotly.newPlot(els.plotSnore, [{x:[0,1],y:[0,0],type:'scatter',mode:'lines',hoverinfo:'skip'}],
       {...CALM_LAYOUT('Snore (not mapped)')}, plotConfig);
@@ -2845,11 +2885,31 @@ function renderPlotsAndText(){
       ...CALM_LAYOUT('Respiratory Rate'),
       yaxis: { ...CALM_LAYOUT('').yaxis, title: { text: s.respRate.unit ? `Respiratory Rate (${s.respRate.unit})` : 'Respiratory Rate' } }
     }, plotConfig);
-    els.respRateNarrative.innerHTML = `<b>Respiratory Rate:</b> respiratory rate trend. Watch for sustained rises/falls compared with your usual baseline.`;
+    els.respRateNarrative.innerHTML = `<b>Respiratory Rate (BPM):</b> respiratory rate trend (sampled every 2 seconds). <b>BPM = Breaths Per Minute</b>. Watch for sustained rises/falls compared with your usual baseline.`;
   } else {
     Plotly.newPlot(els.plotRespRate, [{x:[0,1],y:[0,0],type:'scatter',mode:'lines',hoverinfo:'skip'}],
       {...CALM_LAYOUT('Respiratory Rate (not mapped)')}, plotConfig);
     els.respRateNarrative.innerHTML = `<b>No Respiratory Rate signal mapped.</b> Set Respiratory Rate in the mapping panel if available.`;
+  }
+
+  if (s.tidalVolume?.t?.length){
+    const layTv = {
+      ...CALM_LAYOUT('Tidal Volume'),
+      yaxis: { ...CALM_LAYOUT('').yaxis, title: { text: s.tidalVolume.unit ? `Tidal Volume (${s.tidalVolume.unit})` : 'Tidal Volume (mL)' } },
+      shapes:[
+        {type:'line', xref:'paper', x0:0, x1:1, yref:'y', y0:500, y1:500, line:{color:'rgba(122,167,255,.75)', width:2, dash:'dot'}},
+        {type:'line', xref:'paper', x0:0, x1:1, yref:'y', y0:400, y1:400, line:{color:'rgba(255,204,102,.75)', width:2, dash:'dot'}}
+      ]
+    };
+    Plotly.newPlot(els.plotTidalVolume, [{
+      x:s.tidalVolume.t, y:s.tidalVolume.y, type:'scatter', mode:'lines',
+      name:'Tidal Volume', line:{ color:'rgba(186,148,255,.95)', width:2.1 }
+    }], layTv, plotConfig);
+    els.tidalNarrative.innerHTML = `<b>Tidal Volume:</b> the amount of air you breathe in one normal resting breath. Typical resting baseline is about <b>500 mL for men</b> and <b>400 mL for women</b> (shown as reference lines).`;
+  } else {
+    Plotly.newPlot(els.plotTidalVolume, [{x:[0,1],y:[0,0],type:'scatter',mode:'lines',hoverinfo:'skip'}],
+      {...CALM_LAYOUT('Tidal Volume (not mapped)')}, plotConfig);
+    els.tidalNarrative.innerHTML = `<b>No Tidal Volume signal mapped.</b> Tidal Volume uses <b>TidVol.2s</b> when available.`;
   }
 
   if (ev?.t?.length){
