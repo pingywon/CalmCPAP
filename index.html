@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>CalmCPAP — 0.41-alpha</title>
+  <title>CalmCPAP — 0.42-alpha</title>
 
   <!-- Unzip -->
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -247,12 +247,12 @@
     }
     .kv .row b{ color: rgba(231,246,246,.93); font-weight:850; }
 
-    .drawer{ margin-top:10px; border:1px solid rgba(255,255,255,.10); border-radius:14px; background:rgba(11,42,49,.35); overflow:hidden; }
-    .drawer > summary{ cursor:pointer; list-style:none; padding:10px 12px; font-size:12.5px; color:var(--muted); font-weight:800; display:flex; align-items:center; justify-content:space-between; }
+    .drawer{ margin-top:12px; border:1px solid rgba(122,167,255,.35); border-radius:16px; background:rgba(11,42,49,.52); overflow:hidden; box-shadow:0 12px 24px rgba(0,0,0,.18); }
+    .drawer > summary{ cursor:pointer; list-style:none; padding:13px 14px; font-size:14px; color:rgba(231,246,246,.95); font-weight:900; display:flex; align-items:center; justify-content:space-between; letter-spacing:.15px; background:rgba(18,58,68,.6); border-bottom:1px solid rgba(255,255,255,.08); }
     .drawer > summary::-webkit-details-marker{ display:none; }
-    .drawer > summary::after{ content:'▾'; color:var(--muted2); font-size:12px; }
+    .drawer > summary::after{ content:'▾'; color:rgba(231,246,246,.92); font-size:14px; }
     .drawer:not([open]) > summary::after{ content:'▸'; }
-    .drawerBody{ padding:0 10px 10px; }
+    .drawerBody{ padding:8px 12px 12px; font-size:13.5px; }
 
     .picker{
       display:flex; gap:10px; align-items:center; flex-wrap:wrap;
@@ -265,7 +265,7 @@
     .picker label{ font-size:12px; color: var(--muted2); }
 
     .rangeControls{ margin-top:10px; display:grid; gap:8px; transition:filter .2s ease, opacity .2s ease; }
-    .rangeControls.disabled{ opacity:.55; filter:saturate(.7); }
+    .rangeControls.disabled{ opacity:.42; filter:saturate(.2) grayscale(.35) brightness(.82); pointer-events:none; }
     .rangeControls.ready .seg, .rangeControls.ready .calendarWrap{ background: rgba(18,58,68,.72); border-color: rgba(122,167,255,.35); }
     .rangeControls.ready .rangeHint{ color: var(--muted); }
     .seg{
@@ -583,7 +583,7 @@
     <div class="brand">
       <div class="logo" aria-hidden="true"></div>
       <div>
-        <h1>CalmCPAP <span class="badge">0.41-alpha</span></h1>
+        <h1>CalmCPAP <span class="badge">0.42-alpha</span></h1>
         <div class="subtitle">AirSense 11 SD ZIP → unzip → Identification.json + EDF → DATALOG/YYYYMMDD sessions → charts + explanations.</div>
       </div>
     </div>
@@ -623,6 +623,32 @@
             Runs completely in your browser. Progress updates show an upward file counter so it never feels frozen.
           </p>
         </div>
+
+        <div class="rangeControls disabled" id="rangeControls">
+          <div class="calendarWrap">
+            <div class="calHead">
+              <div class="calNav">
+                <button type="button" id="calPrev" aria-label="Previous month">◀</button>
+                <button type="button" id="calToday" aria-label="Jump to selected month">Today</button>
+              </div>
+              <select id="calMonthSelect" class="calMonthSelect" aria-label="Choose month"></select>
+              <div class="calNav">
+                <button type="button" id="calNext" aria-label="Next month">▶</button>
+              </div>
+            </div>
+            <div class="dow"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+            <div class="calGrid" id="calGrid"></div>
+          </div>
+          <div class="seg" id="rangeModeSeg" aria-label="Range mode">
+            <button type="button" id="modeNight" class="active">Night</button>
+            <button type="button" id="modeWeek">Week</button>
+            <button type="button" id="modeMonth">Month</button>
+            <button type="button" id="modeCustom">Custom</button>
+            <button type="button" id="loadRangeBtn">Load Range</button>
+          </div>
+          <div class="rangeHint" id="rangeHint">Upload a ZIP to enable calendar range selection.</div>
+        </div>
+
 
         <div class="hr"></div>
 
@@ -678,30 +704,7 @@
           </div>
         </details>
 
-        <div class="rangeControls disabled" id="rangeControls">
-          <div class="calendarWrap">
-            <div class="calHead">
-              <div class="calNav">
-                <button type="button" id="calPrev" aria-label="Previous month">◀</button>
-                <button type="button" id="calToday" aria-label="Jump to selected month">Today</button>
-              </div>
-              <select id="calMonthSelect" class="calMonthSelect" aria-label="Choose month"></select>
-              <div class="calNav">
-                <button type="button" id="calNext" aria-label="Next month">▶</button>
-              </div>
-            </div>
-            <div class="dow"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
-            <div class="calGrid" id="calGrid"></div>
-          </div>
-          <div class="seg" id="rangeModeSeg" aria-label="Range mode">
-            <button type="button" id="modeNight" class="active">Night</button>
-            <button type="button" id="modeWeek">Week</button>
-            <button type="button" id="modeMonth">Month</button>
-            <button type="button" id="modeCustom">Custom</button>
-            <button type="button" id="loadRangeBtn">Load Range</button>
-          </div>
-          <div class="rangeHint" id="rangeHint">Upload a ZIP to enable calendar range selection.</div>
-        </div>
+
 
         <div class="hr"></div>
 
@@ -823,12 +826,8 @@
       <li>Create one ZIP from that root copy.</li>
       <li>Upload that ZIP in this app.</li>
     </ol>
-    <label style="display:flex; align-items:center; gap:8px; margin-bottom:14px; color:var(--muted);">
-      <input type="checkbox" id="onboardingDontShow" />
-      Don’t show this again
-    </label>
-    <div style="display:flex; justify-content:flex-end; gap:10px;">
-      <button class="btn ghost" id="onboardingCloseBtn" type="button">Got it — Continue</button>
+    <div style="display:flex; justify-content:center; gap:10px;">
+      <button class="btn" id="onboardingCloseBtn" type="button" style="min-width:280px; font-size:16px; padding:12px 18px; text-align:center;">Got it — Continue</button>
     </div>
   </div>
 </div>
@@ -844,7 +843,7 @@
 
 <script>
 /* ============================
-   CalmCPAP 0.41-alpha (AirSense 11 SD)
+   CalmCPAP 0.42-alpha (AirSense 11 SD)
    ✔️ Robust ZIP indexing + EDF parsing + charts
    ============================ */
 
@@ -860,7 +859,6 @@ const els = {
   floatingSidebarBtn: document.getElementById('floatingSidebarBtn'),
   onboardingModal: document.getElementById('onboardingModal'),
   onboardingCloseBtn: document.getElementById('onboardingCloseBtn'),
-  onboardingDontShow: document.getElementById('onboardingDontShow'),
   globalLoadOverlay: document.getElementById('globalLoadOverlay'),
   globalLoadStep: document.getElementById('globalLoadStep'),
   globalLoadPct: document.getElementById('globalLoadPct'),
@@ -1185,6 +1183,11 @@ function setActiveTab(tabId){
     const wants = p.getAttribute('aria-labelledby') === tabId;
     p.classList.toggle('active', wants);
   }
+  setTimeout(()=>{
+    [els.plotOverview, els.plotLeak, els.plotPressure, els.plotFlow, els.plotSnore, els.plotRespRate, els.plotTidalVolume, els.plotEpr, els.plotEvents, els.plotExplore].forEach(p=>{
+      if (p) Plotly.Plots.resize(p);
+    });
+  }, 20);
 }
 els.tablist.addEventListener('click', (e)=>{
   const btn = e.target.closest('[role="tab"]');
@@ -1213,14 +1216,11 @@ els.tablist.addEventListener('keydown', (e)=>{
 /* ---------- Upload handling ---------- */
 function maybeShowOnboarding(){
   if (!els.onboardingModal) return;
-  const hide = localStorage.getItem('calmcpap_hide_onboarding') === '1';
-  if (hide) return;
   els.onboardingModal.style.display = 'block';
   els.onboardingModal.setAttribute('aria-hidden','false');
 }
 function closeOnboarding(){
   if (!els.onboardingModal) return;
-  if (els.onboardingDontShow?.checked) localStorage.setItem('calmcpap_hide_onboarding','1');
   els.onboardingModal.style.display = 'none';
   els.onboardingModal.setAttribute('aria-hidden','true');
 }
