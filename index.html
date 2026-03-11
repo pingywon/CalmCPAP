@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>CalmCPAP — 0.51-alpha</title>
+  <title>CalmCPAP — 0.52-alpha</title>
 
   <!-- Unzip -->
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -266,32 +266,50 @@
 
     .rangeControls{ margin-top:10px; display:grid; gap:8px; transition:filter .2s ease, opacity .2s ease; }
     .rangeControls.disabled{ opacity:.3; filter:saturate(.05) grayscale(.65) brightness(.65); pointer-events:none; }
-    .rangeControls.ready .seg, .rangeControls.ready .calendarWrap{ background: rgba(18,58,68,.72); border-color: rgba(122,167,255,.35); box-shadow: inset 0 0 0 1px rgba(122,167,255,.15); }
+    .rangeControls.ready .nightToolbar, .rangeControls.ready .calendarWrap{ background: rgba(18,58,68,.72); border-color: rgba(122,167,255,.35); box-shadow: inset 0 0 0 1px rgba(122,167,255,.15); }
     .rangeControls.ready .rangeHint{ color: var(--muted); }
-    .seg{
-      display:flex; gap:6px; flex-wrap:wrap;
-      background: rgba(11,42,49,.45);
-      border:1px solid rgba(255,255,255,.08);
-      padding:8px; border-radius:12px;
-    }
-    .seg button{ padding:7px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.05); color:var(--text); cursor:pointer; font-weight:700; }
-    #loadRangeBtn{ background: linear-gradient(135deg, var(--accent), var(--accent2)); color:#062026; border:none; box-shadow:0 10px 18px rgba(97,212,195,.22); font-weight:900; }
-    #loadRangeBtn:disabled{ opacity:.55; filter:saturate(.7); }
-    .seg button.active{ background:linear-gradient(135deg, rgba(97,212,195,.24), rgba(122,167,255,.25)); border-color:rgba(97,212,195,.65); }
     .calendarWrap{ border:1px solid rgba(255,255,255,.10); background:rgba(11,42,49,.45); border-radius:14px; padding:10px; }
     .calHead{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
     .calHead .month{ font-size:12px; color:var(--muted); font-weight:700; }
     .calMonthSelect{ background:rgba(255,255,255,.08); color:var(--text); border:1px solid rgba(255,255,255,.16); border-radius:10px; padding:6px 8px; font-size:12px; min-width:180px; }
     .calNav{ display:flex; gap:6px; }
     .calNav button{ border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.05); color:var(--text); border-radius:10px; padding:4px 8px; cursor:pointer; }
+    .nightToolbar{
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      gap:8px;
+      align-items:center;
+      background: rgba(11,42,49,.45);
+      border:1px solid rgba(255,255,255,.08);
+      padding:8px;
+      border-radius:12px;
+    }
+    .nightToolbar button{
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      border-radius:10px;
+      padding:7px 10px;
+      cursor:pointer;
+      font-weight:800;
+      min-width:72px;
+    }
+    .nightToolbar button[disabled]{ opacity:.45; cursor:not-allowed; }
+    .nightSummary{ min-width:0; text-align:center; }
+    .nightSummary b{ display:block; font-size:12.5px; color:rgba(231,246,246,.95); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .nightSummary span{ display:block; margin-top:2px; font-size:11px; color:var(--muted); }
     .dow, .calGrid{ display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:5px; }
     .dow div{ text-align:center; font-size:10.5px; color:var(--muted2); text-transform:uppercase; }
-    .day{ min-height:32px; border-radius:10px; border:1px solid rgba(255,255,255,.08); font-size:12px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.03); color:var(--muted); }
+    .day{ min-height:32px; border-radius:10px; border:1px solid rgba(255,255,255,.08); font-size:12px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.03); color:var(--muted); cursor:pointer; }
+    .day:disabled{ cursor:not-allowed; }
     .day.muted{ opacity:.45; }
     .day.hasData{ color:var(--text); border-color:rgba(97,212,195,.45); }
     .day.selected{ background:linear-gradient(135deg, rgba(255,204,102,.42), rgba(255,107,122,.34)); color:#ffffff; border-color:rgba(255,204,102,.95); box-shadow: inset 0 0 0 1px rgba(255,255,255,.24); font-weight:900; }
-    .day.boundary{ background:linear-gradient(135deg, rgba(255,107,122,.62), rgba(122,167,255,.62)); border-color:#ffffff; color:#ffffff; box-shadow:0 0 0 2px rgba(255,255,255,.24); }
     .rangeHint{ font-size:11.5px; color:var(--muted2); }
+    @media (max-width: 520px){
+      .nightToolbar{ grid-template-columns:1fr 1fr; }
+      .nightSummary{ grid-column:1 / -1; order:-1; }
+    }
     .picker input[type="date"], .picker select{
       background: rgba(255,255,255,.06);
       border:1px solid rgba(255,255,255,.12);
@@ -583,7 +601,7 @@
     <div class="brand">
       <div class="logo" aria-hidden="true"></div>
       <div>
-        <h1>CalmCPAP <span class="badge">0.51-alpha</span></h1>
+        <h1>CalmCPAP <span class="badge">0.52-alpha</span></h1>
         <div class="subtitle">AirSense 11 SD ZIP → unzip → Identification.json + EDF → DATALOG/YYYYMMDD sessions → charts + explanations.</div>
       </div>
     </div>
@@ -632,7 +650,7 @@
             <div class="calHead">
               <div class="calNav">
                 <button type="button" id="calPrev" aria-label="Previous month">◀</button>
-                <button type="button" id="calToday" aria-label="Jump to selected month">Today</button>
+                <button type="button" id="calToday" aria-label="Jump to today">Today</button>
               </div>
               <select id="calMonthSelect" class="calMonthSelect" aria-label="Choose month"></select>
               <div class="calNav">
@@ -642,12 +660,12 @@
             <div class="dow"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
             <div class="calGrid" id="calGrid"></div>
           </div>
-          <div class="seg" id="rangeModeSeg" aria-label="Range mode">
-            <button type="button" id="modeNight" class="active">Night</button>
-            <button type="button" id="modeCustom" style="display:none">Custom</button>
-            <button type="button" id="loadRangeBtn" style="display:none">Load Range</button>
+          <div class="nightToolbar" id="nightToolbar" aria-label="Night navigation">
+            <button type="button" id="nightPrevBtn" aria-label="Load previous available night">Prev</button>
+            <div class="nightSummary" id="nightSummary"><b>No night selected</b><span>Upload ZIP to enable night picker.</span></div>
+            <button type="button" id="nightNextBtn" aria-label="Load next available night">Next</button>
           </div>
-          <div class="rangeHint" id="rangeHint">Upload ZIP to enable.</div>
+          <div class="rangeHint" id="rangeHint">Upload ZIP to enable night picker.</div>
         </div></div></details>
 
         <div class="hr"></div>
@@ -665,7 +683,7 @@
           <div class="kpi">
             <div class="label">Usage (hours)</div>
             <div class="value" id="kpiUsage">—</div>
-            <div class="note" id="kpiUsageNote">Select a day.</div>
+            <div class="note" id="kpiUsageNote">Select a night.</div>
           </div>
           <div class="kpi">
             <div class="label">Leak (95th %)</div>
@@ -747,7 +765,7 @@
           <div class="explain">
             <div class="callout" id="overviewExplain">
               <b>How this report works</b><br/>
-              Upload an AirSense 11 SD ZIP (raw SD structure), pick a day, and we’ll plot + explain leak/pressure/flow (if present).
+              Upload an AirSense 11 SD ZIP (raw SD structure), pick a night, and we’ll plot + explain leak/pressure/flow (if present).
               Mapping controls handle label differences.
             </div>
             <div class="callout" id="overviewSummary">
@@ -859,7 +877,7 @@
 
 <script>
 /* ============================
-   CalmCPAP 0.51-alpha (AirSense 11 SD)
+   CalmCPAP 0.52-alpha (AirSense 11 SD)
    ✔️ Robust ZIP indexing + EDF parsing + charts
    ============================ */
 
@@ -890,10 +908,10 @@ const els = {
   idArea: document.getElementById('idArea'),
   settingsArea: document.getElementById('settingsArea'),
   rangeControls: document.getElementById('rangeControls'),
-  rangeModeSeg: document.getElementById('rangeModeSeg'),
-  modeNight: document.getElementById('modeNight'),
-  modeCustom: document.getElementById('modeCustom'),
-  loadRangeBtn: document.getElementById('loadRangeBtn'),
+  nightToolbar: document.getElementById('nightToolbar'),
+  nightPrevBtn: document.getElementById('nightPrevBtn'),
+  nightNextBtn: document.getElementById('nightNextBtn'),
+  nightSummary: document.getElementById('nightSummary'),
   calPrev: document.getElementById('calPrev'),
   calNext: document.getElementById('calNext'),
   calToday: document.getElementById('calToday'),
@@ -960,9 +978,7 @@ const state = {
   currentSettings: null,
   sessionsByDate: new Map(),
   selectedDateISO: null,
-  selectedRange: { mode:'night', startISO:null, endISO:null, pickingStart:true },
   calendarView: null,
-  calendarDrag: false,
   current: {
     session: null,
     edfFiles: [],
@@ -1135,7 +1151,6 @@ function resetAll(){
   state.currentSettings = null;
   state.sessionsByDate.clear();
   state.selectedDateISO = null;
-  state.selectedRange = { mode:'night', startISO:null, endISO:null, pickingStart:true };
   state.calendarView = null;
   state.current = {
     session:null, edfFiles:[], signalCatalog:[],
@@ -1151,15 +1166,15 @@ function resetAll(){
   els.idArea.innerHTML = `<div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>`;
   els.settingsArea.innerHTML = `<div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>`;
 
-  els.loadRangeBtn.disabled = true;
   els.rangeHint.textContent = 'Upload ZIP to enable night picker.';
   els.rangeControls.classList.add('disabled');
   els.rangeControls.classList.remove('ready');
+  refreshNightNav();
 
   els.mapGrid.innerHTML = '';
   els.applyMappingBtn.disabled = true;
 
-  els.kpiUsage.textContent = '—'; els.kpiUsageNote.textContent = 'Select a day.';
+  els.kpiUsage.textContent = '—'; els.kpiUsageNote.textContent = 'Select a night.';
   els.kpiLeak95.textContent = '—'; els.kpiLeak95Note.textContent = 'Needs leak signal.';
   els.kpiP50.textContent = '—'; els.kpiP50Note.textContent = 'Needs pressure signal.';
   els.kpiAHI.textContent = '—'; els.kpiAHINote.textContent = 'From annotations if found.';
@@ -1315,25 +1330,31 @@ window.addEventListener('resize', ()=>{
 });
 
 /* ---------- Picker ---------- */
-els.modeNight.addEventListener('click', ()=> applyRangeMode('night'));
-els.modeCustom?.addEventListener('click', ()=> applyRangeMode('night'));
-els.loadRangeBtn?.addEventListener('click', async ()=>{ /* single-night mode: no range loading */ });
 els.calPrev.addEventListener('click', ()=>{ const d = state.calendarView || new Date(); d.setMonth(d.getMonth()-1); state.calendarView = d; renderCalendar(); });
 els.calNext.addEventListener('click', ()=>{ const d = state.calendarView || new Date(); d.setMonth(d.getMonth()+1); state.calendarView = d; renderCalendar(); });
-els.calToday.addEventListener('click', ()=>{ state.calendarView = isoToDate(state.selectedDateISO || localDateISO(new Date())); renderCalendar(); });
-document.addEventListener('mouseup', ()=>{ state.calendarDrag = false; });
-els.calMonthSelect.addEventListener('change', ()=>{
+els.calToday.addEventListener('click', async ()=>{
+  const todayISO = localDateISO(new Date());
+  state.calendarView = isoToDate(todayISO) || new Date();
+  renderCalendar();
+  if (state.sessionsByDate.has(todayISO)) await selectNight(todayISO);
+});
+els.calMonthSelect.addEventListener('change', async ()=>{
   const v = els.calMonthSelect.value;
   if (!v) return;
   const d = new Date(`${v}-01T00:00:00`);
   if (!Number.isFinite(d.getTime())) return;
   state.calendarView = d;
-  const mDates = Array.from(state.sessionsByDate.keys()).filter(x=>x!=='unknown' && x.startsWith(v)).sort();
-  if (mDates.length){
-    state.selectedDateISO = mDates[mDates.length-1];
-    applyRangeMode(state.selectedRange.mode || 'night');
-  }
   renderCalendar();
+  const mDates = availableDates().filter(x => x.startsWith(v));
+  if (mDates.length) await selectNight(mDates[mDates.length-1]);
+});
+els.nightPrevBtn?.addEventListener('click', async ()=>{
+  const prevISO = getAdjacentAvailableDate(-1);
+  if (prevISO) await selectNight(prevISO);
+});
+els.nightNextBtn?.addEventListener('click', async ()=>{
+  const nextISO = getAdjacentAvailableDate(1);
+  if (nextISO) await selectNight(nextISO);
 });
 els.applyMappingBtn.addEventListener('click', async ()=>{
   applyMappingFromUI();
@@ -1364,7 +1385,7 @@ els.demoBtn.addEventListener('click', ()=>{
 
   const sess = {
     key: `${dateISO}__DAY`,
-    label: `${dateISO} — Day`,
+    label: `${dateISO} — Night`,
     start, end,
     files: [{ path:'demo/STR.edf', entry:null, _folderDateISO: dateISO }]
   };
@@ -1485,19 +1506,17 @@ async function handleZip(file){
 
     enablePicker(true);
 
-    setStatus('Loading most recent day…','neutral');
-    progress('Auto-loading', 96, 'Auto-loading most recent day…');
+    setStatus('Loading most recent night…','neutral');
+    progress('Auto-loading', 96, 'Auto-loading most recent night…');
     await tick();
     assertActive(jobId);
 
-    const maxDate = Array.from(state.sessionsByDate.keys()).filter(d=>d!=='unknown').sort().slice(-1)[0];
-    const pack = state.sessionsByDate.get(maxDate);
-    const firstKey = pack?.sessions?.[0]?.key;
-    if (maxDate && firstKey){
-      await loadSession(maxDate, firstKey, jobId);
+    const maxDate = availableDates().slice(-1)[0];
+    if (maxDate){
+      await selectNight(maxDate, jobId);
     } else {
       setStatus('Ready','good');
-      progress('Ready', 100, 'Choose a date + session, then click Load.');
+      progress('Ready', 100, 'Choose a night from the calendar.');
     }
 
     toast('ZIP ready ✔️');
@@ -1633,7 +1652,7 @@ async function indexSessionsFromSDStructure(entries, jobId){
 
     const session = {
       key: `${dateISO}__DAY`,
-      label: `${dateISO} — Day`,
+      label: `${dateISO} — Night`,
       start: minStart || new Date(dateISO + 'T00:00:00'),
       end: maxEnd || new Date(dateISO + 'T08:00:00'),
       files
@@ -1659,7 +1678,7 @@ async function indexSessionsFromSDStructure(entries, jobId){
             dateISO: attachISO,
             sessions: [{
               key: `${attachISO}__DAY`,
-              label: `${attachISO} — Day`,
+              label: `${attachISO} — Night`,
               start: header.start,
               end: new Date(header.start.getTime() + estimateDurationSeconds(buf, header)*1000),
               files: []
@@ -2239,91 +2258,134 @@ function sanitizePressureSeries(series){
    ============================ */
 
 function enablePicker(autoSelectMostRecent){
-  const dates = Array.from(state.sessionsByDate.keys()).filter(d => d !== 'unknown').sort();
-  const min = dates[0] || '';
+  const dates = availableDates();
   const max = dates[dates.length-1] || '';
 
-  els.loadRangeBtn.disabled = !max;
-
   if (!max){
-    state.selectedRange = { mode:'night', startISO:null, endISO:null, pickingStart:true };
     state.selectedDateISO = null;
     els.rangeHint.textContent = 'Upload ZIP to enable night picker.';
     els.rangeControls.classList.add('disabled');
     els.rangeControls.classList.remove('ready');
+    refreshNightNav();
     renderCalendar();
     return;
   }
 
-  state.selectedDateISO = autoSelectMostRecent ? max : (state.selectedDateISO || max);
-  state.selectedRange.startISO = state.selectedDateISO;
-  state.selectedRange.endISO = state.selectedDateISO;
-  state.calendarView = state.calendarView || new Date(`${state.selectedDateISO}T00:00:00`);
+  state.selectedDateISO = autoSelectMostRecent
+    ? max
+    : (dates.includes(state.selectedDateISO) ? state.selectedDateISO : max);
+  state.calendarView = state.calendarView || isoToDate(state.selectedDateISO) || new Date(`${state.selectedDateISO}T00:00:00`);
 
-  applyRangeMode(state.selectedRange.mode || 'night');
+  updateRangeHint();
   els.rangeControls.classList.remove('disabled');
   els.rangeControls.classList.add('ready');
+  refreshNightNav();
   renderCalendar();
 }
 
 function formatHours(sec){ return `${(sec/3600).toFixed(2)}h`; }
 
 function isoToDate(iso){ return iso ? new Date(`${iso}T00:00:00`) : null; }
-function addDaysISO(iso, days){
-  const d = isoToDate(iso); if (!d) return null;
-  d.setDate(d.getDate()+days);
-  return localDateISO(d);
+function availableDates(){
+  return Array.from(state.sessionsByDate.keys()).filter(d => d !== 'unknown').sort();
 }
-function monthBoundsISO(iso){
-  const d = isoToDate(iso); if (!d) return {start:null,end:null};
-  const a = new Date(d.getFullYear(), d.getMonth(), 1);
-  const b = new Date(d.getFullYear(), d.getMonth()+1, 0);
-  return { start: localDateISO(a), end: localDateISO(b) };
+function monthISOFromDate(d){
+  if (!(d instanceof Date) || !Number.isFinite(d.getTime())) return '';
+  return `${d.getFullYear()}-${pad2(d.getMonth()+1)}`;
 }
-
-function applyRangeMode(mode){
-  state.selectedRange.mode = 'night';
-  const btns = [els.modeNight, els.modeCustom].filter(Boolean);
-  btns.forEach(b => b.classList.remove('active'));
-  els.modeNight?.classList.add('active');
-
-  const anchor = state.selectedDateISO || Array.from(state.sessionsByDate.keys()).filter(d=>d!=='unknown').sort().slice(-1)[0];
-  if (!anchor) return;
-
-  state.selectedRange.pickingStart = true;
-  state.selectedRange.startISO = anchor;
-  state.selectedRange.endISO = anchor;
-
-  const dates = Array.from(state.sessionsByDate.keys()).filter(d => d !== 'unknown').sort();
-  const min = dates[0] || '';
-  const max = dates[dates.length-1] || '';
-  if (min && state.selectedRange.startISO < min) state.selectedRange.startISO = min;
-  if (max && state.selectedRange.endISO > max) state.selectedRange.endISO = max;
-
+function buildVisibleMonths(minISO, maxISO, extraMonthISO=''){
+  const months = [];
+  const seen = new Set();
+  const pushMonth = (monthISO)=>{
+    if (!monthISO || seen.has(monthISO)) return;
+    seen.add(monthISO);
+    months.push(monthISO);
+  };
+  if (minISO && maxISO){
+    const cursor = isoToDate(minISO);
+    const end = isoToDate(maxISO);
+    if (cursor && end){
+      cursor.setDate(1);
+      end.setDate(1);
+      while (cursor <= end){
+        pushMonth(monthISOFromDate(cursor));
+        cursor.setMonth(cursor.getMonth()+1);
+      }
+    }
+  }
+  pushMonth(extraMonthISO);
+  return months.sort();
+}
+function formatNightHeadline(iso){
+  const d = isoToDate(iso);
+  if (!d || !Number.isFinite(d.getTime())) return iso || 'No night selected';
+  return d.toLocaleDateString(undefined, { weekday:'short', month:'short', day:'numeric', year:'numeric' });
+}
+function getAdjacentAvailableDate(offset){
+  const dates = availableDates();
+  if (!dates.length) return null;
+  const currentISO = dates.includes(state.selectedDateISO) ? state.selectedDateISO : dates[dates.length-1];
+  const idx = dates.indexOf(currentISO);
+  const nextIdx = idx + offset;
+  return (nextIdx >= 0 && nextIdx < dates.length) ? dates[nextIdx] : null;
+}
+function refreshNightNav(){
+  if (!els.nightSummary) return;
+  const dates = availableDates();
+  if (!dates.length){
+    els.nightSummary.innerHTML = '<b>No night selected</b><span>Upload ZIP to enable night picker.</span>';
+    if (els.nightPrevBtn) els.nightPrevBtn.disabled = true;
+    if (els.nightNextBtn) els.nightNextBtn.disabled = true;
+    return;
+  }
+  const currentISO = dates.includes(state.selectedDateISO) ? state.selectedDateISO : dates[dates.length-1];
+  const idx = dates.indexOf(currentISO);
+  const fileCount = state.sessionsByDate.get(currentISO)?.sessions?.[0]?.files?.length || 0;
+  els.nightSummary.innerHTML = `<b>${escapeHtml(formatNightHeadline(currentISO))}</b><span>Night ${idx+1} of ${dates.length}${fileCount ? ` | ${fileCount} EDF file${fileCount === 1 ? '' : 's'}` : ''}</span>`;
+  if (els.nightPrevBtn) els.nightPrevBtn.disabled = idx <= 0;
+  if (els.nightNextBtn) els.nightNextBtn.disabled = idx === -1 || idx >= dates.length-1;
+}
+async function selectNight(dateISO, jobId = null){
+  const activeJobId = jobId ?? (state.jobId = newJob());
+  assertActive(activeJobId);
+  if (!dateISO || !state.sessionsByDate.has(dateISO)) return false;
+  state.selectedDateISO = dateISO;
+  state.calendarView = isoToDate(dateISO) || state.calendarView;
   updateRangeHint();
+  refreshNightNav();
   renderCalendar();
+  const day = state.sessionsByDate.get(dateISO);
+  const firstKey = day?.sessions?.[0]?.key;
+  if (!firstKey) return false;
+  try{
+    await loadSession(dateISO, firstKey, activeJobId);
+    return true;
+  }catch(err){
+    if (err?.name === 'CancelledError') return false;
+    throw err;
+  }
 }
 
 function updateRangeHint(){
-  const {startISO, endISO, mode} = state.selectedRange;
-  if (!startISO || !endISO){
-    els.rangeHint.textContent = 'Pick a night to auto-load.';
+  if (!availableDates().length){
+    els.rangeHint.textContent = 'Upload ZIP to enable night picker.';
     return;
   }
-  els.rangeHint.textContent = `Night: ${startISO} (auto-load)`;
+  els.rangeHint.textContent = 'Click a highlighted night to load it immediately.';
 }
 
 function renderCalendar(){
   if (!els.calGrid) return;
   els.calGrid.innerHTML = '';
-  const dates = new Set(Array.from(state.sessionsByDate.keys()).filter(d=>d!=='unknown'));
+  const indexedDates = availableDates();
+  const dates = new Set(indexedDates);
   const base = state.calendarView || isoToDate(state.selectedDateISO || localDateISO(new Date())) || new Date();
   const y = base.getFullYear(), m = base.getMonth();
-  const allDates = Array.from(state.sessionsByDate.keys()).filter(d=>d!=='unknown').sort();
-  const months = Array.from(new Set(allDates.map(d=>d.slice(0,7))));
-  const curMonth = `${base.getFullYear()}-${pad2(base.getMonth()+1)}`;
+  const curMonth = monthISOFromDate(base);
+  const months = buildVisibleMonths(indexedDates[0], indexedDates[indexedDates.length-1], curMonth);
   els.calMonthSelect.innerHTML = months.map(m=>`<option value="${m}">${new Date(`${m}-01T00:00:00`).toLocaleString(undefined,{month:'long',year:'numeric'})}</option>`).join('');
-  els.calMonthSelect.value = months.includes(curMonth) ? curMonth : (months[months.length-1] || '');
+  els.calMonthSelect.value = curMonth;
+  els.calMonthSelect.disabled = !months.length;
 
   const first = new Date(y,m,1);
   const start = new Date(first); start.setDate(first.getDate() - first.getDay());
@@ -2336,38 +2398,13 @@ function renderCalendar(){
     b.className = 'day';
     if (d.getMonth() !== m) b.classList.add('muted');
     if (dates.has(iso)) b.classList.add('hasData');
-    if (state.selectedRange.startISO && state.selectedRange.endISO && iso >= state.selectedRange.startISO && iso <= state.selectedRange.endISO){
-      b.classList.add('selected');
-      if (iso === state.selectedRange.startISO || iso === state.selectedRange.endISO) b.classList.add('boundary');
-    }
+    if (iso === state.selectedDateISO) b.classList.add('selected');
     b.textContent = String(d.getDate());
     b.disabled = !dates.has(iso);
-    b.addEventListener('mousedown', async ()=>{
-      state.selectedDateISO = iso;
-      applyRangeMode('night');
-      updateRangeHint();
-      renderCalendar();
-      const day = state.sessionsByDate.get(iso);
-      const firstKey = day?.sessions?.[0]?.key;
-      if (firstKey) await loadSession(iso, firstKey);
-    });
+    b.setAttribute('aria-pressed', iso === state.selectedDateISO ? 'true' : 'false');
+    b.addEventListener('click', async ()=>{ await selectNight(iso); });
     els.calGrid.appendChild(b);
   }
-}
-
-async function loadRange(){
-  const { startISO, endISO } = state.selectedRange;
-  if (!startISO || !endISO) return;
-  progress('Preparing range', 52, `Processing range ${startISO} → ${endISO}. Please wait…`);
-  setStatus('Processing range…','neutral');
-  toast('Loading selected timeframe…');
-  const dates = Array.from(state.sessionsByDate.keys()).filter(d => d!=='unknown' && d >= startISO && d <= endISO).sort();
-  const sessions = dates.flatMap(d => state.sessionsByDate.get(d)?.sessions || []);
-  if (!sessions.length){
-    toast('No sessions in selected range.');
-    return;
-  }
-  await loadSessionsAggregate(sessions, `${dates[0]} → ${dates[dates.length-1]}`);
 }
 
 /* ============================
@@ -2404,7 +2441,7 @@ async function loadSessionsAggregate(sessions, label, jobId = state.jobId){
 
 
   setStatus('Loading selection…','neutral');
-  progress('Loading selection', 62, `Loading ${state.current.session.files.length} EDF file(s)… This can take a bit for large ranges.`);
+  progress('Loading selection', 62, `Loading ${state.current.session.files.length} EDF file(s)… This can take a bit for nights with multiple files.`);
   toast('Loading selection…');
   log(`Loading: ${label} (${state.current.session.files.length} EDF file(s))`);
 
@@ -2765,7 +2802,7 @@ async function extractSignalsAndRender(){
   for (let i=0;i<n;i++){
     const f = files[i];
     const pct = 88 + ((i)/Math.max(1,n))*8;
-    progress('Extracting signals', pct, `Parsing EDF ${i+1}/${n}: ${f.path.split('/').pop()} — please wait for large ranges…`);
+    progress('Extracting signals', pct, `Parsing EDF ${i+1}/${n}: ${f.path.split('/').pop()} — please wait for larger night loads…`);
 
     const { series, events } = await readSelectedSignalsFromEDF(f, mapping, 90000);
     merged.leak = mergeSeriesPickBest(merged.leak, series.leak);
@@ -3245,12 +3282,12 @@ function renderPlotsAndText(){
 
     const top = ranked.slice(0,5)
       .map(([k,v])=>`• ${escapeHtml(humanizeEventCategory(k))}: <b>${v}</b>`).join('<br/>');
-    const rangeLabel = state.selectedRange?.startISO && state.selectedRange?.endISO ? `${state.selectedRange.startISO} → ${state.selectedRange.endISO}` : (state.current.session?.label || 'Selected session');
+    const nightLabel = state.selectedDateISO || state.current.session?.label || 'Selected night';
     const perHour = st.usageHrs && st.usageHrs > 0 ? (ev.t.length / st.usageHrs) : null;
     els.eventsNarrative.innerHTML = `
       <b>Events explained:</b> each dot is one parsed annotation event, grouped by category (including decoded device event codes where possible).<br/>
       Scale meaning: this chart is event timing + category (not pressure strength). Higher rows are different categories, not “more severe” by height.<br/><br/>
-      • Range: <b>${escapeHtml(rangeLabel)}</b><br/>
+      • Night: <b>${escapeHtml(nightLabel)}</b><br/>
       • Total events: <b>${ev.t.length}</b><br/>
       • Events/hour (raw): <b>${perHour != null ? perHour.toFixed(2) : '—'}</b><br/>
       • AHI (est): <b>${st.ahiEst != null ? st.ahiEst.toFixed(2) : '—'}</b><br/><br/>
