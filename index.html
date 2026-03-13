@@ -1033,6 +1033,30 @@ function setActiveTab(tabId){
     const wants = p.getAttribute('aria-labelledby') === tabId;
     p.classList.toggle('active', wants);
   }
+  resizeVisiblePlots();
+}
+function resizeVisiblePlots(){
+  if (!window.Plotly?.Plots?.resize) return;
+  window.requestAnimationFrame(()=>{
+    for (const plot of [els.plotOverview, els.plotLeak, els.plotPressure, els.plotFlow, els.plotEvents]){
+      if (!plot?.data || !plot.offsetParent) continue;
+      try{ Plotly.Plots.resize(plot); }catch(e){}
+    }
+  });
+}
+function resolveTabId(name){
+  const key = String(name || '').trim().toLowerCase();
+  const map = {
+    overview:'tab-overview',
+    leak:'tab-leaks',
+    leaks:'tab-leaks',
+    pressure:'tab-pressure',
+    flow:'tab-flow',
+    event:'tab-events',
+    events:'tab-events',
+    raw:'tab-raw'
+  };
+  return map[key] || null;
 }
 els.tablist.addEventListener('click', (e)=>{
   const btn = e.target.closest('[role="tab"]');
@@ -1221,6 +1245,25 @@ els.demoBtn.addEventListener('click', ()=>{
   els.pdfBtn.disabled = false;
   toast('Demo ready ✔️');
 });
+
+function applyStartupStateFromQuery(){
+  const rawParams = window.location.search || (window.location.hash ? `?${window.location.hash.slice(1)}` : '');
+  const params = new URLSearchParams(rawParams);
+  const wantsDemo = /^(1|true|yes)$/i.test(params.get('demo') || '');
+  const tabId = resolveTabId(params.get('tab'));
+
+  if (!wantsDemo){
+    if (tabId) setActiveTab(tabId);
+    return;
+  }
+
+  // URL params make repeatable demo screenshots easy.
+  window.setTimeout(()=>{
+    els.demoBtn.click();
+    if (tabId) setActiveTab(tabId);
+    resizeVisiblePlots();
+  }, 250);
+}
 
 /* ============================
    ZIP scan helpers
@@ -2974,6 +3017,7 @@ async function buildPrettyPdfShell(){
    Startup
    ============================ */
 resetAll();
+applyStartupStateFromQuery();
 </script>
 </body>
 </html>
