@@ -36,11 +36,12 @@ The app reads the archive in your browser, inventories the source files it finds
 
 ## Demo Mode
 
-The built-in demo is no longer a hand-written fake chart. CalmCPAP now embeds five pseudo-random demo nights generated from the provided sample archive.
+The built-in demo is no longer a hand-written fake chart. CalmCPAP now embeds five transformed demo sessions generated from the provided sample archive.
 
-- `Load demo` randomly picks one of the five embedded demo nights.
+- `Load demo` randomly picks one of the five embedded demo sessions.
 - Refreshing in normal demo mode also rerolls among those five.
-- All demo-facing identifiers, dates, settings, and chart values are transformed before display.
+- All demo-facing identifiers and dates are shifted before display, while session windows still follow real sample timing.
+- Demo chart values remain transformed rather than exposing the original sample values directly.
 - The demo serial uses a same-length fake sequence instead of the real sample serial.
 
 For documentation and screenshots, the app also supports a pinned demo-set override in the URL hash:
@@ -54,14 +55,14 @@ That override keeps a chosen demo set stable so screenshots can be regenerated c
 ## Tabs in Plain English
 
 - `Overview`: quick read on the selected anchored night, especially leak vs pressure.
-- `Leaks`: mask-seal behavior and time near the large-leak rule-of-thumb line.
+- `Leak`: mask-seal behavior and time near the large-leak rule-of-thumb line.
 - `Pressure`: therapy pressure over the full detected session.
 - `Flow`: breathing waveform and shape changes.
 - `Snore`: snore-related vibration trend.
 - `Respiratory Rate`: breaths per minute over time.
 - `Tidal Volume`: air moved per breath.
 - `EPR`: therapy pressure vs exhalation pressure, plus derived relief from the pressure difference.
-- `Events`: parsed annotations, session start/stop markers, a legend, and a glossary for known event types.
+- `Events`: parsed annotations, session start/stop markers, a compact on-chart legend, and a collapsed glossary for known event types.
 - `Compare`: overlay several signals on one plot.
 - `Explore`: inspect one mapped signal at a time.
 - `Raw`: source inventory, mappings, headers, and debug output.

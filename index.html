@@ -311,6 +311,137 @@
       font-weight:850;
       color: rgba(231,246,246,.96);
     }
+    #eventsLegend{
+      padding:10px 12px;
+      background: rgba(9,34,40,.52);
+    }
+    .eventsLegendHeader{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .eventsLegendHint{
+      color:var(--muted2);
+      font-size:11.5px;
+    }
+    .eventsLegendGrid{
+      display:grid;
+      gap:6px;
+      margin-top:10px;
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .eventsLegendRow{
+      display:grid;
+      grid-template-columns:auto 1fr;
+      gap:8px;
+      align-items:start;
+      padding:8px 10px;
+      border-radius:11px;
+      background: rgba(11,42,49,.52);
+      border:1px solid rgba(255,255,255,.07);
+    }
+    .eventsLegendChip{
+      width:12px;
+      height:12px;
+      border-radius:999px;
+      margin-top:4px;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.28);
+    }
+    .eventsLegendMain{
+      display:grid;
+      gap:2px;
+      min-width:0;
+    }
+    .eventsLegendTitleRow{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      min-width:0;
+    }
+    .eventsLegendTitle{
+      color:rgba(231,246,246,.97);
+      font-size:12.5px;
+      font-weight:900;
+      min-width:0;
+    }
+    .eventsLegendSub{
+      color:var(--muted2);
+      font-size:11.5px;
+      line-height:1.3;
+    }
+    .eventsMetaBadge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      white-space:nowrap;
+      padding:3px 8px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      color:rgba(231,246,246,.95);
+      font-size:10.5px;
+      font-weight:800;
+      letter-spacing:.16px;
+    }
+    .eventsGlossaryDetails{
+      margin-top:10px;
+      border-top:1px solid rgba(255,255,255,.08);
+      padding-top:10px;
+    }
+    .eventsGlossarySummary{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      list-style:none;
+    }
+    .eventsGlossarySummary::-webkit-details-marker{ display:none; }
+    .eventsGlossarySummary::after{
+      content:'▾';
+      color:rgba(231,246,246,.88);
+      font-size:12px;
+    }
+    .eventsGlossaryDetails:not([open]) .eventsGlossarySummary::after{ content:'▸'; }
+    .eventsGlossaryGrid{
+      display:grid;
+      gap:6px;
+      margin-top:10px;
+    }
+    .eventsGlossaryRow{
+      display:grid;
+      grid-template-columns:auto minmax(0, 1fr);
+      gap:8px;
+      align-items:start;
+      padding:7px 9px;
+      border-radius:10px;
+      background: rgba(11,42,49,.44);
+      border:1px solid rgba(255,255,255,.06);
+    }
+    .eventsGlossaryMain{
+      display:grid;
+      gap:4px;
+      min-width:0;
+    }
+    .eventsGlossaryHead{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .eventsGlossaryTitle{
+      color:rgba(231,246,246,.97);
+      font-size:12.5px;
+      font-weight:850;
+    }
+    .eventsGlossaryDesc{
+      color:var(--muted);
+      font-size:11.75px;
+      line-height:1.35;
+    }
 
     .progressWrap{
       padding:12px;
@@ -975,6 +1106,7 @@
     <section class="card" id="rightPanelCard">
       <div class="tabs" role="tablist" aria-label="Report sections" id="tablist">
         <button class="tab active" role="tab" aria-selected="true" tabindex="0" data-tab="overview" id="tab-overview" aria-controls="panel-overview">Overview</button>
+        <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="leaks" id="tab-leaks" aria-controls="panel-leaks">Leak</button>
         <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="pressure" id="tab-pressure" aria-controls="panel-pressure">Pressure</button>
         <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="flow" id="tab-flow" aria-controls="panel-flow">Flow</button>
         <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="snore" id="tab-snore" aria-controls="panel-snore">Snore</button>
@@ -1647,9 +1779,10 @@ const DEMO_DATASETS = [
     id: 1,
     title: 'Demo Night 1',
     fakeDateISO: '2026-03-03',
-    startHour: 22,
-    startMinute: 18,
-    durationHours: 7.07,
+    sourceAnchorISO: '2026-01-01',
+    sourceSessionStamp: '20260102_001058',
+    startOffsetSeconds: 87058,
+    durationSeconds: 25440,
     pressureMedian: 10.7,
     exhaleMedian: 7.7,
     reliefMedian: 3,
@@ -1658,7 +1791,6 @@ const DEMO_DATASETS = [
     tidalMedianMl: 480,
     pulseMedian: 66,
     spo2Median: 96,
-    sourceCounts: { 'STR.edf':1, PLD:1, BRP:1, EVE:1, CSL:1, SA2:1 },
     eventMix: [
       ['Hypopnea', 9],
       ['Obstructive Apnea', 8],
@@ -1671,9 +1803,10 @@ const DEMO_DATASETS = [
     id: 2,
     title: 'Demo Night 2',
     fakeDateISO: '2026-03-08',
-    startHour: 22,
-    startMinute: 42,
-    durationHours: 7.4,
+    sourceAnchorISO: '2026-01-03',
+    sourceSessionStamp: '20260104_024824',
+    startOffsetSeconds: 96504,
+    durationSeconds: 21660,
     pressureMedian: 10.34,
     exhaleMedian: 7.34,
     reliefMedian: 3,
@@ -1682,7 +1815,6 @@ const DEMO_DATASETS = [
     tidalMedianMl: 480,
     pulseMedian: 67,
     spo2Median: 95.8,
-    sourceCounts: { 'STR.edf':1, PLD:3, BRP:3, EVE:3, CSL:3, SA2:3 },
     eventMix: [
       ['Obstructive Apnea', 6],
       ['Central Apnea', 5],
@@ -1695,9 +1827,10 @@ const DEMO_DATASETS = [
     id: 3,
     title: 'Demo Night 3',
     fakeDateISO: '2026-03-14',
-    startHour: 23,
-    startMinute: 6,
-    durationHours: 6.05,
+    sourceAnchorISO: '2026-01-02',
+    sourceSessionStamp: '20260103_071252',
+    startOffsetSeconds: 112372,
+    durationSeconds: 11040,
     pressureMedian: 10.0,
     exhaleMedian: 7.0,
     reliefMedian: 3,
@@ -1706,7 +1839,6 @@ const DEMO_DATASETS = [
     tidalMedianMl: 460,
     pulseMedian: 64,
     spo2Median: 96.4,
-    sourceCounts: { 'STR.edf':1, PLD:4, BRP:4, EVE:4, CSL:4, SA2:4 },
     eventMix: [
       ['Obstructive Apnea', 6],
       ['Hypopnea', 3],
@@ -1718,9 +1850,10 @@ const DEMO_DATASETS = [
     id: 4,
     title: 'Demo Night 4',
     fakeDateISO: '2026-03-21',
-    startHour: 21,
-    startMinute: 54,
-    durationHours: 8.28,
+    sourceAnchorISO: '2026-01-03',
+    sourceSessionStamp: '20260104_085435',
+    startOffsetSeconds: 118475,
+    durationSeconds: 6840,
     pressureMedian: 10.38,
     exhaleMedian: 7.38,
     reliefMedian: 3,
@@ -1729,7 +1862,6 @@ const DEMO_DATASETS = [
     tidalMedianMl: 520,
     pulseMedian: 65,
     spo2Median: 95.6,
-    sourceCounts: { 'STR.edf':1, PLD:3, BRP:3, EVE:3, CSL:3, SA2:3 },
     eventMix: [
       ['Obstructive Apnea', 7],
       ['Central Apnea', 6],
@@ -1741,9 +1873,10 @@ const DEMO_DATASETS = [
     id: 5,
     title: 'Demo Night 5',
     fakeDateISO: '2026-03-29',
-    startHour: 22,
-    startMinute: 11,
-    durationHours: 8.68,
+    sourceAnchorISO: '2026-01-02',
+    sourceSessionStamp: '20260103_101926',
+    startOffsetSeconds: 123566,
+    durationSeconds: 6000,
     pressureMedian: 10.0,
     exhaleMedian: 7.0,
     reliefMedian: 3,
@@ -1752,7 +1885,6 @@ const DEMO_DATASETS = [
     tidalMedianMl: 500,
     pulseMedian: 68,
     spo2Median: 95.4,
-    sourceCounts: { 'STR.edf':1, PLD:6, BRP:6, EVE:7, CSL:6, SA2:6 },
     eventMix: [
       ['Obstructive Apnea', 11],
       ['Hypopnea', 3],
@@ -1762,6 +1894,7 @@ const DEMO_DATASETS = [
     ]
   }
 ];
+const DEMO_SOURCE_COUNTS = { 'STR.edf':1, PLD:1, BRP:1, EVE:1, CSL:1, SA2:1 };
 
 function mulberry32(seed){
   let t = seed >>> 0;
@@ -1784,7 +1917,7 @@ function pickDemoDataset(requestedId=null){
   }
   return DEMO_DATASETS[Math.floor(Math.random() * DEMO_DATASETS.length)];
 }
-function makeDemoFiles(seed, dateISO){
+function makeDemoFiles(dateISO){
   const out = [];
   const defs = [
     ['STR.edf', 'STR'],
@@ -1795,7 +1928,7 @@ function makeDemoFiles(seed, dateISO){
     ['SA2', 'SA2']
   ];
   for (const [family, suffix] of defs){
-    const count = seed.sourceCounts[family] || 0;
+    const count = DEMO_SOURCE_COUNTS[family] || 0;
     for (let i=0;i<count;i++){
       const pad = String(i + 1).padStart(2, '0');
       const name = family === 'STR.edf'
@@ -1815,7 +1948,7 @@ function buildDemoSettings(seed){
         Attributes: {
           AppliedDateTime: `${seed.fakeDateISO}T12:00:00.000Z`,
           Source: 'DEMO',
-          TransactionIdentifier: seed.id
+          TransactionIdentifier: 'DEMO'
         },
         ActiveProfiles: {
           TherapyProfile: 'AutoSetProfile',
@@ -1869,8 +2002,10 @@ function buildDemoCatalog(signals){
 }
 function materializeDemoDataset(seed){
   const rng = mulberry32(9000 + seed.id * 97);
-  const start = new Date(`${seed.fakeDateISO}T${pad2(seed.startHour)}:${pad2(seed.startMinute)}:00`);
-  const totalMinutes = Math.round(seed.durationHours * 60);
+  const anchorStart = new Date(`${seed.fakeDateISO}T00:00:00`);
+  const start = new Date(anchorStart.getTime() + (seed.startOffsetSeconds || 0) * 1000);
+  const durationSeconds = seed.durationSeconds || 0;
+  const totalMinutes = Math.max(1, Math.round(durationSeconds / 60));
   const t = [];
   const leak = [];
   const pressure = [];
@@ -1951,13 +2086,14 @@ function materializeDemoDataset(seed){
   }
   const eventIdx = evtT.map((d,i)=>[d.getTime(), i]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
   const sortedEvents = { t:eventIdx.map(i=>evtT[i]), type:eventIdx.map(i=>evtType[i]) };
-  const dateISO = localDateISO(start);
-  const files = makeDemoFiles(seed, dateISO);
+  const dateISO = seed.fakeDateISO;
+  const files = makeDemoFiles(dateISO);
   const sess = {
-    key: `${dateISO}__DAY`,
-    label: `${dateISO} — Embedded demo night ${seed.id}`,
+    key: `${dateISO}__DEMO`,
+    label: `${dateISO} — Demo session`,
+    anchorDateISO: dateISO,
     start,
-    end: new Date(start.getTime() + totalMinutes * 60 * 1000),
+    end: new Date(start.getTime() + durationSeconds * 1000),
     files
   };
   const serial = fakeSerial(11);
@@ -1967,7 +2103,7 @@ function materializeDemoDataset(seed){
     Mode: 'AutoSet (demo)',
     ProductName: 'AirSense 11 AutoSet (demo)',
     SerialNumber: serial,
-    DeviceProfile: `Embedded demo set ${seed.id}`
+    DeviceProfile: 'Embedded demo profile'
   };
   const signals = {
     leak: { t:[...t], y:leak, unit:'L/min', label:'Leak', sampleRate:1/60, _source:'embedded-demo' },
@@ -1980,7 +2116,7 @@ function materializeDemoDataset(seed){
     pulse: { t:[...t], y:pulse, unit:'BPM', label:'Pulse', sampleRate:1/60, _source:'embedded-demo' },
     spo2: { t:[...t], y:spo2, unit:'%', label:'SpO₂', sampleRate:1/60, _source:'embedded-demo' }
   };
-  return { sess, identification, currentSettings: buildDemoSettings(seed), signals, events: sortedEvents, sourceSummary: buildSourceSummary({ demoSourceCounts: seed.sourceCounts }), signalCatalog: buildDemoCatalog(signals) };
+  return { sess, identification, currentSettings: buildDemoSettings(seed), signals, events: sortedEvents, sourceSummary: buildSourceSummary({ demoSourceCounts: DEMO_SOURCE_COUNTS }), signalCatalog: buildDemoCatalog(signals) };
 }
 function loadDemoData({ tabId='', skipToast=false, datasetId=null } = {}){
   resetAll();
@@ -2000,27 +2136,31 @@ function loadDemoData({ tabId='', skipToast=false, datasetId=null } = {}){
   };
   state.current.raw = {
     'embedded-demo': {
-      note:`Pseudo-random demo dataset ${seed.id} generated from the provided sample archive and embedded in index.html.`,
-      sourceFamilies: seed.sourceCounts,
+      note:`Embedded demo dataset ${seed.id} uses transformed values on a shifted copy of a real sample session window.`,
+      sourceFamilies: DEMO_SOURCE_COUNTS,
       fakeDateISO: seed.fakeDateISO,
+      sourceAnchorISO: seed.sourceAnchorISO,
+      sourceSessionStamp: seed.sourceSessionStamp,
+      startOffsetSeconds: seed.startOffsetSeconds,
+      durationSeconds: seed.durationSeconds,
       serialNumber: fakeSerial(11)
     }
   };
   state.notes = [
-    `Embedded demo set ${seed.id} selected.`,
-    'All displayed demo data is transformed and does not expose original sample identifiers or timestamps.'
+    'Demo data loaded.',
+    'Displayed demo values are transformed, and displayed dates are shifted away from the original sample dates.'
   ];
 
   setStatus('Demo','good');
-  els.fileBadge.textContent = `embedded-demo-${seed.id}.zip`;
-  els.zipStats.textContent = `demo ${seed.id} / ${DEMO_DATASETS.length}`;
-  progress('Demo', 100, `Loaded embedded demo set ${seed.id} with pseudo-random sample-derived data.`);
+  els.fileBadge.textContent = 'demo-data.zip';
+  els.zipStats.textContent = 'demo mode';
+  progress('Demo', 100, 'Loaded transformed demo data with shifted sample-session timing.');
 
   renderIdentification(state.identification);
   renderCurrentSettings(state.currentSettings);
   renderSourceSummary(state.current.sourceSummary);
 
-  const dateISO = localDateISO(demo.sess.start);
+  const dateISO = demo.sess.anchorDateISO || seed.fakeDateISO;
   state.sessionsByDate.set(dateISO, { dateISO, sessions:[demo.sess] });
   enablePicker(true);
 
@@ -2028,7 +2168,7 @@ function loadDemoData({ tabId='', skipToast=false, datasetId=null } = {}){
   renderRawDump();
   analyzeAndRender();
   if (tabId) setActiveTab(tabId);
-  if (!skipToast) toast(`Demo set ${seed.id} ready ✔️`);
+  if (!skipToast) toast('Demo data ready ✔️');
 }
 els.demoBtn.addEventListener('click', ()=>{
   updateHashParams({ demo:1, demoSet:null, tab:getActiveTabKey() || null });
@@ -2749,15 +2889,32 @@ function countLabel(n, singular, plural=`${singular}s`){
 const SESSION_START_COLOR = 'rgba(97,212,195,.98)';
 const SESSION_STOP_COLOR = 'rgba(255,107,122,.98)';
 
-function legendRowHtml({ color, title, meta='', description='' }){
+function eventLegendRowHtml({ color, title, meta='', sub='' }){
   return `
-    <div class="legendRow">
-      <div class="legendChip" style="background:${color}"></div>
-      <div class="legendMain">
-        <div class="legendTitle">${escapeHtml(title)}</div>
-        <div class="legendMeta">${escapeHtml(description)}</div>
+    <div class="eventsLegendRow">
+      <div class="eventsLegendChip" style="background:${color}"></div>
+      <div class="eventsLegendMain">
+        <div class="eventsLegendTitleRow">
+          <div class="eventsLegendTitle">${escapeHtml(title)}</div>
+          ${meta ? `<span class="eventsMetaBadge">${escapeHtml(meta)}</span>` : ''}
+        </div>
+        ${sub ? `<div class="eventsLegendSub">${escapeHtml(sub)}</div>` : ''}
       </div>
-      <div class="legendMeta">${escapeHtml(meta)}</div>
+    </div>
+  `;
+}
+
+function eventGlossaryRowHtml({ color, title, badge='', description='' }){
+  return `
+    <div class="eventsGlossaryRow">
+      <div class="eventsLegendChip" style="background:${color}"></div>
+      <div class="eventsGlossaryMain">
+        <div class="eventsGlossaryHead">
+          <div class="eventsGlossaryTitle">${escapeHtml(title)}</div>
+          ${badge ? `<span class="eventsMetaBadge">${escapeHtml(badge)}</span>` : ''}
+        </div>
+        <div class="eventsGlossaryDesc">${escapeHtml(description)}</div>
+      </div>
     </div>
   `;
 }
@@ -2793,71 +2950,68 @@ function renderEventsLegend(counts, sess){
   if (!els.eventsLegend) return;
   const rows = [];
   if (sess?.start instanceof Date){
-    rows.push(legendRowHtml({
+    rows.push(eventLegendRowHtml({
       color: SESSION_START_COLOR,
       title: 'Session start',
       meta: fmtTime(sess.start),
-      description: 'Vertical marker for the first timestamp included in this anchored night.'
+      sub: 'Boundary'
     }));
   }
   if (sess?.end instanceof Date){
-    rows.push(legendRowHtml({
+    rows.push(eventLegendRowHtml({
       color: SESSION_STOP_COLOR,
       title: 'Session stop',
       meta: fmtTime(sess.end),
-      description: 'Vertical marker for the last timestamp included in this anchored night.'
+      sub: 'Boundary'
     }));
   }
 
   const present = Object.entries(counts || {}).sort((a,b) => b[1] - a[1] || humanizeEventCategory(a[0]).localeCompare(humanizeEventCategory(b[0])));
   present.forEach(([raw, count], idx) => {
-    rows.push(legendRowHtml({
+    const info = eventInfo(raw);
+    const sub = info.fullLabel && info.fullLabel !== info.shortLabel ? info.fullLabel : '';
+    rows.push(eventLegendRowHtml({
       color: eventColor(raw, idx),
-      title: humanizeEventCategory(raw),
+      title: info.shortLabel,
       meta: countLabel(count, 'event'),
-      description: eventDescription(raw)
+      sub
     }));
   });
 
   const glossaryRows = [
-    legendRowHtml({
-      color: SESSION_START_COLOR,
-      title: 'Session start',
-      meta: 'Boundary',
-      description: 'First timestamp included in the selected anchored night.'
-    }),
-    legendRowHtml({
-      color: SESSION_STOP_COLOR,
-      title: 'Session stop',
-      meta: 'Boundary',
-      description: 'Last timestamp included in the selected anchored night.'
-    }),
-    ...Object.entries(EVENT_CODE_LABELS).map(([code, label], idx) => legendRowHtml({
+    ...Object.entries(EVENT_CODE_LABELS).map(([code, label], idx) => eventGlossaryRowHtml({
       color: eventColor(code, idx),
       title: `${label} (code ${code})`,
-      meta: 'Known code',
+      badge: eventCompactLabel(code),
       description: EVENT_DESCRIPTIONS[label] || 'Device-coded event retained from the source EDF annotations.'
     })),
-    legendRowHtml({
+    eventGlossaryRowHtml({
       color: eventColor('Arousal', 20),
       title: 'Arousal',
-      meta: 'Known label',
+      badge: 'Arousal',
       description: EVENT_DESCRIPTIONS.Arousal
     }),
-    legendRowHtml({
+    eventGlossaryRowHtml({
       color: eventColor('Recording starts', 21),
       title: 'Recording starts',
-      meta: 'Known label',
+      badge: eventCompactLabel('Recording starts'),
       description: EVENT_DESCRIPTIONS['Recording starts']
     })
   ];
 
+  const sessionItemCount = rows.length;
   els.eventsLegend.innerHTML = `
-    <div><b>Legend for this night</b></div>
-    <div class="legendGrid" style="margin-top:12px">${rows.join('') || '<div class="tiny">No session boundaries or event categories to display.</div>'}</div>
-    <details style="margin-top:12px">
-      <summary><b>Known event glossary</b></summary>
-      <div class="legendGrid" style="margin-top:12px">${glossaryRows.join('')}</div>
+    <div class="eventsLegendHeader">
+      <div><b>On this chart</b></div>
+      <div class="eventsLegendHint">${sessionItemCount} item${sessionItemCount === 1 ? '' : 's'} in view</div>
+    </div>
+    <div class="eventsLegendGrid">${rows.join('') || '<div class="tiny">No session boundaries or event categories to display.</div>'}</div>
+    <details class="eventsGlossaryDetails">
+      <summary class="eventsGlossarySummary">
+        <b>Full event glossary</b>
+        <span class="eventsLegendHint">${glossaryRows.length} known types</span>
+      </summary>
+      <div class="eventsGlossaryGrid">${glossaryRows.join('')}</div>
     </details>
   `;
   els.eventsLegend.style.display = 'block';
@@ -3008,17 +3162,26 @@ function cleanEventLabel(s){
 
 const EVENT_CODE_LABELS = {
   '0':'Unknown / Unspecified event',
-  '10':'Obstructive Apnea (OA)',
-  '11':'Hypopnea (H)',
-  '12':'Central Apnea (CA)',
+  '10':'Obstructive Apnea',
+  '11':'Hypopnea',
+  '12':'Central Apnea',
   '13':'Unclassified Apnea',
   '14':'RERA / Flow Limitation-related event',
   '16':'Flow Limitation / Device-defined respiratory event'
 };
+const EVENT_CODE_SHORT_LABELS = {
+  '0':'Unknown (0)',
+  '10':'OA (10)',
+  '11':'H (11)',
+  '12':'CA (12)',
+  '13':'Unclassified (13)',
+  '14':'RERA (14)',
+  '16':'Flow Limitation (16)'
+};
 const EVENT_DESCRIPTIONS = {
-  'Obstructive Apnea (OA)':'Airflow appears blocked while breathing effort continues.',
-  'Hypopnea (H)':'Breathing looks partially reduced rather than fully blocked.',
-  'Central Apnea (CA)':'Breathing effort drops along with airflow.',
+  'Obstructive Apnea':'Airflow appears blocked while breathing effort continues.',
+  'Hypopnea':'Breathing looks partially reduced rather than fully blocked.',
+  'Central Apnea':'Breathing effort drops along with airflow.',
   'Unclassified Apnea':'The device flagged an apnea but did not map it to a cleaner subtype.',
   'RERA / Flow Limitation-related event':'A breathing disturbance that may not count as apnea or hypopnea but can still fragment sleep.',
   'Flow Limitation / Device-defined respiratory event':'A device-coded breathing restriction or related respiratory marker.',
@@ -3026,31 +3189,104 @@ const EVENT_DESCRIPTIONS = {
   'Recording starts':'The device started a new recording segment at that timestamp.',
   'Unknown / Unspecified event':'The device recorded an event code without a clearer label.'
 };
-function humanizeEventCategory(raw){
+const EVENT_LABEL_CODE_LOOKUP = {
+  [normalizeLabel('Unknown / Unspecified event')]: '0',
+  [normalizeLabel('Obstructive Apnea')]: '10',
+  [normalizeLabel('Obstructive Apnea (OA)')]: '10',
+  [normalizeLabel('OA')]: '10',
+  [normalizeLabel('Hypopnea')]: '11',
+  [normalizeLabel('Hypopnea (H)')]: '11',
+  [normalizeLabel('H')]: '11',
+  [normalizeLabel('Central Apnea')]: '12',
+  [normalizeLabel('Central Apnea (CA)')]: '12',
+  [normalizeLabel('CA')]: '12',
+  [normalizeLabel('Unclassified Apnea')]: '13',
+  [normalizeLabel('RERA')]: '14',
+  [normalizeLabel('RERA / Flow Limitation-related event')]: '14',
+  [normalizeLabel('Flow Limitation')]: '16',
+  [normalizeLabel('Flow Limitation / Device-defined respiratory event')]: '16'
+};
+const EVENT_SPECIAL_LABELS = {
+  [normalizeLabel('Arousal')]: {
+    shortLabel: 'Arousal',
+    fullLabel: 'Arousal',
+    glossaryTitle: 'Arousal',
+    description: EVENT_DESCRIPTIONS.Arousal,
+    colorKey: 'label:arousal'
+  },
+  [normalizeLabel('Recording starts')]: {
+    shortLabel: 'Recording start',
+    fullLabel: 'Recording starts',
+    glossaryTitle: 'Recording starts',
+    description: EVENT_DESCRIPTIONS['Recording starts'],
+    colorKey: 'label:recording-starts'
+  },
+  [normalizeLabel('Recording start')]: {
+    shortLabel: 'Recording start',
+    fullLabel: 'Recording starts',
+    glossaryTitle: 'Recording starts',
+    description: EVENT_DESCRIPTIONS['Recording starts'],
+    colorKey: 'label:recording-starts'
+  }
+};
+function eventInfo(raw){
   const clean = cleanEventLabel(raw);
-  if (!clean) return '';
-  const m = clean.match(/^\s*(\d{1,3})\s*$/);
-  if (!m) return clean;
-  const code = m[1];
-  return EVENT_CODE_LABELS[code] ? `${EVENT_CODE_LABELS[code]} (code ${code})` : `Device event code ${code}`;
+  if (!clean){
+    return { raw:'', code:'', shortLabel:'', fullLabel:'', glossaryTitle:'', description:'', colorKey:'' };
+  }
+  const directCode = clean.match(/^\s*(\d{1,3})\s*$/)?.[1] || '';
+  const normalized = normalizeLabel(clean);
+  const knownCode = directCode || EVENT_LABEL_CODE_LOOKUP[normalized] || '';
+  if (knownCode){
+    const fullLabel = EVENT_CODE_LABELS[knownCode] || `Device event code ${knownCode}`;
+    const shortLabel = EVENT_CODE_SHORT_LABELS[knownCode] || `Code ${knownCode}`;
+    const knownDescription = EVENT_DESCRIPTIONS[fullLabel];
+    return {
+      raw: clean,
+      code: knownCode,
+      shortLabel,
+      fullLabel,
+      glossaryTitle: EVENT_CODE_LABELS[knownCode] ? `${fullLabel} (code ${knownCode})` : `Device event code ${knownCode}`,
+      description: knownDescription || 'Unmapped device-defined event code retained from the source EDF annotations.',
+      colorKey: EVENT_CODE_LABELS[knownCode] ? `code:${knownCode}` : `unknown-code:${knownCode}`
+    };
+  }
+  if (EVENT_SPECIAL_LABELS[normalized]){
+    return { raw: clean, code:'', ...EVENT_SPECIAL_LABELS[normalized] };
+  }
+  return {
+    raw: clean,
+    code:'',
+    shortLabel: clean,
+    fullLabel: clean,
+    glossaryTitle: clean,
+    description: 'Device event or annotation retained exactly as recorded in the source files.',
+    colorKey: `raw:${normalized}`
+  };
+}
+function eventCompactLabel(raw){
+  return eventInfo(raw).shortLabel;
+}
+function humanizeEventCategory(raw){
+  return eventInfo(raw).glossaryTitle;
 }
 function eventDescription(raw){
-  const label = humanizeEventCategory(raw).replace(/\s+\(code \d+\)$/, '');
-  return EVENT_DESCRIPTIONS[label] || 'Device event or annotation retained exactly as recorded in the source files.';
+  return eventInfo(raw).description;
 }
 function eventColor(raw, idx=0){
-  const label = humanizeEventCategory(raw);
+  const colorKey = eventInfo(raw).colorKey;
   const map = {
-    'Obstructive Apnea (OA) (code 10)':'rgba(255,107,122,.96)',
-    'Hypopnea (H) (code 11)':'rgba(255,204,102,.96)',
-    'Central Apnea (CA) (code 12)':'rgba(122,167,255,.96)',
-    'Unclassified Apnea (code 13)':'rgba(186,148,255,.96)',
-    'RERA / Flow Limitation-related event (code 14)':'rgba(110,231,166,.96)',
-    'Flow Limitation / Device-defined respiratory event (code 16)':'rgba(141,211,255,.96)',
-    'Arousal':'rgba(255,154,102,.96)',
-    'Recording starts':'rgba(231,246,246,.92)'
+    'code:10':'rgba(255,107,122,.96)',
+    'code:11':'rgba(255,204,102,.96)',
+    'code:12':'rgba(122,167,255,.96)',
+    'code:13':'rgba(186,148,255,.96)',
+    'code:14':'rgba(110,231,166,.96)',
+    'code:16':'rgba(141,211,255,.96)',
+    'code:0':'rgba(231,246,246,.92)',
+    'label:arousal':'rgba(255,154,102,.96)',
+    'label:recording-starts':'rgba(231,246,246,.92)'
   };
-  if (map[label]) return map[label];
+  if (map[colorKey]) return map[colorKey];
   const fallback = [
     'rgba(255,107,122,.96)','rgba(255,204,102,.96)','rgba(122,167,255,.96)',
     'rgba(110,231,166,.96)','rgba(186,148,255,.96)','rgba(141,211,255,.96)',
@@ -4278,6 +4514,7 @@ function renderPlotsAndText(){
     const topCats = ranked.map(x=>x[0]);
 
     const layout = CALM_LAYOUT('Events over time (annotations)');
+    layout.showlegend = false;
     layout.margin = { ...layout.margin, l: 130 };
     layout.yaxis = {
       ...layout.yaxis,
@@ -4285,19 +4522,21 @@ function renderPlotsAndText(){
       title: { text: 'Event Category', standoff: 14 },
       tickmode: 'array',
       tickvals: topCats.map((_,i)=>i),
-      ticktext: topCats.map(c=>humanizeEventCategory(c)),
+      ticktext: topCats.map(c=>eventCompactLabel(c)),
       range: [-0.6, Math.max(0, topCats.length - 1) + 0.6]
     };
 
-    const buckets = new Map(topCats.map((c, i) => [c, { idx: i, x: [], y: [], text: [] }]));
+    const buckets = new Map(topCats.map((c, i) => [c, { idx: i, x: [], y: [], text: [], customdata: [] }]));
 
     for (let j=0;j<ev.t.length;j++){
       const raw = ev.type[j];
       const b = buckets.get(raw);
       if (!b) continue;
+      const info = eventInfo(raw);
       b.x.push(ev.t[j]);
       b.y.push(b.idx);
-      b.text.push(humanizeEventCategory(raw));
+      b.text.push(info.glossaryTitle);
+      b.customdata.push([info.glossaryTitle, info.description]);
     }
 
     const eventTraces = buildSessionBoundaryTraces(sess, -0.6, Math.max(0, topCats.length - 1) + 0.6);
@@ -4310,9 +4549,10 @@ function renderPlotsAndText(){
         type:'scatter',
         mode:'markers',
         marker:{ size:9, color: eventColor(rawCat, b.idx), line:{width:1,color:'rgba(0,0,0,.35)'} },
-        name: humanizeEventCategory(rawCat),
+        name: eventCompactLabel(rawCat),
         text: b.text,
-        hovertemplate:'%{x|%Y-%m-%d %H:%M:%S}<br><b>%{text}</b><extra></extra>'
+        customdata: b.customdata,
+        hovertemplate:'%{x|%Y-%m-%d %H:%M:%S}<br><b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>'
       });
     }
     Plotly.newPlot(els.plotEvents, eventTraces, layout, plotConfig);
@@ -4336,6 +4576,7 @@ function renderPlotsAndText(){
     if (boundaryTraces.length){
       Plotly.newPlot(els.plotEvents, boundaryTraces, {
         ...CALM_LAYOUT('Session boundaries (no parsed events)'),
+        showlegend:false,
         yaxis: { ...CALM_LAYOUT('').yaxis, tickmode:'array', tickvals:[0], ticktext:['Session'], range:[-0.6, 0.6] }
       }, plotConfig);
     } else {
