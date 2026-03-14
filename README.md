@@ -2,9 +2,6 @@ CalmCPAP 0.51-alpha
 
 Interactive tool for visualizing CPAP therapy data from SD card exports.
 
-Current tracked app
-- `index.html` is the current 0.51-alpha standalone application snapshot.
-- `index.legacy.html` is retained as the older 0.30-alpha reference snapshot.
 
 Features
 - EDF waveform viewer
