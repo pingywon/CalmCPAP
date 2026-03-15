@@ -68,7 +68,7 @@
     .versionTag{
       display:inline-flex;
       align-items:center;
-      gap:8px;
+      gap:10px;
       padding:6px 12px;
       border-radius:999px;
       border:1px solid rgba(97,212,195,.42);
@@ -78,6 +78,52 @@
       font-weight:900;
       letter-spacing:.18px;
       box-shadow: inset 0 0 0 1px rgba(122,167,255,.08);
+      text-decoration:none;
+      white-space:nowrap;
+      user-select:none;
+      cursor:pointer;
+      transform:translateY(0);
+      transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease, background .16s ease;
+    }
+    .versionTag:hover,
+    .versionTag:focus-visible{
+      border-color: rgba(231,246,246,.58);
+      background: linear-gradient(135deg, rgba(97,212,195,.28), rgba(122,167,255,.32));
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.12),
+        0 12px 24px rgba(0,0,0,.22),
+        0 0 0 6px rgba(97,212,195,.08);
+      transform:translateY(-1px);
+    }
+    .versionTagIcon,
+    .versionTagArrow{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      flex:0 0 auto;
+      transition: opacity .16s ease, transform .16s ease, filter .16s ease;
+    }
+    .versionTagIcon{
+      width:15px;
+      height:15px;
+      opacity:.88;
+      color: rgba(231,246,246,.95);
+    }
+    .versionTagArrow{
+      width:12px;
+      height:12px;
+      opacity:.42;
+      color: var(--accent);
+      transform: translateX(-3px) scale(.92);
+    }
+    .versionTag:hover .versionTagIcon,
+    .versionTag:focus-visible .versionTagIcon{
+      filter: drop-shadow(0 0 10px rgba(97,212,195,.34));
+    }
+    .versionTag:hover .versionTagArrow,
+    .versionTag:focus-visible .versionTagArrow{
+      opacity:1;
+      transform: translateX(0) scale(1);
     }
     .brandLockup{
       grid-area:brand;
@@ -133,53 +179,6 @@
       justify-content:flex-end;
       justify-self:end;
       min-width:0;
-    }
-    .headerStatus{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-      min-width:0;
-    }
-    .statusTag,
-    .headerStatus .badge{
-      display:inline-flex;
-      align-items:center;
-      min-height:36px;
-      padding:7px 12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: rgba(231,246,246,.96);
-      font-size:12px;
-      font-weight:850;
-      line-height:1.2;
-      white-space:nowrap;
-    }
-    .statusTag{ transition: background .12s ease; }
-    .headerStatus .badge{
-      max-width:min(34vw, 260px);
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .headerLink{
-      display:inline-flex;
-      align-items:center;
-      min-height:auto;
-      padding:0;
-      border:none;
-      background:none;
-      color: var(--muted);
-      text-decoration:underline;
-      text-underline-offset:3px;
-      font-weight:800;
-      box-shadow:none;
-      transition: color .12s ease, text-decoration-color .12s ease;
-    }
-    .headerLink:hover{
-      color: rgba(231,246,246,.98);
-      text-decoration-color: var(--accent2);
     }
     .badge{
       font-size:11px;
@@ -256,13 +255,12 @@
         justify-items:stretch;
         padding:16px;
       }
-      .headerMetaZone{ justify-self:center; }
+      .headerMetaZone{ justify-self:start; }
       .brandLockup{ justify-self:center; }
       .top-actions{
         justify-self:stretch;
         justify-content:center;
       }
-      .headerStatus{ justify-content:center; }
     }
 
     @media (max-width: 760px){
@@ -271,7 +269,6 @@
       .brandWordmark{ font-size:24px; }
       .brandNote{ font-size:12px; }
       .top-actions{ gap:8px; }
-      .headerStatus .badge{ max-width:100%; }
     }
 
     .card{
@@ -653,6 +650,7 @@
     .rangeControls.disabled{ opacity:.3; filter:saturate(.05) grayscale(.65) brightness(.65); pointer-events:none; }
     .rangeControls.ready .seg, .rangeControls.ready .calendarWrap{ background: rgba(18,58,68,.72); border-color: rgba(122,167,255,.35); box-shadow: inset 0 0 0 1px rgba(122,167,255,.15); }
     .rangeControls.ready .rangeHint{ color: var(--muted); }
+    #rangeModeSeg{ display:none; }
     .seg{
       display:flex; gap:6px; flex-wrap:wrap;
       background: rgba(11,42,49,.45);
@@ -1408,7 +1406,20 @@
 <div class="app" id="appShell">
   <header>
     <div class="headerMetaZone">
-      <span class="versionTag" id="headerVersion">Version 1.0</span>
+      <a class="versionTag" id="headerVersion" href="https://github.com/pingywon/CalmCPAP" target="_blank" rel="noreferrer noopener" aria-label="Open CalmCPAP GitHub repository">
+        <span class="versionTagIcon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 .5a12 12 0 0 0-3.793 23.38c.6.111.82-.26.82-.577l-.016-2.234c-3.338.726-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.73.083-.73 1.204.085 1.838 1.236 1.838 1.236 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.304.76-1.603-2.665-.304-5.467-1.333-5.467-5.932 0-1.311.469-2.382 1.236-3.221-.124-.304-.536-1.526.117-3.18 0 0 1.008-.322 3.3 1.23A11.5 11.5 0 0 1 12 6.845c1.02.005 2.047.138 3.007.404 2.29-1.553 3.296-1.23 3.296-1.23.655 1.654.243 2.876.12 3.18.77.839 1.235 1.91 1.235 3.221 0 4.61-2.807 5.625-5.48 5.921.43.37.814 1.102.814 2.222l-.015 3.293c0 .32.216.694.825.576A12.001 12.001 0 0 0 12 .5Z"/>
+          </svg>
+        </span>
+        <span>Version 1.0</span>
+        <span class="versionTagArrow" aria-hidden="true">
+          <svg viewBox="0 0 16 16" fill="none">
+            <path d="M5 3h8v8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13 3 3 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+          </svg>
+        </span>
+      </a>
     </div>
 
     <div class="brandLockup">
@@ -1420,15 +1431,9 @@
     </div>
 
     <div class="top-actions">
-      <div class="headerStatus" aria-live="polite">
-        <span class="statusTag"><b id="statusText">Waiting</b></span>
-        <span class="badge" id="fileBadge">No file</span>
-        <span class="badge" id="zipStats">—</span>
-      </div>
       <label class="btn" id="chooseZipBtn" for="zipInput">Choose ZIP</label>
       <input id="zipInput" type="file" accept=".zip,application/zip" />
       <button class="btn ghost" id="demoBtn" type="button">Load demo</button>
-      <a class="headerLink" href="https://github.com/pingywon/CalmCPAP" target="_blank" rel="noreferrer">GitHub</a>
     </div>
   </header>
 
@@ -1855,6 +1860,9 @@ function setStatus(text, tone='neutral'){
   };
   st.parentElement.style.background = map[tone] || map.neutral;
 }
+function setTextIfPresent(node, text){
+  if (node) node.textContent = text;
+}
 function log(line){
   const stamp = new Date().toLocaleTimeString([], { hour12:false });
   const msg = typeof line === 'string' ? line : JSON.stringify(line, null, 2);
@@ -2052,8 +2060,8 @@ function resetAll(){
   state.demoSetId = null;
 
   els.zipInput.value = '';
-  els.fileBadge.textContent = 'No file';
-  els.zipStats.textContent = '—';
+  setTextIfPresent(els.fileBadge, 'No file');
+  setTextIfPresent(els.zipStats, '—');
 
   els.idArea.innerHTML = `<div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>`;
   els.settingsArea.innerHTML = `<div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>`;
@@ -2606,8 +2614,8 @@ function loadDemoData({ tabId='', skipToast=false, datasetId=null } = {}){
   ];
 
   setStatus('Demo','good');
-  els.fileBadge.textContent = 'demo-data.zip';
-  els.zipStats.textContent = 'demo mode';
+  setTextIfPresent(els.fileBadge, 'demo-data.zip');
+  setTextIfPresent(els.zipStats, 'demo mode');
   progress('Demo', 100, 'Loaded transformed demo data with shifted sample-session timing.');
 
   renderIdentification(state.identification);
@@ -2641,7 +2649,7 @@ async function handleZip(file){
   state.jobId = jobId;
   updateHashParams({ demo:null, demoSet:null });
 
-  els.fileBadge.textContent = file.name;
+  setTextIfPresent(els.fileBadge, file.name);
   setStatus('Reading ZIP…','neutral');
   progress('Reading ZIP', 2, `${file.name} — ${(file.size/1024/1024).toFixed(2)} MB`);
   log(`ZIP selected: ${file.name} (${(file.size/1024/1024).toFixed(2)} MB)`);
@@ -2674,7 +2682,7 @@ async function handleZip(file){
     const edfCount = entries.filter(e => e.path.toLowerCase().endsWith('.edf')).length;
     const idCount = entries.filter(e => e.path.toLowerCase().endsWith('identification.json')).length;
 
-    els.zipStats.textContent = `${entries.length} files • ${edfCount} edf • id:${idCount? 'yes':'no'}`;
+    setTextIfPresent(els.zipStats, `${entries.length} files • ${edfCount} edf • id:${idCount? 'yes':'no'}`);
     log({
       phase: 'zip-scan',
       fileCount: entries.length,
