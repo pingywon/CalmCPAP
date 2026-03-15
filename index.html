@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>CalmCPAP — 0.9-alpha</title>
+  <title>CalmCPAP — 1.0</title>
   <link rel="icon" type="image/svg+xml" href="assets/calmcpap-mask-badge.svg" />
   <link rel="icon" type="image/png" sizes="16x16" href="assets/calmcpap-mask-badge-16.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/calmcpap-mask-badge-32.png" />
@@ -94,93 +94,10 @@
       gap:14px;
       min-width:0;
     }
-    .brandMark{
-      width:62px;
-      height:62px;
-      flex:0 0 auto;
-      filter: drop-shadow(0 14px 20px rgba(0,0,0,.28));
-    }
-    .brandWordmark{
-      margin:0;
-      display:inline-flex;
-      align-items:baseline;
-      gap:.12em;
-      font-size:31px;
-      font-weight:950;
-      letter-spacing:.08em;
-      line-height:1;
-      text-transform:uppercase;
-      white-space:nowrap;
-    }
-    .brandWordmark span:first-child{ color:rgba(231,246,246,.98); }
-    .brandWordmark span:last-child{
-      color:var(--accent);
-      text-shadow:0 0 18px rgba(97,212,195,.18);
-    }
-    .brandNote{
-      margin:0;
-      max-width:560px;
-      color:var(--muted2);
-      font-size:12.5px;
-      line-height:1.4;
-    }
-    .top-actions{
-      grid-area:actions;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-      justify-self:end;
-      min-width:0;
-    }
-    .headerStatus{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-      min-width:0;
-    }
-    .statusTag,
-    .headerStatus .badge{
-      display:inline-flex;
-      align-items:center;
-      min-height:36px;
-      padding:7px 12px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.06);
-      color: rgba(231,246,246,.96);
-      font-size:12px;
-      font-weight:850;
-      line-height:1.2;
-      white-space:nowrap;
-    }
-    .statusTag{ transition: background .12s ease; }
-    .headerStatus .badge{
-      max-width:min(34vw, 260px);
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .headerLink{
-      display:inline-flex;
-      align-items:center;
-      min-height:auto;
-      padding:0;
-      border:none;
-      background:none;
-      color: var(--muted);
-      text-decoration:underline;
-      text-underline-offset:3px;
-      font-weight:800;
-      box-shadow:none;
-      transition: color .12s ease, text-decoration-color .12s ease;
-    }
-    .headerLink:hover{
-      color: rgba(231,246,246,.98);
-      text-decoration-color: var(--accent2);
-    }
+    h1{ margin:0; font-size:18px; letter-spacing:.2px; }
+    .subtitle{ margin:2px 0 0; color:var(--muted); font-size:12.5px; line-height:1.35; }
+
+    .top-actions{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
     .badge{
       font-size:11px;
       padding:4px 10px;
@@ -227,20 +144,6 @@
     body.left-collapsed #leftPanelCard{ display:none; }
 
     #leftPanelCard{ position:sticky; top:0; align-self:start; max-height:calc(100vh - 28px); }
-
-    @media (max-width: 1320px){
-      main{ grid-template-columns: clamp(400px, 40vw, 540px) minmax(0, 1fr); }
-    }
-
-    @media (max-width: 1240px){
-      header{
-        grid-template-columns:minmax(0, 1fr) auto;
-        grid-template-areas:
-          "meta actions"
-          "brand brand";
-      }
-      .brandLockup{ justify-self:center; }
-    }
 
     @media (max-width: 1050px){
       body{ overflow:auto; }
@@ -306,7 +209,27 @@
       overflow-x:hidden;
       min-height:0;
     }
-    #rightPanelCard{ min-width:0; }
+
+    .drop{
+      border:1px dashed rgba(255,255,255,.25);
+      border-radius: var(--radius2);
+      background: rgba(11,42,49,.55);
+      padding:16px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      cursor:pointer;
+      transition: border-color .12s ease, transform .12s ease, filter .12s ease;
+    }
+    .drop:hover{
+      border-color: rgba(97,212,195,.65);
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+    }
+    .drop strong{ font-size: 14px; }
+    .drop p{ margin:0; color:var(--muted); font-size:12.5px; line-height: 1.35; }
+    .drop .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
+    .drop .row .left{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
 
     .hr{ height:1px; background: rgba(255,255,255,.08); margin:12px 0; }
     .tiny{ font-size:12px; color:var(--muted2); }
@@ -751,6 +674,327 @@
       line-height:1.45;
     }
 
+    body.onboarding-open{ overflow:hidden; }
+    .onboardingOverlay{
+      position:fixed;
+      inset:0;
+      z-index:50;
+      display:grid;
+      place-items:center;
+      padding:20px;
+      background:
+        radial-gradient(900px 420px at 18% 10%, rgba(97,212,195,.16), transparent 62%),
+        radial-gradient(820px 420px at 88% 0%, rgba(122,167,255,.16), transparent 58%),
+        rgba(5,16,20,.82);
+      backdrop-filter: blur(12px);
+    }
+    .onboardingOverlay[hidden]{ display:none; }
+    .onboardingDialog{
+      position:relative;
+      width:min(860px, 100%);
+      max-height:min(86vh, 920px);
+      overflow:auto;
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:28px;
+      background: linear-gradient(180deg, rgba(15,50,58,.98), rgba(8,28,33,.98));
+      box-shadow: 0 30px 70px rgba(0,0,0,.48);
+      padding: clamp(22px, 4vw, 34px);
+      outline:none;
+    }
+    .onboardingDialog::before{
+      content:'';
+      position:absolute;
+      inset:1px;
+      border-radius:27px;
+      background:
+        radial-gradient(480px 220px at 12% 6%, rgba(97,212,195,.12), transparent 65%),
+        radial-gradient(420px 220px at 88% 0%, rgba(122,167,255,.12), transparent 62%);
+      pointer-events:none;
+    }
+    .onboardingInner{
+      position:relative;
+      z-index:1;
+      display:grid;
+      gap:26px;
+    }
+    .onboardingHero{
+      display:grid;
+      gap:18px;
+    }
+    .onboardingHeroTop{
+      display:grid;
+      gap:10px;
+    }
+    .onboardingKicker{
+      font-size:12px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color: rgba(151,235,223,.92);
+    }
+    .onboardingTagline{
+      margin:0;
+      font-size:15px;
+      font-weight:900;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color: rgba(255,236,188,.95);
+    }
+    .onboardingTitle{
+      margin:0;
+      font-size: clamp(32px, 5vw, 44px);
+      line-height:1.02;
+      max-width: 11ch;
+    }
+    .onboardingLead{
+      margin:0;
+      max-width:55ch;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.55;
+    }
+    .onboardingFlow{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap:12px;
+      align-items:start;
+    }
+    .flowStep{
+      position:relative;
+      display:grid;
+      justify-items:center;
+      gap:10px;
+      text-align:center;
+    }
+    .flowStep::after{
+      content:'→';
+      position:absolute;
+      top:20px;
+      right:-12px;
+      font-size:22px;
+      color: rgba(151,235,223,.58);
+    }
+    .flowStep:last-child::after{ display:none; }
+    .flowStep strong{
+      font-size:14px;
+      line-height:1.3;
+    }
+    .flowGlyph{
+      width:64px;
+      height:64px;
+      border-radius:22px;
+      display:grid;
+      place-items:center;
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .flowGlyph span,
+    .flowGlyph span::before,
+    .flowGlyph span::after{
+      content:'';
+      position:absolute;
+      display:block;
+    }
+    .flowGlyph span{ position:relative; }
+    .glyph-sd{
+      width:28px;
+      height:38px;
+      background: linear-gradient(180deg, rgba(151,235,223,.95), rgba(102,177,255,.82));
+      border-radius:8px 8px 10px 10px;
+      clip-path: polygon(0 0, 76% 0, 100% 22%, 100% 100%, 0 100%);
+      box-shadow: inset 0 -8px 0 rgba(6,32,38,.18);
+    }
+    .glyph-sd::before{
+      width:16px;
+      height:6px;
+      top:6px;
+      left:6px;
+      border-top:2px solid rgba(6,32,38,.48);
+      border-bottom:2px solid rgba(6,32,38,.48);
+    }
+    .glyph-sd::after{
+      width:10px;
+      height:10px;
+      top:0;
+      right:0;
+      background: rgba(11,42,49,.95);
+      clip-path: polygon(0 0, 100% 0, 100% 100%);
+      border-top-right-radius:6px;
+    }
+    .glyph-folder{
+      width:36px;
+      height:24px;
+      background: linear-gradient(180deg, rgba(255,236,188,.94), rgba(255,204,102,.82));
+      border-radius:7px;
+      box-shadow: inset 0 -6px 0 rgba(6,32,38,.12);
+    }
+    .glyph-folder::before{
+      width:16px;
+      height:8px;
+      top:-6px;
+      left:4px;
+      background: rgba(255,236,188,.94);
+      border-radius:6px 6px 0 0;
+    }
+    .glyph-folder::after{
+      width:18px;
+      height:3px;
+      top:11px;
+      right:-8px;
+      background: rgba(151,235,223,.88);
+      border-radius:999px;
+      box-shadow: -8px -6px 0 rgba(151,235,223,.42);
+    }
+    .glyph-zip{
+      width:30px;
+      height:36px;
+      border-radius:10px;
+      background: linear-gradient(180deg, rgba(122,167,255,.96), rgba(97,212,195,.78));
+      box-shadow: inset 0 -8px 0 rgba(6,32,38,.16);
+    }
+    .glyph-zip::before{
+      width:4px;
+      height:24px;
+      left:13px;
+      top:6px;
+      background: repeating-linear-gradient(180deg, rgba(6,32,38,.78) 0 3px, rgba(255,255,255,.9) 3px 6px);
+      border-radius:999px;
+    }
+    .glyph-zip::after{
+      width:12px;
+      height:6px;
+      left:9px;
+      top:8px;
+      border:2px solid rgba(6,32,38,.65);
+      border-bottom:none;
+      border-radius:999px 999px 0 0;
+    }
+    .glyph-upload{
+      width:4px;
+      height:20px;
+      background: rgba(255,236,188,.95);
+      border-radius:999px;
+    }
+    .glyph-upload::before{
+      width:24px;
+      height:12px;
+      left:-10px;
+      bottom:-6px;
+      border:2px solid rgba(151,235,223,.92);
+      border-top:none;
+      border-radius:0 0 8px 8px;
+    }
+    .glyph-upload::after{
+      width:0;
+      height:0;
+      left:-6px;
+      top:-10px;
+      border-left:8px solid transparent;
+      border-right:8px solid transparent;
+      border-bottom:12px solid rgba(255,236,188,.95);
+    }
+    .onboardingSectionTitle{
+      margin:0;
+      font-size:12px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color:var(--muted2);
+    }
+    .onboardingList{
+      list-style:none;
+      counter-reset:onboardingStep;
+      margin:12px 0 0;
+      padding:0;
+      display:grid;
+      gap:10px;
+    }
+    .onboardingList li{
+      counter-increment:onboardingStep;
+      display:grid;
+      grid-template-columns:auto 1fr;
+      gap:12px;
+      align-items:start;
+      line-height:1.5;
+      color:var(--text);
+    }
+    .onboardingList li::before{
+      content:counter(onboardingStep);
+      width:28px;
+      height:28px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      font-size:12px;
+      font-weight:900;
+      color:#062026;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 10px 18px rgba(97,212,195,.18);
+      margin-top:2px;
+    }
+    .onboardingAgreement{
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,.12);
+      display:grid;
+      gap:14px;
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+    }
+    .onboardingAgreementText{
+      margin:0;
+      color:var(--muted);
+      line-height:1.55;
+    }
+    .onboardingCheck{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      color:var(--text);
+      line-height:1.45;
+      font-weight:700;
+    }
+    .onboardingCheck input{
+      width:18px;
+      height:18px;
+      margin-top:3px;
+      accent-color: var(--accent);
+      flex:0 0 auto;
+    }
+    .onboardingActions{
+      display:flex;
+      justify-content:flex-start;
+    }
+    .onboardingActions .btn{
+      min-width:220px;
+      padding:12px 18px;
+      font-size:15px;
+    }
+    @media (max-width: 760px){
+      .onboardingOverlay{
+        padding:12px;
+        align-items:start;
+      }
+      .onboardingDialog{
+        max-height: calc(100vh - 24px);
+        border-radius:24px;
+      }
+      .onboardingFlow{
+        grid-template-columns: repeat(2, minmax(0,1fr));
+        row-gap:18px;
+      }
+      .flowStep::after{ display:none; }
+      .onboardingActions .btn{
+        width:100%;
+      }
+    }
+    @media (max-width: 560px){
+      .onboardingTitle{ max-width:none; }
+      .onboardingLead{ font-size:14px; }
+      .flowGlyph{
+        width:58px;
+        height:58px;
+        border-radius:20px;
+      }
+    }
+
     .toast{
       position:fixed;
       bottom:16px;
@@ -1064,31 +1308,17 @@
 </head>
 
 <body>
-<div class="app">
+<div class="app" id="appShell">
   <header>
-    <div class="headerMetaZone">
-      <span class="versionTag" id="headerVersion">Version 0.9-alpha</span>
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <h1>CalmCPAP <span class="badge">0.51-alpha</span></h1>
+        <div class="subtitle">AirSense 11 SD ZIP → unzip → Identification.json + EDF → DATALOG/YYYYMMDD sessions → charts + explanations.</div>
+      </div>
     </div>
 
-    <div class="brandLockup">
-      <div class="brandMain">
-        <img class="brandMark" src="assets/calmcpap-favicon.svg" alt="" />
-        <h1 class="brandWordmark"><span>Calm</span><span>CPAP</span></h1>
-      </div>
-      <p class="brandNote">Tested on ResMed AirSense 11 only. Your mileage may vary with other machines.</p>
-    </div>
-
-    <div class="top-actions">
-      <div class="headerStatus" aria-live="polite">
-        <span class="statusTag"><b id="statusText">Waiting</b></span>
-        <span class="badge" id="fileBadge">No file</span>
-        <span class="badge" id="zipStats">—</span>
-      </div>
-      <label class="btn" id="chooseZipBtn" for="zipInput">Choose ZIP</label>
-      <input id="zipInput" type="file" accept=".zip,application/zip" />
-      <button class="btn ghost" id="demoBtn" type="button">Load demo</button>
-      <a class="headerLink" href="https://github.com/pingywon/CalmCPAP" target="_blank" rel="noreferrer">GitHub</a>
-    </div>
+    <div class="top-actions"></div>
   </header>
 
   <main>
@@ -1103,7 +1333,56 @@
       </div>
 
       <div class="bd">
-        <details class="drawer" id="statsDrawer"><summary>Session Stats</summary><div class="drawerBody"><div class="progressWrap">
+        <div class="drop" id="dropZone" role="button" tabindex="0" aria-label="Upload zip">
+          <div class="row">
+            <div class="left">
+              <strong>Drop your CPAP ZIP here</strong>
+              <span class="badge" id="zipStats">—</span>
+            </div>
+            <div class="left">
+              <label class="btn" id="chooseZipBtn" for="zipInput">Choose ZIP</label>
+              <input id="zipInput" type="file" accept=".zip,application/zip" />
+              <button class="btn ghost" id="demoBtn" type="button">Load demo</button>
+            </div>
+          </div>
+          <p>
+            Runs completely in your browser. Progress updates show an upward file counter so it never feels frozen.
+          </p>
+        </div>
+
+        <div class="progressWrap" style="margin-top:10px;">
+          <div class="progressTop" style="margin-bottom:0;">
+            <div class="tiny"><b id="statusText">Waiting</b></div>
+            <span class="badge" id="fileBadge">No file</span>
+          </div>
+        </div>
+
+        <details class="drawer" open><summary>Calendar</summary><div class="drawerBody"><div class="rangeControls disabled" id="rangeControls">
+          <div class="calendarWrap">
+            <div class="calHead">
+              <div class="calNav">
+                <button type="button" id="calPrev" aria-label="Previous month">◀</button>
+                <button type="button" id="calToday" aria-label="Jump to selected month">Today</button>
+              </div>
+              <select id="calMonthSelect" class="calMonthSelect" aria-label="Choose month"></select>
+              <div class="calNav">
+                <button type="button" id="calNext" aria-label="Next month">▶</button>
+              </div>
+            </div>
+            <div class="dow"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+            <div class="calGrid" id="calGrid"></div>
+          </div>
+          <div class="seg" id="rangeModeSeg" aria-label="Range mode">
+            <button type="button" id="modeNight" class="active">Night</button>
+            <button type="button" id="modeCustom" style="display:none">Custom</button>
+            <button type="button" id="loadRangeBtn" style="display:none">Load Range</button>
+          </div>
+          <div class="rangeHint" id="rangeHint">Upload ZIP to enable.</div>
+        </div></div></details>
+
+        <div class="hr"></div>
+
+        <details class="drawer" open><summary>Session Stats</summary><div class="drawerBody"><div class="progressWrap">
           <div class="progressTop">
             <div class="tiny"><b id="progressStep">Idle</b></div>
             <div class="badge" id="progressPct">0%</div>
@@ -1137,30 +1416,7 @@
 
         </div></details>
 
-        <details class="drawer" id="calendarDrawer" open><summary>Calendar</summary><div class="drawerBody drawerScroll calendarDrawerBody"><div class="rangeControls disabled" id="rangeControls">
-          <div class="calendarWrap">
-            <div class="calHead">
-              <div class="calNav">
-                <button type="button" id="calPrev" aria-label="Previous month">◀</button>
-                <button type="button" id="calToday" aria-label="Jump to selected month">Today</button>
-              </div>
-              <select id="calMonthSelect" class="calMonthSelect" aria-label="Choose month"></select>
-              <div class="calNav">
-                <button type="button" id="calNext" aria-label="Next month">▶</button>
-              </div>
-            </div>
-            <div class="dow"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
-            <div class="calGrid" id="calGrid"></div>
-          </div>
-          <div class="seg" id="rangeModeSeg" aria-label="Range mode">
-            <button type="button" id="modeNight" class="active">Night</button>
-            <button type="button" id="modeCustom" style="display:none">Custom</button>
-            <button type="button" id="loadRangeBtn" style="display:none">Load Range</button>
-          </div>
-          <div class="rangeHint" id="rangeHint">Upload ZIP to enable.</div>
-        </div></div></details>
-
-        <details class="drawer" id="deviceDrawer">
+        <details class="drawer" open>
           <summary>Device & Profile (Identification.json)</summary>
           <div class="drawerBody">
             <div class="kv" id="idArea" style="margin-top:0;">
@@ -1178,25 +1434,17 @@
           </div>
         </details>
 
-        <details class="drawer" id="sourcesDrawer">
-          <summary>Data Sources</summary>
-          <div class="drawerBody drawerScroll sourceDrawerBody">
-            <div class="sourceHint">File families found for the current selection, what they contribute, and whether the report is using them.</div>
-            <div class="sourceGrid" id="sourceArea"></div>
-          </div>
-        </details>
-
 
 
         <div class="hr"></div>
 
         <details class="drawer" id="mappingDrawer">
           <summary>Manual Signal Mapping</summary>
-          <div class="drawerBody drawerScroll mappingDrawerBody">
-            <div class="mapHint">If auto-mapping misses labels, pick one entry per signal type here from the deduplicated signal list.</div>
-            <div class="mapGrid" id="mapGrid"></div>
-            <div class="mappingActions">
-              <button class="btn ghost" id="applyMappingBtn" disabled>Apply mapping</button>
+          <div class="drawerBody">
+            <div class="callout">
+              <div class="tiny">If auto-mapping misses labels, pick one entry per signal type here (deduplicated labels).</div>
+              <div class="mapGrid" id="mapGrid"></div>
+              <button class="btn ghost" id="applyMappingBtn" disabled style="margin-top:10px;">Apply mapping</button>
             </div>
           </div>
         </details>
@@ -1298,34 +1546,24 @@
 
 <div class="toast" id="toast"></div>
 <button id="floatingSidebarBtn" class="btn ghost" style="display:none; position:fixed; left:14px; bottom:18px; z-index:30;">Open Sidebar</button>
-<div id="onboardingModal" class="modalShell" aria-hidden="true">
-  <div class="modalCard">
-    <div class="modalEyebrow">Read before using</div>
-    <h2>Load local ZIPs, inspect nights, keep expectations realistic.</h2>
-    <p class="modalLead">CalmCPAP is a local browser tool for exploring CPAP export data. It is not medical advice, not a diagnosis tool, and not a substitute for a clinician. It should be treated as an educational and for-fun viewer that may still be incomplete, wrong, or misleading.</p>
-    <div class="modalGrid">
-      <div class="modalPanel">
-        <h3>How to prepare your SD ZIP</h3>
-        <ol>
-          <li>Power off the CPAP device and safely remove the SD card.</li>
-          <li>Copy the <b>entire root of the SD card</b> to your computer.</li>
-          <li>If you want a smaller test ZIP, trim older folders from <code>DATALOG/</code>.</li>
-          <li>Create one ZIP from that copied root folder.</li>
-          <li>Upload that ZIP here, or use the built-in demo data.</li>
-        </ol>
-      </div>
-      <div class="dangerNote">
-        This app is not intended for treatment decisions, emergencies, or clinical care. By continuing, you agree that the charts, explanations, and summaries may be inaccurate or incomplete and must not be treated as professional medical guidance.
-      </div>
-    </div>
-    <div class="agreeRow">
-      <label class="agreeBox" for="onboardingAgree">
-        <span class="checkWrap"><input type="checkbox" id="onboardingAgree" /></span>
-        <span>I have read this warning and understand that CalmCPAP is a local exploratory viewer for educational and personal-use experimentation only. I will not rely on it for diagnosis, treatment, or emergency decisions.</span>
-      </label>
-    </div>
-    <div class="modalActions">
-      <button class="btn" id="onboardingCloseBtn" type="button" disabled>Continue to CalmCPAP</button>
+<div id="onboardingModal" aria-hidden="true" style="display:none; position:fixed; inset:0; z-index:50; background:rgba(5,16,20,.75);">
+  <div style="width:min(1100px, 75vw); max-height:82vh; overflow:auto; margin:6vh auto 0; background:rgba(11,42,49,.98); border:1px solid rgba(255,255,255,.2); border-radius:18px; padding:18px 20px; box-shadow:0 28px 60px rgba(0,0,0,.45); text-align:center;">
+    <h2 style="margin:0 0 8px;">How to prepare your SD ZIP</h2>
+    <p style="margin:0 0 10px; color:var(--muted);">This is not medical advice. This program is for entertainment purposes only. When in doubt contact a Dr.</p><p style="margin:0 0 10px; color:var(--muted);">Follow these steps:</p>
+    <ol style="margin:0 auto 14px; max-width:760px; text-align:left; line-height:1.5; color:var(--text);">
+      <li>Power off your CPAP Device and safely remove the SD card.</li>
+      <li>Copy the <b>entire root of the SD card</b> to your computer.</li>
+      <li>If you want a smaller file, remove older day folders from <code>DATALOG/</code>.</li>
+      <li>Create one ZIP from that root copy.</li>
+      <li>Upload that ZIP in this app.</li>
+    </ol>
+    <label style="display:flex; align-items:center; gap:8px; margin:2px 0 12px; color:var(--text);">
+      <input type="checkbox" id="onboardingAgree" />
+      I have read and agree. I understand no person or party can be held responsible for misuse, interpretation errors, or inaccurate output from this app.
+    </label>
+    <p style="margin:0 auto 12px; max-width:820px; color:var(--muted);">This app is not intended for diagnosis, treatment decisions, emergency guidance, or clinical care. It may be incomplete, wrong, or misleading. By continuing, you acknowledge this is for entertainment/educational use only and no one is liable for misuse, interpretation, or outcomes based on this information.</p>
+    <div style="display:flex; justify-content:center; gap:10px;">
+      <button class="btn" id="onboardingCloseBtn" type="button" disabled style="min-width:280px; font-size:16px; padding:12px 18px; text-align:center;">Got it — Continue</button>
     </div>
   </div>
 </div>
@@ -1341,11 +1579,12 @@
 
 <script>
 /* ============================
-   CalmCPAP 0.9-alpha (AirSense 11 SD)
-   Single-file CPAP viewer with embedded demo datasets
+   CalmCPAP 0.51-alpha (AirSense 11 SD)
+   ✔️ Robust ZIP indexing + EDF parsing + charts
    ============================ */
 
 const els = {
+  appShell: document.getElementById('appShell'),
   zipInput: document.getElementById('zipInput'),
   fileBadge: document.getElementById('fileBadge'),
   zipStats: document.getElementById('zipStats'),
@@ -1353,6 +1592,7 @@ const els = {
   toggleLeftBtn: document.getElementById('toggleLeftBtn'),
   floatingSidebarBtn: document.getElementById('floatingSidebarBtn'),
   onboardingModal: document.getElementById('onboardingModal'),
+  onboardingDialog: document.getElementById('onboardingDialog'),
   onboardingCloseBtn: document.getElementById('onboardingCloseBtn'),
   onboardingAgree: document.getElementById('onboardingAgree'),
   globalLoadOverlay: document.getElementById('globalLoadOverlay'),
@@ -1384,9 +1624,6 @@ const els = {
 
   mapGrid: document.getElementById('mapGrid'),
   applyMappingBtn: document.getElementById('applyMappingBtn'),
-  calendarDrawer: document.getElementById('calendarDrawer'),
-  statsDrawer: document.getElementById('statsDrawer'),
-  sourcesDrawer: document.getElementById('sourcesDrawer'),
 
   kpiUsage: document.getElementById('kpiUsage'),
   kpiUsageNote: document.getElementById('kpiUsageNote'),
@@ -1426,6 +1663,7 @@ const els = {
   plotEvents: document.getElementById('plotEvents'),
 
   log: document.getElementById('log'),
+  debugDrawer: document.getElementById('debugLogDrawer'),
   toast: document.getElementById('toast'),
 
   tablist: document.getElementById('tablist'),
@@ -1516,8 +1754,49 @@ function setStatus(text, tone='neutral'){
   st.parentElement.style.background = map[tone] || map.neutral;
 }
 function log(line){
-  state.notes.push(line);
+  const stamp = new Date().toLocaleTimeString([], { hour12:false });
+  const msg = typeof line === 'string' ? line : JSON.stringify(line, null, 2);
+  state.notes.push(`[${stamp}] ${msg}`);
   els.log.textContent = state.notes.join('\n');
+  if (els.debugDrawer?.open){
+    els.log.scrollTop = els.log.scrollHeight;
+  }
+}
+function summarizeHeader(header){
+  return {
+    start: header?.start?.toISOString?.() || null,
+    signals: header?.numSignals ?? 0,
+    records: header?.numRecords ?? null,
+    recordDurationSec: header?.recordDuration ?? null,
+    headerBytes: header?.headerBytes ?? 0,
+  };
+}
+function summarizeSeries(series){
+  if (!series?.t?.length) return null;
+  return {
+    points: series.t.length,
+    label: series.label || '',
+    unit: series.unit || '',
+    start: series.t[0]?.toISOString?.() || null,
+    end: series.t[series.t.length - 1]?.toISOString?.() || null,
+    source: series._source || ''
+  };
+}
+function setDrawerOpen(drawer, open=true){
+  const el = typeof drawer === 'string' ? document.getElementById(drawer) : drawer;
+  if (!el) return;
+  if (open) el.setAttribute('open', '');
+  else el.removeAttribute('open');
+}
+function collapseSidebarDrawers(){
+  document.querySelectorAll('#leftPanelCard details.drawer').forEach(drawer => drawer.removeAttribute('open'));
+}
+function autoOpenLoadStart(){
+  setDrawerOpen(els.statsDrawer, true);
+}
+function autoOpenLoadComplete(){
+  setDrawerOpen(els.statsDrawer, true);
+  setDrawerOpen(els.sourcesDrawer, true);
 }
 function setDrawerOpen(drawer, open=true){
   const el = typeof drawer === 'string' ? document.getElementById(drawer) : drawer;
@@ -1724,7 +2003,6 @@ function resetAll(){
 
   els.rawSummary.innerHTML = '';
   els.rawDump.textContent = '';
-  collapseSidebarDrawers(['calendarDrawer']);
   applyRangeMode('night');
   renderCalendar();
 
@@ -1781,25 +2059,86 @@ els.tablist.addEventListener('keydown', (e)=>{
 });
 
 /* ---------- Upload handling ---------- */
+function isOnboardingOpen(){
+  return !!els.onboardingModal && !els.onboardingModal.hidden;
+}
+function setInertState(el, inert){
+  if (!el) return;
+  if (inert){
+    el.setAttribute('inert', '');
+    el.setAttribute('aria-hidden', 'true');
+  } else {
+    el.removeAttribute('inert');
+    el.removeAttribute('aria-hidden');
+  }
+}
+function setOnboardingBlocking(blocking){
+  document.body.classList.toggle('onboarding-open', blocking);
+  setInertState(els.appShell, blocking);
+  setInertState(els.floatingSidebarBtn, blocking);
+}
+function getOnboardingFocusable(){
+  if (!els.onboardingModal) return [];
+  return Array.from(els.onboardingModal.querySelectorAll('button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'))
+    .filter((el)=> !el.hasAttribute('hidden') && (el.offsetWidth > 0 || el.offsetHeight > 0 || el === document.activeElement));
+}
+function focusOnboardingStart(){
+  const focusTarget = els.onboardingAgree || getOnboardingFocusable()[0] || els.onboardingDialog;
+  focusTarget?.focus({ preventScroll:true });
+}
+function handleOnboardingKeydown(e){
+  if (!isOnboardingOpen()) return;
+  if (e.key === 'Escape'){
+    e.preventDefault();
+    e.stopPropagation();
+    return;
+  }
+  if (e.key !== 'Tab') return;
+  const focusable = getOnboardingFocusable();
+  if (!focusable.length){
+    e.preventDefault();
+    els.onboardingDialog?.focus({ preventScroll:true });
+    return;
+  }
+  const active = document.activeElement;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (!els.onboardingModal?.contains(active)){
+    e.preventDefault();
+    (e.shiftKey ? last : first).focus({ preventScroll:true });
+    return;
+  }
+  if (!e.shiftKey && active === last){
+    e.preventDefault();
+    first.focus({ preventScroll:true });
+  } else if (e.shiftKey && active === first){
+    e.preventDefault();
+    last.focus({ preventScroll:true });
+  }
+}
 function maybeShowOnboarding(){
   if (!els.onboardingModal) return;
   if (state.skipOnboarding) return;
-  els.onboardingModal.style.display = 'block';
+  els.onboardingModal.hidden = false;
   els.onboardingModal.setAttribute('aria-hidden','false');
+  setOnboardingBlocking(true);
+  if (els.onboardingDialog) els.onboardingDialog.scrollTop = 0;
   if (els.onboardingAgree) els.onboardingAgree.checked = false;
   if (els.onboardingCloseBtn) els.onboardingCloseBtn.disabled = true;
+  requestAnimationFrame(focusOnboardingStart);
 }
-function closeOnboarding(){
+function closeOnboarding({ restoreFocus=true } = {}){
   if (!els.onboardingModal) return;
-  els.onboardingModal.style.display = 'none';
+  els.onboardingModal.hidden = true;
   els.onboardingModal.setAttribute('aria-hidden','true');
+  setOnboardingBlocking(false);
+  if (restoreFocus) els.dropZone?.focus({ preventScroll:true });
 }
 els.onboardingAgree?.addEventListener('change', ()=>{
   if (els.onboardingCloseBtn) els.onboardingCloseBtn.disabled = !els.onboardingAgree.checked;
 });
-els.onboardingCloseBtn?.addEventListener('click', closeOnboarding);
-els.onboardingModal?.addEventListener('click', (e)=>{ if (e.target === els.onboardingModal) closeOnboarding(); });
-document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && els.onboardingModal?.style.display === 'block') closeOnboarding(); });
+els.onboardingCloseBtn?.addEventListener('click', ()=> closeOnboarding({ restoreFocus:true }));
+document.addEventListener('keydown', handleOnboardingKeydown, true);
 setTimeout(maybeShowOnboarding, 120);
 
 els.zipInput.addEventListener('change', ()=>{
@@ -2279,7 +2618,7 @@ async function handleZip(file){
   els.fileBadge.textContent = file.name;
   setStatus('Reading ZIP…','neutral');
   progress('Reading ZIP', 2, `${file.name} — ${(file.size/1024/1024).toFixed(2)} MB`);
-  log(`ZIP: ${file.name} (${(file.size/1024/1024).toFixed(2)} MB)`);
+  log(`ZIP selected: ${file.name} (${(file.size/1024/1024).toFixed(2)} MB)`);
 
   try{
     const buf = await readFileAsArrayBufferWithProgress(file, (loaded, total)=>{
@@ -2310,7 +2649,14 @@ async function handleZip(file){
     const idCount = entries.filter(e => e.path.toLowerCase().endsWith('identification.json')).length;
 
     els.zipStats.textContent = `${entries.length} files • ${edfCount} edf • id:${idCount? 'yes':'no'}`;
-    log(`Files: ${entries.length} | EDF: ${edfCount} | Identification.json: ${idCount? 'yes':'no'} | prefix: ${prefix || '(none)'}`);
+    log({
+      phase: 'zip-scan',
+      fileCount: entries.length,
+      edfCount,
+      hasIdentification: !!idCount,
+      prefix: prefix || '(none)',
+      markers
+    });
     progress('Scanning ZIP', 35, `Found ${entries.length} files. EDF: ${edfCount}. Identification.json: ${idCount? 'yes':'no'}.`);
     await tick();
     assertActive(jobId);
@@ -2429,6 +2775,7 @@ async function indexSessionsFromSDStructure(entries, jobId){
   const edfs = entries.filter(e => e.path.toLowerCase().endsWith('.edf'));
   const dayFolders = new Map();
   let strEntry = null;
+  log(`Indexing EDF files: ${edfs.length} candidate file(s).`);
 
   for (const e of edfs){
     assertActive(jobId);
@@ -2470,7 +2817,9 @@ async function indexSessionsFromSDStructure(entries, jobId){
         const buf = await files[fi].entry.async('arraybuffer');
         assertActive(jobId);
         const header = parseEDFHeader(buf);
-        const parsedStart = bestFileStartDate(files[fi].path, header?.start, dateISO);
+        const parsedStart = header?.start instanceof Date && Number.isFinite(header.start.getTime()) && header.start.getFullYear() >= 2000
+          ? header.start
+          : new Date(`${dateISO}T12:00:00`);
         if (parsedStart && Number.isFinite(parsedStart.getTime())){
           const durSec = estimateDurationSeconds(buf, header);
           const end = new Date(parsedStart.getTime() + durSec*1000);
@@ -2490,6 +2839,13 @@ async function indexSessionsFromSDStructure(entries, jobId){
       files
     };
     sessionsByDate.set(dateISO, { dateISO, sessions:[session] });
+    log({
+      phase: 'indexed-session',
+      dateISO,
+      fileCount: files.length,
+      start: session.start?.toISOString?.() || null,
+      end: session.end?.toISOString?.() || null
+    });
   }
 
   if (strEntry){
@@ -2546,7 +2902,7 @@ async function indexSessionsFromSDStructure(entries, jobId){
     }
   }
 
-  log(`Indexed dates: ${sessionsByDate.size} (folder-based)`);
+  log(`Indexed dates: ${sessionsByDate.size} (folder-based).`);
   return { sessionsByDate };
 }
 
@@ -2714,6 +3070,7 @@ function flattenObject(obj, depth=5){
 async function readCurrentSettings(entries, jobId){
   const csEntry = entries.find(e => e.path.toLowerCase().endsWith('currentsettings.json'));
   if (!csEntry){
+    log('CurrentSettings.json not found.');
     state.currentSettings = null;
     els.settingsArea.innerHTML = `<div class="row"><span>No CurrentSettings.json found</span><span class="badge">info</span></div>`;
     return;
@@ -2724,8 +3081,10 @@ async function readCurrentSettings(entries, jobId){
     assertActive(jobId);
     const json = JSON.parse(txt);
     state.currentSettings = json;
+    log(`CurrentSettings.json loaded: ${csEntry.path}`);
     renderCurrentSettings(json);
   }catch(_e){
+    log('CurrentSettings.json present but failed to parse.');
     state.currentSettings = null;
     els.settingsArea.innerHTML = `<div class="row"><span>CurrentSettings.json parse failed</span><span class="badge">warn</span></div>`;
   }
@@ -3603,6 +3962,13 @@ function enablePicker(autoSelectMostRecent){
   els.rangeControls.classList.remove('disabled');
   els.rangeControls.classList.add('ready');
   renderCalendar();
+  log({
+    phase: 'picker-ready',
+    dateCount: dates.length,
+    selectedDateISO: state.selectedDateISO,
+    earliestDate: min,
+    latestDate: max
+  });
 }
 
 function formatHours(sec){ return `${(sec/3600).toFixed(2)}h`; }
@@ -3747,7 +4113,14 @@ async function loadSessionsAggregate(sessions, label, jobId = state.jobId){
   setStatus('Loading selection…','neutral');
   progress('Loading selection', 62, `Loading ${state.current.session.files.length} EDF file(s)… This can take a bit for large ranges.`);
   toast('Loading selection…');
-  log(`Loading: ${label} (${state.current.session.files.length} EDF file(s))`);
+  log({
+    phase: 'load-selection',
+    label,
+    fileCount: state.current.session.files.length,
+    start: state.current.session.start?.toISOString?.() || null,
+    end: state.current.session.end?.toISOString?.() || null,
+    files: state.current.session.files.map(f => f.path)
+  });
 
   const n = state.current.session.files.length;
   for (let i=0;i<n;i++){
@@ -3770,6 +4143,13 @@ async function loadSessionsAggregate(sessions, label, jobId = state.jobId){
       recordingId: header.recordingId,
       signals: header.signals.map(s => ({ label:s.label, unit:s.physDim, sr:+(s.sampleRate||0).toFixed(3), spr:s.samplesPerRecord }))
     };
+    log({
+      phase: 'loaded-edf-header',
+      file: seg.path,
+      folderDateISO: seg._folderDateISO || null,
+      summary: summarizeHeader(header),
+      labels: header.signals.map(s => `${s.index}:${s.label}${s.physDim ? ` [${s.physDim}]` : ''}`)
+    });
   }
 
   progress('Cataloging signals', 82, 'Building signal catalog…');
@@ -3800,6 +4180,17 @@ async function loadSessionsAggregate(sessions, label, jobId = state.jobId){
     uniq.push(c);
   }
   state.current.signalCatalog = uniq;
+  log({
+    phase: 'signal-catalog',
+    uniqueSignals: uniq.length,
+    preview: uniq.slice(0, 24).map(c => ({
+      file: c.file,
+      index: c.signalIndex,
+      label: c.label,
+      unit: c.unit,
+      sr: +(c.sr || 0).toFixed(3)
+    }))
+  });
 
   progress('Auto-mapping', 85, `Found ${uniq.length} unique signals. Auto-detecting…`);
   await tick();
@@ -3951,7 +4342,10 @@ function autoMapSignals(){
   state.current.mapping.spo2 = pickBest('spo2');
   state.current.mapping.annotations = pickBest('annotations');
 
-  log(`Auto-map: ${JSON.stringify(state.current.mapping)}`);
+  log({
+    phase: 'auto-map',
+    mapping: state.current.mapping
+  });
 }
 
 function renderMappingUI(){
@@ -4044,7 +4438,12 @@ function applyMappingFromUI(){
     annotations: annotations||null
   };
   log(`Applied manual mapping: ${JSON.stringify(state.current.mapping)}`);
-  renderRawDump();
+  els.rawDump.textContent = JSON.stringify({
+    identification: state.identification,
+    session: { label: state.current.session?.label, files: state.current.edfFiles.map(f=>f.path) },
+    mapping: state.current.mapping,
+    edfHeaders: state.current.raw
+  }, null, 2);
 }
 
 /* ============================
@@ -4067,6 +4466,13 @@ async function extractSignalsAndRender(){
     progress('Extracting signals', pct, `Parsing EDF ${i+1}/${n}: ${f.path.split('/').pop()} — please wait for large ranges…`);
 
     const { series, events } = await readSelectedSignalsFromEDF(f, mapping, 90000);
+    log({
+      phase: 'extract-edf',
+      file: f.path,
+      extracted: Object.fromEntries(Object.entries(series || {}).map(([key, value]) => [key, summarizeSeries(value)])),
+      eventCount: events?.t?.length || 0,
+      eventSource: events?.source || null
+    });
     merged.leak = mergeSeriesPickBest(merged.leak, series.leak);
     merged.pressure = mergeSeriesPickBest(merged.pressure, series.pressure);
     merged.flow = mergeSeriesPickBest(merged.flow, series.flow);
@@ -4117,6 +4523,11 @@ async function extractSignalsAndRender(){
     spo2: clippedSpo2
   };
   state.current.events = eventsOut;
+  log({
+    phase: 'extract-merged',
+    signals: Object.fromEntries(Object.entries(state.current.signals).map(([key, value]) => [key, summarizeSeries(value)])),
+    events: eventsOut?.t?.length || 0
+  });
 
   progress('Analyzing', 97, 'Computing stats + writing explanations…');
   try {
@@ -4228,6 +4639,12 @@ function analyzeAndRender(){
     stats.ahiEst = stats.ahiLikeCount / stats.usageHrs;
   }
   state.current.stats = stats;
+  log({
+    phase: 'analysis',
+    stats,
+    eventCount: ev?.t?.length || 0,
+    sessionLabel: sess?.label || ''
+  });
 
   els.kpiUsage.textContent = stats.usageHrs != null ? `${stats.usageHrs.toFixed(2)} h` : '—';
   els.kpiUsageNote.textContent = stats.usageHrs != null ? 'Merged anchored-night session span.' : 'No usable time span.';
@@ -4486,7 +4903,7 @@ function renderPlotsAndText(){
       x:s.tidalVolume.t, y:s.tidalVolume.y, type:'scatter', mode:'lines',
       name:'Tidal Volume', line:{ color:'rgba(186,148,255,.95)', width:2.1 }
     }], layTv, plotConfig);
-    els.tidalNarrative.innerHTML = `<b>Tidal Volume:</b> this is the air moved with each normal breath.<br/>Think of it as “air per breath” rather than “air per minute.” The dotted reference lines are rough resting-ballpark guides, not pass/fail targets, and your own comfortable baseline matters most.`;
+    els.tidalNarrative.innerHTML = `<b>Tidal Volume:</b> the amount of air you breathe in one normal resting breath.<br/>Scale meaning: this is “air per breath.” For context, about <b>${asLiters ? '0.5 L' : '500 mL'}</b> is roughly half a liter (about half of a 1-liter bottle).<br/>Scientific detail: typical resting baseline is about <b>${asLiters ? '0.5 L' : '500 mL'} for men</b> and <b>${asLiters ? '0.4 L' : '400 mL'} for women</b> (shown as reference lines).`;
   } else {
     Plotly.newPlot(els.plotTidalVolume, [{x:[0,1],y:[0,0],type:'scatter',mode:'lines',hoverinfo:'skip'}],
       {...CALM_LAYOUT('Tidal Volume (not mapped)')}, plotConfig);
@@ -4629,7 +5046,7 @@ const startupOptions = getStartupOptions();
 state.skipOnboarding = startupOptions.skipOnboarding;
 if (startupOptions.demo){
   closeOnboarding();
-  loadDemoData({ tabId: resolveTabId(startupOptions.tab), skipToast:true, datasetId: startupOptions.demoSet });
+  loadDemoData({ tabId: resolveTabId(startupOptions.tab), skipToast:true });
 } else {
   const startupTabId = resolveTabId(startupOptions.tab);
   if (startupTabId) setActiveTab(startupTabId);
