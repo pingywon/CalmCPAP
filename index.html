@@ -145,7 +145,7 @@
     main{
       height:100%;
       display:grid;
-      grid-template-columns: 430px 1fr;
+      grid-template-columns: clamp(480px, 35vw, 620px) minmax(0, 1fr);
       gap:14px;
       padding:14px;
       overflow:hidden;
@@ -155,6 +155,10 @@
     body.left-collapsed #leftPanelCard{ display:none; }
 
     #leftPanelCard{ position:sticky; top:0; align-self:start; max-height:calc(100vh - 28px); }
+
+    @media (max-width: 1320px){
+      main{ grid-template-columns: clamp(400px, 40vw, 540px) minmax(0, 1fr); }
+    }
 
     @media (max-width: 1050px){
       body{ overflow:auto; }
@@ -191,9 +195,11 @@
     }
     .card .bd{
       padding:14px;
-      overflow:auto;
+      overflow-y:auto;
+      overflow-x:hidden;
       min-height:0;
     }
+    #rightPanelCard{ min-width:0; }
 
     .drop{
       border:1px dashed rgba(255,255,255,.25);
@@ -246,61 +252,79 @@
     }
     .callout b{ color: rgba(231,246,246,.94); }
     .callout strong{ color: rgba(231,246,246,.96); }
-    .sourceGrid, .legendGrid{
+    .sourceGrid{
       display:grid;
-      gap:10px;
+      gap:8px;
       margin-top:10px;
     }
-    .sourceRow, .legendRow{
+    .sourceRow{
       display:grid;
-      grid-template-columns:auto 1fr auto;
-      gap:10px;
-      align-items:start;
-      padding:10px 12px;
+      grid-template-columns:minmax(0, 1fr) auto;
+      gap:12px;
+      align-items:center;
+      padding:9px 10px;
       border-radius:12px;
       background: rgba(11,42,49,.58);
       border:1px solid rgba(255,255,255,.08);
     }
-    .legendRow{
-      grid-template-columns:auto 1fr;
-    }
-    .sourceMain, .legendMain{
+    .sourceMain{
       display:grid;
-      gap:3px;
+      gap:2px;
+      min-width:0;
     }
-    .sourceTitle, .legendTitle{
+    .sourceTitle{
       color: rgba(231,246,246,.97);
       font-weight:900;
-      font-size:13px;
+      font-size:12.5px;
+      line-height:1.25;
     }
-    .sourceMeta, .legendMeta{
+    .sourceMeta{
       color: var(--muted);
-      font-size:12.25px;
-      line-height:1.45;
+      font-size:11.75px;
+      line-height:1.35;
+    }
+    .sourcePath{
+      color: var(--muted2);
+      font-size:11px;
+      line-height:1.3;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .sourceSide{
+      display:grid;
+      gap:5px;
+      justify-items:end;
+      text-align:right;
+      align-self:start;
+    }
+    .sourceCount{
+      color: var(--muted2);
+      font-size:11.25px;
+      font-weight:800;
+      white-space:nowrap;
     }
     .sourcePill{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      min-width:74px;
-      padding:6px 10px;
+      min-width:68px;
+      padding:4px 9px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.05);
       color: rgba(231,246,246,.95);
-      font-size:11px;
+      font-size:10.5px;
       font-weight:800;
       text-transform:uppercase;
       letter-spacing:.22px;
     }
-    .legendChip{
-      width:14px;
-      height:14px;
-      border-radius:999px;
-      box-shadow: inset 0 0 0 1px rgba(0,0,0,.28);
-      margin-top:2px;
-    }
     #eventsLegend:empty, #sourceArea:empty{ display:none; }
+    .sourceHint, .mapHint{
+      color: var(--muted2);
+      font-size:12px;
+      line-height:1.4;
+    }
     .callout details{
       margin-top:10px;
       border-top:1px solid rgba(255,255,255,.08);
@@ -491,6 +515,23 @@
     .drawer > summary::after{ content:'▾'; color:rgba(231,246,246,.92); font-size:14px; }
     .drawer:not([open]) > summary::after{ content:'▸'; }
     .drawerBody{ padding:10px 13px 14px; font-size:14px; }
+    .drawerScroll{ overflow:auto; scrollbar-gutter:stable both-edges; }
+    .calendarDrawerBody{ max-height:min(46vh, 430px); }
+    .sourceDrawerBody{ max-height:min(36vh, 320px); }
+    .mappingDrawerBody{ max-height:min(42vh, 410px); display:flex; flex-direction:column; gap:12px; }
+    .mappingActions{
+      position:sticky;
+      bottom:-14px;
+      padding-top:12px;
+      margin-top:auto;
+      background: linear-gradient(180deg, rgba(11,42,49,0), rgba(11,42,49,.96) 46%);
+    }
+    .rawDebugDrawerBody{
+      max-height:min(40vh, 360px);
+      display:grid;
+      gap:10px;
+    }
+    .rawDebugDrawerBody #rawDump{ max-height:260px; }
 
     .picker{
       display:flex; gap:10px; align-items:center; flex-wrap:wrap;
@@ -539,19 +580,19 @@
       outline:none;
     }
 
-    .mapGrid{ display:grid; grid-template-columns:1fr; gap:10px; margin-top:10px; }
+    .mapGrid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px; margin-top:10px; }
     .mapRow{
       display:grid;
-      grid-template-columns: 120px 1fr;
-      gap:10px;
-      align-items:center;
-      padding:10px;
+      grid-template-columns:1fr;
+      gap:8px;
+      align-items:stretch;
+      padding:12px;
       border-radius:12px;
       background: rgba(11,42,49,.55);
       border:1px solid rgba(255,255,255,.08);
       font-size:12.5px;
     }
-    .mapRow label{ color:var(--muted2); font-size:12px; }
+    .mapRow label{ color:rgba(231,246,246,.96); font-size:12px; font-weight:800; }
 
     select, option, .calMonthSelect option{
       color: var(--text);
@@ -597,7 +638,6 @@
 
     #floatingSidebarBtn{ box-shadow: var(--shadow); border:1px solid rgba(255,255,255,.2); background:rgba(11,42,49,.92); }
     body.left-collapsed #floatingSidebarBtn{ display:inline-flex !important; }
-    #exploreSelect{ width:100%; max-width:640px; min-height:44px; font-size:14px; font-weight:700; border:1px solid rgba(97,212,195,.5); background:rgba(8,36,43,.8); color:var(--text); border-radius:12px; padding:10px 12px; box-shadow:0 8px 16px rgba(0,0,0,.22); }
 
     .explain{
       display:grid;
@@ -993,7 +1033,7 @@
           </div>
         </div>
 
-        <details class="drawer" open><summary>Calendar</summary><div class="drawerBody"><div class="rangeControls disabled" id="rangeControls">
+        <details class="drawer" id="calendarDrawer"><summary>Calendar</summary><div class="drawerBody drawerScroll calendarDrawerBody"><div class="rangeControls disabled" id="rangeControls">
           <div class="calendarWrap">
             <div class="calHead">
               <div class="calNav">
@@ -1018,7 +1058,7 @@
 
         <div class="hr"></div>
 
-        <details class="drawer" open><summary>Session Stats</summary><div class="drawerBody"><div class="progressWrap">
+        <details class="drawer" id="statsDrawer"><summary>Session Stats</summary><div class="drawerBody"><div class="progressWrap">
           <div class="progressTop">
             <div class="tiny"><b id="progressStep">Idle</b></div>
             <div class="badge" id="progressPct">0%</div>
@@ -1054,7 +1094,7 @@
 
         </div></details>
 
-        <details class="drawer" open>
+        <details class="drawer" id="deviceDrawer">
           <summary>Device & Profile (Identification.json)</summary>
           <div class="drawerBody">
             <div class="kv" id="idArea" style="margin-top:0;">
@@ -1063,7 +1103,7 @@
           </div>
         </details>
 
-        <details class="drawer" open>
+        <details class="drawer" id="settingsDrawer">
           <summary>Current Settings (CurrentSettings.json)</summary>
           <div class="drawerBody">
             <div class="kv" id="settingsArea" style="margin-top:0;">
@@ -1072,12 +1112,10 @@
           </div>
         </details>
 
-        <details class="drawer" open>
+        <details class="drawer" id="sourcesDrawer">
           <summary>Data Sources</summary>
-          <div class="drawerBody">
-            <div class="callout">
-              This panel shows which file families were found for the current selection, what they contribute, and whether the report is actively using them.
-            </div>
+          <div class="drawerBody drawerScroll sourceDrawerBody">
+            <div class="sourceHint">File families found for the current selection, what they contribute, and whether the report is using them.</div>
             <div class="sourceGrid" id="sourceArea"></div>
           </div>
         </details>
@@ -1088,17 +1126,24 @@
 
         <details class="drawer" id="mappingDrawer">
           <summary>Manual Signal Mapping</summary>
-          <div class="drawerBody">
-            <div class="callout">
-              <div class="tiny">If auto-mapping misses labels, pick one entry per signal type here (deduplicated labels).</div>
-              <div class="mapGrid" id="mapGrid"></div>
-              <button class="btn ghost" id="applyMappingBtn" disabled style="margin-top:10px;">Apply mapping</button>
+          <div class="drawerBody drawerScroll mappingDrawerBody">
+            <div class="mapHint">If auto-mapping misses labels, pick one entry per signal type here from the deduplicated signal list.</div>
+            <div class="mapGrid" id="mapGrid"></div>
+            <div class="mappingActions">
+              <button class="btn ghost" id="applyMappingBtn" disabled>Apply mapping</button>
             </div>
           </div>
         </details>
 
         <div class="hr"></div>
-        <details class="drawer"><summary>Debug log</summary><div class="drawerBody"><pre class="callout log" id="log"></pre></div></details>
+        <details class="drawer" id="debugLogDrawer"><summary>Debug log</summary><div class="drawerBody"><pre class="callout log" id="log"></pre></div></details>
+        <details class="drawer" id="rawDebugDrawer">
+          <summary>Raw / Debug Snapshot</summary>
+          <div class="drawerBody drawerScroll rawDebugDrawerBody">
+            <div class="callout" id="rawSummary"></div>
+            <pre class="callout log" id="rawDump"></pre>
+          </div>
+        </details>
       </div>
     </section>
 
@@ -1115,8 +1160,6 @@
         <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="epr" id="tab-epr" aria-controls="panel-epr">EPR</button>
         <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="events" id="tab-events" aria-controls="panel-events">Events</button>
         <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="compare" id="tab-compare" aria-controls="panel-compare">Compare</button>
-        <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="explore" id="tab-explore" aria-controls="panel-explore">Explore</button>
-        <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="raw" id="tab-raw" aria-controls="panel-raw">Raw</button>
       </div>
 
       <div class="report" id="reportArea">
@@ -1182,20 +1225,6 @@
           <div class="callout" style="margin-top:12px" id="eventsNarrative"></div>
         </div>
 
-        <div class="panel" id="panel-explore" role="tabpanel" aria-labelledby="tab-explore">
-          <div class="callout" id="exploreNarrative"><b>Explore:</b> choose a mapped signal from the dropdown below to display it here.</div>
-          <div style="margin:10px 0;">
-            <select id="exploreSelect" disabled>
-              <option value="">Choose a mapped signal…</option>
-            </select>
-          </div>
-          <div class="plot" id="plotExplore"></div>
-        </div>
-
-        <div class="panel" id="panel-raw" role="tabpanel" aria-labelledby="tab-raw">
-          <div class="callout" id="rawSummary"></div>
-          <pre class="callout log" id="rawDump" style="max-height:580px"></pre>
-        </div>
       </div>
     </section>
   </main>
@@ -1291,6 +1320,8 @@ const els = {
 
   mapGrid: document.getElementById('mapGrid'),
   applyMappingBtn: document.getElementById('applyMappingBtn'),
+  statsDrawer: document.getElementById('statsDrawer'),
+  sourcesDrawer: document.getElementById('sourcesDrawer'),
 
   kpiUsage: document.getElementById('kpiUsage'),
   kpiUsageNote: document.getElementById('kpiUsageNote'),
@@ -1328,9 +1359,6 @@ const els = {
   plotTidalVolume: document.getElementById('plotTidalVolume'),
   plotEpr: document.getElementById('plotEpr'),
   plotEvents: document.getElementById('plotEvents'),
-  plotExplore: document.getElementById('plotExplore'),
-  exploreSelect: document.getElementById('exploreSelect'),
-  exploreNarrative: document.getElementById('exploreNarrative'),
 
   log: document.getElementById('log'),
   toast: document.getElementById('toast'),
@@ -1384,7 +1412,7 @@ function getStartupOptions(){
 function resolveTabId(tabKey){
   if (!tabKey) return '';
   const id = `tab-${tabKey}`;
-  return document.getElementById(id) ? id : '';
+  return document.getElementById(id) ? id : 'tab-overview';
 }
 function getActiveTabKey(){
   const active = document.querySelector('[role="tab"].active');
@@ -1425,6 +1453,22 @@ function setStatus(text, tone='neutral'){
 function log(line){
   state.notes.push(line);
   els.log.textContent = state.notes.join('\n');
+}
+function setDrawerOpen(drawer, open=true){
+  const el = typeof drawer === 'string' ? document.getElementById(drawer) : drawer;
+  if (!el) return;
+  if (open) el.setAttribute('open', '');
+  else el.removeAttribute('open');
+}
+function collapseSidebarDrawers(){
+  document.querySelectorAll('#leftPanelCard details.drawer').forEach(drawer => drawer.removeAttribute('open'));
+}
+function autoOpenLoadStart(){
+  setDrawerOpen(els.statsDrawer, true);
+}
+function autoOpenLoadComplete(){
+  setDrawerOpen(els.statsDrawer, true);
+  setDrawerOpen(els.sourcesDrawer, true);
 }
 
 const progressState = { step:'Idle', pct:0, detail:'', raf:0 };
@@ -1533,7 +1577,7 @@ function CALM_LAYOUT(title){
 const plotConfig = { responsive:true, displayModeBar:true, modeBarButtonsToRemove:['autoScale2d'] };
 
 function purgePlots(){
-  [els.plotOverview, els.plotCompare, els.plotLeak, els.plotPressure, els.plotFlow, els.plotSnore, els.plotRespRate, els.plotTidalVolume, els.plotEpr, els.plotEvents, els.plotExplore].forEach(p => Plotly.purge(p));
+  [els.plotOverview, els.plotCompare, els.plotLeak, els.plotPressure, els.plotFlow, els.plotSnore, els.plotRespRate, els.plotTidalVolume, els.plotEpr, els.plotEvents].forEach(p => Plotly.purge(p));
 }
 function placeholderPlots(){
   const data = [{ x:[0,1,2,3], y:[0,1,0.4,0.8], type:'scatter', mode:'lines', hoverinfo:'skip',
@@ -1548,7 +1592,6 @@ function placeholderPlots(){
   Plotly.newPlot(els.plotTidalVolume, data, {...CALM_LAYOUT('Tidal Volume'), xaxis:{visible:false}, yaxis:{visible:false}}, plotConfig);
   Plotly.newPlot(els.plotEpr, data, {...CALM_LAYOUT('Expiratory Pressure Relief (EPR)'), xaxis:{visible:false}, yaxis:{visible:false}}, plotConfig);
   Plotly.newPlot(els.plotEvents, data, {...CALM_LAYOUT('Events'), xaxis:{visible:false}, yaxis:{visible:false}}, plotConfig);
-  Plotly.newPlot(els.plotExplore, data, {...CALM_LAYOUT('Explore'), xaxis:{visible:false}, yaxis:{visible:false}}, plotConfig);
 }
 
 /* ---------- Reset ---------- */
@@ -1607,12 +1650,10 @@ function resetAll(){
   els.eventsLegend.innerHTML = '';
   els.eventsLegend.style.display = 'none';
   els.eventsNarrative.innerHTML = '';
-  els.exploreNarrative.innerHTML = '<b>Explore:</b> choose a mapped signal from the dropdown below to display it here.';
-  els.exploreSelect.innerHTML = '<option value="">Choose a mapped signal…</option>';
-  els.exploreSelect.disabled = true;
 
   els.rawSummary.innerHTML = '';
   els.rawDump.textContent = '';
+  collapseSidebarDrawers();
   applyRangeMode('night');
   renderCalendar();
 
@@ -1639,7 +1680,7 @@ function setActiveTab(tabId){
     p.classList.toggle('active', wants);
   }
   setTimeout(()=>{
-    [els.plotOverview, els.plotCompare, els.plotLeak, els.plotPressure, els.plotFlow, els.plotSnore, els.plotRespRate, els.plotTidalVolume, els.plotEpr, els.plotEvents, els.plotExplore].forEach(p=>{
+    [els.plotOverview, els.plotCompare, els.plotLeak, els.plotPressure, els.plotFlow, els.plotSnore, els.plotRespRate, els.plotTidalVolume, els.plotEpr, els.plotEvents].forEach(p=>{
       if (p) Plotly.Plots.resize(p);
     });
   }, 20);
@@ -1725,7 +1766,7 @@ function updateSidebarToggleUI(collapsed){
     els.floatingSidebarBtn.textContent = 'Open Sidebar';
   }
   setTimeout(()=>{
-    [els.plotOverview, els.plotCompare, els.plotLeak, els.plotPressure, els.plotFlow, els.plotSnore, els.plotRespRate, els.plotTidalVolume, els.plotEpr, els.plotEvents, els.plotExplore].forEach(p=>{
+    [els.plotOverview, els.plotCompare, els.plotLeak, els.plotPressure, els.plotFlow, els.plotSnore, els.plotRespRate, els.plotTidalVolume, els.plotEpr, els.plotEvents].forEach(p=>{
       if (p) Plotly.Plots.resize(p);
     });
   }, 40);
@@ -1740,7 +1781,7 @@ els.floatingSidebarBtn?.addEventListener('click', ()=>{
   updateSidebarToggleUI(false);
 });
 window.addEventListener('resize', ()=>{
-  [els.plotOverview, els.plotCompare, els.plotLeak, els.plotPressure, els.plotFlow, els.plotSnore, els.plotRespRate, els.plotTidalVolume, els.plotEpr, els.plotEvents, els.plotExplore].forEach(p=>{
+  [els.plotOverview, els.plotCompare, els.plotLeak, els.plotPressure, els.plotFlow, els.plotSnore, els.plotRespRate, els.plotTidalVolume, els.plotEpr, els.plotEvents].forEach(p=>{
     if (p) Plotly.Plots.resize(p);
   });
 });
@@ -1769,9 +1810,7 @@ els.calMonthSelect.addEventListener('change', ()=>{
 els.applyMappingBtn.addEventListener('click', async ()=>{
   applyMappingFromUI();
   await extractSignalsAndRender();
-  await renderExplorePlot();
 });
-els.exploreSelect.addEventListener('change', async ()=>{ await renderExplorePlot(); });
 
 /* ---------- Demo ---------- */
 const DEMO_DATASETS = [
@@ -2120,6 +2159,7 @@ function materializeDemoDataset(seed){
 }
 function loadDemoData({ tabId='', skipToast=false, datasetId=null } = {}){
   resetAll();
+  autoOpenLoadStart();
   const seed = pickDemoDataset(datasetId);
   const demo = materializeDemoDataset(seed);
   state.demoSetId = seed.id;
@@ -2167,6 +2207,7 @@ function loadDemoData({ tabId='', skipToast=false, datasetId=null } = {}){
   renderMappingUI();
   renderRawDump();
   analyzeAndRender();
+  autoOpenLoadComplete();
   if (tabId) setActiveTab(tabId);
   if (!skipToast) toast('Demo data ready ✔️');
 }
@@ -2182,6 +2223,7 @@ els.demoBtn.addEventListener('click', ()=>{
 async function handleZip(file){
   const jobId = newJob();
   resetAll();
+  autoOpenLoadStart();
   state.jobId = jobId;
   updateHashParams({ demo:null, demoSet:null });
 
@@ -2239,7 +2281,7 @@ async function handleZip(file){
       setStatus('No sessions','warn');
       progress('Indexing days', 100, 'No day folders found under DATALOG/YYYYMMDD, and no usable STR.edf date.');
       els.overviewSummary.innerHTML = `<b>Status</b><br/>Couldn’t find sessions. Expected: <b>DATALOG/YYYYMMDD/*.edf</b>.`;
-      els.rawSummary.innerHTML = `<b>Raw:</b> Couldn’t index sessions.`;
+      els.rawSummary.innerHTML = `<b>Raw / debug snapshot:</b><br/>Couldn’t index sessions.`;
       els.rawDump.textContent = entries.slice(0,400).map(e=>e.path).join('\n');
       return;
     }
@@ -2261,6 +2303,7 @@ async function handleZip(file){
       progress('Ready', 100, 'Choose a date + session, then click Load.');
     }
 
+    autoOpenLoadComplete();
     toast('ZIP ready ✔️');
   }catch(err){
     if (err?.name === 'CancelledError'){
@@ -2670,16 +2713,16 @@ function renderCurrentSettings(obj){
 }
 
 const SOURCE_FAMILY_DEFS = {
-  'Identification.json': { title:'Identification.json', role:'Device identity and product metadata.', pill:'active' },
-  'CurrentSettings.json': { title:'CurrentSettings.json', role:'Configured therapy, comfort, and device settings.', pill:'active' },
-  'Identification.crc': { title:'Identification.crc', role:'Integrity marker retained for reference only.', pill:'reference' },
-  'CurrentSettings.crc': { title:'CurrentSettings.crc', role:'Integrity marker retained for reference only.', pill:'reference' },
-  'STR.edf': { title:'STR.edf', role:'Summary cross-checks and longer-horizon nightly rollups.', pill:'retained' },
-  'PLD': { title:'PLD', role:'Primary 2-second therapy metrics used in the nightly report.', pill:'active' },
-  'BRP': { title:'BRP', role:'Higher-rate waveform and pressure context used for flow/pressure views.', pill:'active' },
-  'EVE': { title:'EVE', role:'Annotation events and device-coded event markers.', pill:'active' },
-  'CSL': { title:'CSL', role:'Companion annotation/event source retained with EVE.', pill:'active' },
-  'SA2': { title:'SA2', role:'Pulse and oxygen signals available for source review and Explore.', pill:'retained' },
+  'Identification.json': { title:'Identification.json', role:'Identity + device metadata', pill:'active' },
+  'CurrentSettings.json': { title:'CurrentSettings.json', role:'Therapy and comfort settings', pill:'active' },
+  'Identification.crc': { title:'Identification.crc', role:'Reference integrity marker', pill:'reference' },
+  'CurrentSettings.crc': { title:'CurrentSettings.crc', role:'Reference integrity marker', pill:'reference' },
+  'STR.edf': { title:'STR.edf', role:'Summary cross-checks + rollups', pill:'retained' },
+  'PLD': { title:'PLD', role:'Primary 2-second therapy metrics', pill:'active' },
+  'BRP': { title:'BRP', role:'Waveform and pressure context', pill:'active' },
+  'EVE': { title:'EVE', role:'Annotation events and coded markers', pill:'active' },
+  'CSL': { title:'CSL', role:'Companion event source', pill:'active' },
+  'SA2': { title:'SA2', role:'Pulse and oxygen source review', pill:'retained' },
 };
 
 function classifySourceFamily(path){
@@ -2756,9 +2799,12 @@ function renderSourceSummary(summary){
       <div class="sourceMain">
         <div class="sourceTitle">${escapeHtml(item.title)}</div>
         <div class="sourceMeta">${escapeHtml(item.role)}</div>
+        ${item.samplePath ? `<div class="sourcePath" title="${escapeHtml(item.samplePath)}">${escapeHtml(item.samplePath.split('/').slice(-2).join('/'))}</div>` : ''}
       </div>
-      <div class="sourceMeta">${item.count} file${item.count === 1 ? '' : 's'}${item.samplePath ? `<br/><span class="tiny">${escapeHtml(item.samplePath.split('/').slice(-2).join('/'))}</span>` : ''}</div>
-      <div class="sourcePill">${escapeHtml(item.pill)}</div>
+      <div class="sourceSide">
+        <div class="sourceCount">${item.count} file${item.count === 1 ? '' : 's'}</div>
+        <div class="sourcePill">${escapeHtml(item.pill)}</div>
+      </div>
     </div>
   `).join('');
 }
@@ -3273,26 +3319,22 @@ function humanizeEventCategory(raw){
 function eventDescription(raw){
   return eventInfo(raw).description;
 }
+const EVENT_COLOR_MAP = {
+  'code:10':'#ef4444',
+  'code:11':'#f59e0b',
+  'code:12':'#3b82f6',
+  'code:13':'#8b5cf6',
+  'code:14':'#22c55e',
+  'code:16':'#06b6d4',
+  'code:0':'#94a3b8',
+  'label:arousal':'#f97316',
+  'label:recording-starts':'#ec4899'
+};
+const EVENT_FALLBACK_COLORS = ['#ef4444','#f59e0b','#3b82f6','#22c55e','#8b5cf6','#06b6d4','#f97316','#ec4899','#94a3b8'];
 function eventColor(raw, idx=0){
   const colorKey = eventInfo(raw).colorKey;
-  const map = {
-    'code:10':'rgba(255,107,122,.96)',
-    'code:11':'rgba(255,204,102,.96)',
-    'code:12':'rgba(122,167,255,.96)',
-    'code:13':'rgba(186,148,255,.96)',
-    'code:14':'rgba(110,231,166,.96)',
-    'code:16':'rgba(141,211,255,.96)',
-    'code:0':'rgba(231,246,246,.92)',
-    'label:arousal':'rgba(255,154,102,.96)',
-    'label:recording-starts':'rgba(231,246,246,.92)'
-  };
-  if (map[colorKey]) return map[colorKey];
-  const fallback = [
-    'rgba(255,107,122,.96)','rgba(255,204,102,.96)','rgba(122,167,255,.96)',
-    'rgba(110,231,166,.96)','rgba(186,148,255,.96)','rgba(141,211,255,.96)',
-    'rgba(255,154,102,.96)','rgba(231,246,246,.92)'
-  ];
-  return fallback[idx % fallback.length];
+  if (EVENT_COLOR_MAP[colorKey]) return EVENT_COLOR_MAP[colorKey];
+  return EVENT_FALLBACK_COLORS[idx % EVENT_FALLBACK_COLORS.length];
 }
 
 function readEDFAnnotations(buffer, header, annSig, sigByteOffset, recordBytes, nRec, file){
@@ -3914,8 +3956,10 @@ function renderMappingUI(){
     const wrap = document.createElement('div');
     wrap.className = 'mapRow';
     const lab = document.createElement('label');
+    const selId = `map_${r.key}`;
     lab.textContent = r.label;
-    const sel = mkSelect(`map_${r.key}`, state.current.mapping[r.key] || '');
+    lab.htmlFor = selId;
+    const sel = mkSelect(selId, state.current.mapping[r.key] || '');
     wrap.appendChild(lab);
     wrap.appendChild(sel);
     els.mapGrid.appendChild(wrap);
@@ -3923,63 +3967,8 @@ function renderMappingUI(){
 
   els.applyMappingBtn.disabled = false;
 
-  populateExploreOptions();
-
   els.rawSummary.innerHTML = `<b>Signal catalog:</b><br/>${cat.length} unique signal labels found across the current selection.`;
   renderRawDump();
-}
-
-
-function populateExploreOptions(){
-  if (!els.exploreSelect) return;
-  const defs = [
-    ['leak','Leak'],
-    ['pressure','Pressure'],
-    ['flow','Flow'],
-    ['snore','Snore'],
-    ['respRate','Respiratory Rate'],
-    ['tidalVolume','Tidal Volume'],
-    ['epr','Exhalation Pressure'],
-    ['pulse','Pulse'],
-    ['spo2','SpO₂']
-  ];
-  const s = state.current.signals || {};
-  const available = defs.filter(([k]) => s[k]?.t?.length);
-  const prev = els.exploreSelect.value;
-  els.exploreSelect.innerHTML = '<option value="">Choose a signal type…</option>';
-  for (const [key,label] of available){
-    const opt = document.createElement('option');
-    opt.value = key;
-    opt.textContent = label;
-    els.exploreSelect.appendChild(opt);
-  }
-  els.exploreSelect.disabled = available.length === 0;
-  if (available.some(([k]) => k === prev)) els.exploreSelect.value = prev;
-}
-
-async function renderExplorePlot(){
-  const key = els.exploreSelect?.value;
-  if (!key){
-    Plotly.newPlot(els.plotExplore, [{x:[0,1],y:[0,0],type:'scatter',mode:'lines',hoverinfo:'skip'}], {...CALM_LAYOUT('Explore (select a signal)')}, plotConfig);
-    els.exploreNarrative.innerHTML = '<b>Explore:</b> choose a signal type to show all data for that reading.';
-    return;
-  }
-  const merged = state.current.signals?.[key] || null;
-  if (!merged?.t?.length){
-    Plotly.newPlot(els.plotExplore, [{x:[0,1],y:[0,0],type:'scatter',mode:'lines',hoverinfo:'skip'}], {...CALM_LAYOUT('Explore (no data for selected signal)')}, plotConfig);
-    els.exploreNarrative.innerHTML = '<b>No data for selected signal in this timeframe.</b>';
-    return;
-  }
-  const labelMap = {
-    leak:'Leak', pressure:'Pressure', flow:'Flow', snore:'Snore', respRate:'Respiratory Rate', tidalVolume:'Tidal Volume', epr:'Exhalation Pressure', pulse:'Pulse', spo2:'SpO₂'
-  };
-  const label = merged.label || labelMap[key] || 'Selected signal';
-  Plotly.newPlot(els.plotExplore, [{x:merged.t,y:merged.y,type:'scatter',mode:'lines',line:{color:'rgba(97,212,195,.95)',width:2}}], {
-    ...CALM_LAYOUT(`Explore — ${label}`),
-    yaxis: { ...CALM_LAYOUT('').yaxis, title: { text: merged.unit ? `${label} (${merged.unit})` : label } }
-  }, plotConfig);
-  const exploreScale = merged.unit ? `Scale: <b>${escapeHtml(merged.unit)}</b>.` : 'Scale: device-native units.';
-  els.exploreNarrative.innerHTML = `<b>Explore:</b> showing <b>${escapeHtml(label)}</b> across the selected timeframe.<br/>${exploreScale} Plain language: watch for sustained shifts from your normal baseline, not just single spikes.`;
 }
 
 function applyMappingFromUI(){
@@ -4083,8 +4072,6 @@ async function extractSignalsAndRender(){
   progress('Analyzing', 97, 'Computing stats + writing explanations…');
   try {
     analyzeAndRender();
-    populateExploreOptions();
-    await renderExplorePlot();
     progress('Done', 100, 'Report ready.');
     setStatus('Ready','good');
   } catch (err) {
@@ -4217,25 +4204,26 @@ function normalizeForCompare(arr){
   if (!Number.isFinite(span) || span <= 1e-9) return (arr || []).map(()=>0.5);
   return (arr || []).map(v => Number.isFinite(v) ? (v - min) / span : null);
 }
+const COMPARE_SERIES_DEFS = [
+  { key:'leak', label:'Leak', color:'#ff6b6b' },
+  { key:'pressure', label:'Pressure', color:'#14b8a6' },
+  { key:'flow', label:'Flow', color:'#3b82f6' },
+  { key:'snore', label:'Snore', color:'#f59e0b' },
+  { key:'respRate', label:'Respiratory Rate', color:'#84cc16' },
+  { key:'tidalVolume', label:'Tidal Volume', color:'#8b5cf6' },
+  { key:'epr', label:'Exhalation Pressure', color:'#06b6d4' },
+  { key:'pulse', label:'Pulse', color:'#f97316' },
+  { key:'spo2', label:'SpO₂', color:'#ec4899' }
+];
+const COMPARE_DEFAULT_KEYS = new Set(['pressure','flow']);
 
 function renderComparePlot(){
   if (!els.plotCompare || !els.compareControls) return;
   const s = state.current.signals || {};
-  const defs = [
-    ['leak','Leak','rgba(255,107,122,.85)'],
-    ['pressure','Pressure','rgba(97,212,195,.92)'],
-    ['flow','Flow','rgba(122,167,255,.92)'],
-    ['snore','Snore','rgba(255,204,102,.95)'],
-    ['respRate','Respiratory Rate','rgba(110,231,166,.95)'],
-    ['tidalVolume','Tidal Volume','rgba(186,148,255,.95)'],
-    ['epr','Exhalation Pressure','rgba(141,211,255,.95)'],
-    ['pulse','Pulse','rgba(255,154,102,.95)'],
-    ['spo2','SpO₂','rgba(231,246,246,.88)']
-  ];
-  const available = defs.filter(([k]) => s[k]?.t?.length);
+  const available = COMPARE_SERIES_DEFS.filter(def => s[def.key]?.t?.length);
   els.compareControls.innerHTML = `
     <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;">
-      ${available.map(([k,label]) => `<label style="display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid rgba(255,255,255,.18);border-radius:10px;background:rgba(8,36,43,.55);font-size:13px;"><input type="checkbox" data-compare="${k}" ${['pressure','flow'].includes(k)?'checked':''}/> <span>${label}</span></label>`).join('')}
+      ${available.map(def => `<label style="display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid rgba(255,255,255,.18);border-radius:10px;background:rgba(8,36,43,.55);font-size:13px;"><input type="checkbox" data-compare="${def.key}" ${COMPARE_DEFAULT_KEYS.has(def.key) ? 'checked' : ''}/> <span style="width:11px;height:11px;border-radius:999px;background:${def.color};box-shadow:inset 0 0 0 1px rgba(0,0,0,.28);flex:0 0 auto;"></span><span>${def.label}</span></label>`).join('')}
       ${available.length ? '<label style="display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid rgba(122,167,255,.35);border-radius:10px;background:rgba(12,44,56,.65);font-size:13px;"><input type="checkbox" id="compareNormalize" checked/> <span>Normalize scales</span></label>' : ''}
     </div>
   ` || '<span class="tiny">No signals available to compare.</span>';
@@ -4246,10 +4234,10 @@ function renderComparePlot(){
     const checked = Array.from(els.compareControls.querySelectorAll('input[data-compare]:checked')).map(i=>i.getAttribute('data-compare'));
     const normalize = !!document.getElementById('compareNormalize')?.checked;
     const traces = checked.map(k=>{
-      const d = defs.find(x=>x[0]===k);
+      const def = available.find(item => item.key === k);
       const srcY = s[k].y || [];
       const y = normalize ? normalizeForCompare(srcY) : srcY;
-      return { x:s[k].t, y, customdata: srcY, type:'scatter', mode:'lines', name:d[1], line:{color:d[2], width:2.3}, hovertemplate: normalize ? '%{x|%Y-%m-%d %H:%M:%S}<br><b>%{fullData.name}</b><br>Raw: %{customdata:.3f}<br>Normalized: %{y:.3f}<extra></extra>' : '%{x|%Y-%m-%d %H:%M:%S}<br><b>%{fullData.name}: %{y:.3f}</b><extra></extra>' };
+      return { x:s[k].t, y, customdata: srcY, type:'scatter', mode:'lines', name:def.label, line:{color:def.color, width:2.3}, hovertemplate: normalize ? '%{x|%Y-%m-%d %H:%M:%S}<br><b>%{fullData.name}</b><br>Raw: %{customdata:.3f}<br>Normalized: %{y:.3f}<extra></extra>' : '%{x|%Y-%m-%d %H:%M:%S}<br><b>%{fullData.name}: %{y:.3f}</b><extra></extra>' };
     });
     if (!traces.length){
       Plotly.newPlot(els.plotCompare, [{x:[0,1],y:[0,0],type:'scatter',mode:'lines',hoverinfo:'skip'}], {...CALM_LAYOUT('Compare')}, plotConfig);

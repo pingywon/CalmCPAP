@@ -19,7 +19,7 @@ The screenshots above come from the built-in demo mode. They are not real patien
 - Keeps the app local-only. No backend, no account, no cloud upload step.
 - Anchors the calendar to raw `DATALOG/YYYYMMDD` folder dates, then loads the full detected night for that anchor date.
 - Shows charts for leak, therapy pressure, flow, snore, respiratory rate, tidal volume, exhalation pressure, events, and comparison overlays.
-- Keeps a raw/debug view so you can see which file families and signals were used.
+- Keeps a raw/debug snapshot in the lower-left sidebar so you can see which file families and signals were used.
 - Ships as one self-contained runtime file: `index.html`.
 
 ## Real ZIP Uploads
@@ -64,8 +64,8 @@ That override keeps a chosen demo set stable so screenshots can be regenerated c
 - `EPR`: therapy pressure vs exhalation pressure, plus derived relief from the pressure difference.
 - `Events`: parsed annotations, session start/stop markers, a compact on-chart legend, and a collapsed glossary for known event types.
 - `Compare`: overlay several signals on one plot.
-- `Explore`: inspect one mapped signal at a time.
-- `Raw`: source inventory, mappings, headers, and debug output.
+
+For source inventory, mappings, headers, and debug output, use the `Raw / Debug Snapshot` drawer at the bottom of the left sidebar.
 
 ## EPR Interpretation
 
