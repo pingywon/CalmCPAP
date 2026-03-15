@@ -665,6 +665,327 @@
       line-height:1.45;
     }
 
+    body.onboarding-open{ overflow:hidden; }
+    .onboardingOverlay{
+      position:fixed;
+      inset:0;
+      z-index:50;
+      display:grid;
+      place-items:center;
+      padding:20px;
+      background:
+        radial-gradient(900px 420px at 18% 10%, rgba(97,212,195,.16), transparent 62%),
+        radial-gradient(820px 420px at 88% 0%, rgba(122,167,255,.16), transparent 58%),
+        rgba(5,16,20,.82);
+      backdrop-filter: blur(12px);
+    }
+    .onboardingOverlay[hidden]{ display:none; }
+    .onboardingDialog{
+      position:relative;
+      width:min(860px, 100%);
+      max-height:min(86vh, 920px);
+      overflow:auto;
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:28px;
+      background: linear-gradient(180deg, rgba(15,50,58,.98), rgba(8,28,33,.98));
+      box-shadow: 0 30px 70px rgba(0,0,0,.48);
+      padding: clamp(22px, 4vw, 34px);
+      outline:none;
+    }
+    .onboardingDialog::before{
+      content:'';
+      position:absolute;
+      inset:1px;
+      border-radius:27px;
+      background:
+        radial-gradient(480px 220px at 12% 6%, rgba(97,212,195,.12), transparent 65%),
+        radial-gradient(420px 220px at 88% 0%, rgba(122,167,255,.12), transparent 62%);
+      pointer-events:none;
+    }
+    .onboardingInner{
+      position:relative;
+      z-index:1;
+      display:grid;
+      gap:26px;
+    }
+    .onboardingHero{
+      display:grid;
+      gap:18px;
+    }
+    .onboardingHeroTop{
+      display:grid;
+      gap:10px;
+    }
+    .onboardingKicker{
+      font-size:12px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color: rgba(151,235,223,.92);
+    }
+    .onboardingTagline{
+      margin:0;
+      font-size:15px;
+      font-weight:900;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      color: rgba(255,236,188,.95);
+    }
+    .onboardingTitle{
+      margin:0;
+      font-size: clamp(32px, 5vw, 44px);
+      line-height:1.02;
+      max-width: 11ch;
+    }
+    .onboardingLead{
+      margin:0;
+      max-width:55ch;
+      color:var(--muted);
+      font-size:15px;
+      line-height:1.55;
+    }
+    .onboardingFlow{
+      display:grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap:12px;
+      align-items:start;
+    }
+    .flowStep{
+      position:relative;
+      display:grid;
+      justify-items:center;
+      gap:10px;
+      text-align:center;
+    }
+    .flowStep::after{
+      content:'→';
+      position:absolute;
+      top:20px;
+      right:-12px;
+      font-size:22px;
+      color: rgba(151,235,223,.58);
+    }
+    .flowStep:last-child::after{ display:none; }
+    .flowStep strong{
+      font-size:14px;
+      line-height:1.3;
+    }
+    .flowGlyph{
+      width:64px;
+      height:64px;
+      border-radius:22px;
+      display:grid;
+      place-items:center;
+      background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+    }
+    .flowGlyph span,
+    .flowGlyph span::before,
+    .flowGlyph span::after{
+      content:'';
+      position:absolute;
+      display:block;
+    }
+    .flowGlyph span{ position:relative; }
+    .glyph-sd{
+      width:28px;
+      height:38px;
+      background: linear-gradient(180deg, rgba(151,235,223,.95), rgba(102,177,255,.82));
+      border-radius:8px 8px 10px 10px;
+      clip-path: polygon(0 0, 76% 0, 100% 22%, 100% 100%, 0 100%);
+      box-shadow: inset 0 -8px 0 rgba(6,32,38,.18);
+    }
+    .glyph-sd::before{
+      width:16px;
+      height:6px;
+      top:6px;
+      left:6px;
+      border-top:2px solid rgba(6,32,38,.48);
+      border-bottom:2px solid rgba(6,32,38,.48);
+    }
+    .glyph-sd::after{
+      width:10px;
+      height:10px;
+      top:0;
+      right:0;
+      background: rgba(11,42,49,.95);
+      clip-path: polygon(0 0, 100% 0, 100% 100%);
+      border-top-right-radius:6px;
+    }
+    .glyph-folder{
+      width:36px;
+      height:24px;
+      background: linear-gradient(180deg, rgba(255,236,188,.94), rgba(255,204,102,.82));
+      border-radius:7px;
+      box-shadow: inset 0 -6px 0 rgba(6,32,38,.12);
+    }
+    .glyph-folder::before{
+      width:16px;
+      height:8px;
+      top:-6px;
+      left:4px;
+      background: rgba(255,236,188,.94);
+      border-radius:6px 6px 0 0;
+    }
+    .glyph-folder::after{
+      width:18px;
+      height:3px;
+      top:11px;
+      right:-8px;
+      background: rgba(151,235,223,.88);
+      border-radius:999px;
+      box-shadow: -8px -6px 0 rgba(151,235,223,.42);
+    }
+    .glyph-zip{
+      width:30px;
+      height:36px;
+      border-radius:10px;
+      background: linear-gradient(180deg, rgba(122,167,255,.96), rgba(97,212,195,.78));
+      box-shadow: inset 0 -8px 0 rgba(6,32,38,.16);
+    }
+    .glyph-zip::before{
+      width:4px;
+      height:24px;
+      left:13px;
+      top:6px;
+      background: repeating-linear-gradient(180deg, rgba(6,32,38,.78) 0 3px, rgba(255,255,255,.9) 3px 6px);
+      border-radius:999px;
+    }
+    .glyph-zip::after{
+      width:12px;
+      height:6px;
+      left:9px;
+      top:8px;
+      border:2px solid rgba(6,32,38,.65);
+      border-bottom:none;
+      border-radius:999px 999px 0 0;
+    }
+    .glyph-upload{
+      width:4px;
+      height:20px;
+      background: rgba(255,236,188,.95);
+      border-radius:999px;
+    }
+    .glyph-upload::before{
+      width:24px;
+      height:12px;
+      left:-10px;
+      bottom:-6px;
+      border:2px solid rgba(151,235,223,.92);
+      border-top:none;
+      border-radius:0 0 8px 8px;
+    }
+    .glyph-upload::after{
+      width:0;
+      height:0;
+      left:-6px;
+      top:-10px;
+      border-left:8px solid transparent;
+      border-right:8px solid transparent;
+      border-bottom:12px solid rgba(255,236,188,.95);
+    }
+    .onboardingSectionTitle{
+      margin:0;
+      font-size:12px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color:var(--muted2);
+    }
+    .onboardingList{
+      list-style:none;
+      counter-reset:onboardingStep;
+      margin:12px 0 0;
+      padding:0;
+      display:grid;
+      gap:10px;
+    }
+    .onboardingList li{
+      counter-increment:onboardingStep;
+      display:grid;
+      grid-template-columns:auto 1fr;
+      gap:12px;
+      align-items:start;
+      line-height:1.5;
+      color:var(--text);
+    }
+    .onboardingList li::before{
+      content:counter(onboardingStep);
+      width:28px;
+      height:28px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      font-size:12px;
+      font-weight:900;
+      color:#062026;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 10px 18px rgba(97,212,195,.18);
+      margin-top:2px;
+    }
+    .onboardingAgreement{
+      padding-top:20px;
+      border-top:1px solid rgba(255,255,255,.12);
+      display:grid;
+      gap:14px;
+      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+    }
+    .onboardingAgreementText{
+      margin:0;
+      color:var(--muted);
+      line-height:1.55;
+    }
+    .onboardingCheck{
+      display:flex;
+      align-items:flex-start;
+      gap:12px;
+      color:var(--text);
+      line-height:1.45;
+      font-weight:700;
+    }
+    .onboardingCheck input{
+      width:18px;
+      height:18px;
+      margin-top:3px;
+      accent-color: var(--accent);
+      flex:0 0 auto;
+    }
+    .onboardingActions{
+      display:flex;
+      justify-content:flex-start;
+    }
+    .onboardingActions .btn{
+      min-width:220px;
+      padding:12px 18px;
+      font-size:15px;
+    }
+    @media (max-width: 760px){
+      .onboardingOverlay{
+        padding:12px;
+        align-items:start;
+      }
+      .onboardingDialog{
+        max-height: calc(100vh - 24px);
+        border-radius:24px;
+      }
+      .onboardingFlow{
+        grid-template-columns: repeat(2, minmax(0,1fr));
+        row-gap:18px;
+      }
+      .flowStep::after{ display:none; }
+      .onboardingActions .btn{
+        width:100%;
+      }
+    }
+    @media (max-width: 560px){
+      .onboardingTitle{ max-width:none; }
+      .onboardingLead{ font-size:14px; }
+      .flowGlyph{
+        width:58px;
+        height:58px;
+        border-radius:20px;
+      }
+    }
+
     .toast{
       position:fixed;
       bottom:16px;
@@ -978,7 +1299,7 @@
 </head>
 
 <body>
-<div class="app">
+<div class="app" id="appShell">
   <header>
     <div class="brand">
       <div class="logo" aria-hidden="true"></div>
@@ -1122,18 +1443,20 @@
 
 
 
-        <div class="hr"></div>
+        <div id="mappingSection" hidden>
+          <div class="hr"></div>
 
-        <details class="drawer" id="mappingDrawer">
-          <summary>Manual Signal Mapping</summary>
-          <div class="drawerBody drawerScroll mappingDrawerBody">
-            <div class="mapHint">If auto-mapping misses labels, pick one entry per signal type here from the deduplicated signal list.</div>
-            <div class="mapGrid" id="mapGrid"></div>
-            <div class="mappingActions">
-              <button class="btn ghost" id="applyMappingBtn" disabled>Apply mapping</button>
+          <details class="drawer" id="mappingDrawer">
+            <summary>Manual Signal Mapping</summary>
+            <div class="drawerBody drawerScroll mappingDrawerBody">
+              <div class="mapHint">If auto-mapping misses labels, pick one entry per signal type here from the deduplicated signal list.</div>
+              <div class="mapGrid" id="mapGrid"></div>
+              <div class="mappingActions">
+                <button class="btn ghost" id="applyMappingBtn" disabled>Apply mapping</button>
+              </div>
             </div>
-          </div>
-        </details>
+          </details>
+        </div>
 
         <div class="hr"></div>
         <details class="drawer" id="debugLogDrawer"><summary>Debug log</summary><div class="drawerBody"><pre class="callout log" id="log"></pre></div></details>
@@ -1232,34 +1555,58 @@
 
 <div class="toast" id="toast"></div>
 <button id="floatingSidebarBtn" class="btn ghost" style="display:none; position:fixed; left:14px; bottom:18px; z-index:30;">Open Sidebar</button>
-<div id="onboardingModal" class="modalShell" aria-hidden="true">
-  <div class="modalCard">
-    <div class="modalEyebrow">Read before using</div>
-    <h2>Load local ZIPs, inspect nights, keep expectations realistic.</h2>
-    <p class="modalLead">CalmCPAP is a local browser tool for exploring CPAP export data. It is not medical advice, not a diagnosis tool, and not a substitute for a clinician. It should be treated as an educational and for-fun viewer that may still be incomplete, wrong, or misleading.</p>
-    <div class="modalGrid">
-      <div class="modalPanel">
-        <h3>How to prepare your SD ZIP</h3>
-        <ol>
-          <li>Power off the CPAP device and safely remove the SD card.</li>
-          <li>Copy the <b>entire root of the SD card</b> to your computer.</li>
-          <li>If you want a smaller test ZIP, trim older folders from <code>DATALOG/</code>.</li>
-          <li>Create one ZIP from that copied root folder.</li>
-          <li>Upload that ZIP here, or use the built-in demo data.</li>
+<div id="onboardingModal" class="onboardingOverlay" aria-hidden="true" hidden>
+  <div class="onboardingDialog" id="onboardingDialog" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle" aria-describedby="onboardingTagline onboardingAgreementText" tabindex="-1">
+    <div class="onboardingInner">
+      <section class="onboardingHero">
+        <div class="onboardingHeroTop">
+          <div class="onboardingKicker">First-time setup</div>
+          <p class="onboardingTagline" id="onboardingTagline">Sleep is serious. This app is not.</p>
+          <h2 class="onboardingTitle" id="onboardingTitle">Prepare your SD card ZIP</h2>
+          <p class="onboardingLead">CalmCPAP reads one ZIP made from your CPAP SD card. Keep the full folder structure intact so the app can find the files it needs.</p>
+        </div>
+        <div class="onboardingFlow" aria-hidden="true">
+          <div class="flowStep">
+            <div class="flowGlyph"><span class="glyph-sd"></span></div>
+            <strong>Remove SD card</strong>
+          </div>
+          <div class="flowStep">
+            <div class="flowGlyph"><span class="glyph-folder"></span></div>
+            <strong>Copy contents</strong>
+          </div>
+          <div class="flowStep">
+            <div class="flowGlyph"><span class="glyph-zip"></span></div>
+            <strong>Zip the folder</strong>
+          </div>
+          <div class="flowStep">
+            <div class="flowGlyph"><span class="glyph-upload"></span></div>
+            <strong>Upload here</strong>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="onboardingStepsTitle">
+        <h3 class="onboardingSectionTitle" id="onboardingStepsTitle">How to make the ZIP</h3>
+        <ol class="onboardingList">
+          <li>Power off your CPAP and remove the SD card.</li>
+          <li>Copy the full contents of the SD card into a folder on your computer.</li>
+          <li>Optional: remove older day folders from <code>DATALOG/</code> inside that copied folder to make a smaller ZIP.</li>
+          <li>Create one <code>.zip</code> from that copied folder.</li>
+          <li>Upload the ZIP in CalmCPAP.</li>
         </ol>
-      </div>
-      <div class="dangerNote">
-        This app is not intended for treatment decisions, emergencies, or clinical care. By continuing, you agree that the charts, explanations, and summaries may be inaccurate or incomplete and must not be treated as professional medical guidance.
-      </div>
-    </div>
-    <div class="agreeRow">
-      <label class="agreeBox" for="onboardingAgree">
-        <span class="checkWrap"><input type="checkbox" id="onboardingAgree" /></span>
-        <span>I have read this warning and understand that CalmCPAP is a local exploratory viewer for educational and personal-use experimentation only. I will not rely on it for diagnosis, treatment, or emergency decisions.</span>
-      </label>
-    </div>
-    <div class="modalActions">
-      <button class="btn" id="onboardingCloseBtn" type="button" disabled>Continue to CalmCPAP</button>
+      </section>
+
+      <section class="onboardingAgreement" aria-labelledby="onboardingAgreementTitle">
+        <h3 class="onboardingSectionTitle" id="onboardingAgreementTitle">Agreement</h3>
+        <p class="onboardingAgreementText" id="onboardingAgreementText">This app is not medical advice and may be wrong or incomplete. Do not use it to diagnose problems, change treatment, or handle emergencies. For medical decisions, talk to your doctor or sleep specialist.</p>
+        <label class="onboardingCheck" for="onboardingAgree">
+          <input type="checkbox" id="onboardingAgree" />
+          <span>I understand CalmCPAP is not medical advice, and I should use a doctor or sleep specialist for diagnosis or treatment decisions.</span>
+        </label>
+        <div class="onboardingActions">
+          <button class="btn" id="onboardingCloseBtn" type="button" disabled>Agree and Continue</button>
+        </div>
+      </section>
     </div>
   </div>
 </div>
@@ -1280,6 +1627,7 @@
    ============================ */
 
 const els = {
+  appShell: document.getElementById('appShell'),
   zipInput: document.getElementById('zipInput'),
   dropZone: document.getElementById('dropZone'),
   chooseZipBtn: document.getElementById('chooseZipBtn'),
@@ -1289,6 +1637,7 @@ const els = {
   toggleLeftBtn: document.getElementById('toggleLeftBtn'),
   floatingSidebarBtn: document.getElementById('floatingSidebarBtn'),
   onboardingModal: document.getElementById('onboardingModal'),
+  onboardingDialog: document.getElementById('onboardingDialog'),
   onboardingCloseBtn: document.getElementById('onboardingCloseBtn'),
   onboardingAgree: document.getElementById('onboardingAgree'),
   globalLoadOverlay: document.getElementById('globalLoadOverlay'),
@@ -1322,6 +1671,8 @@ const els = {
   applyMappingBtn: document.getElementById('applyMappingBtn'),
   statsDrawer: document.getElementById('statsDrawer'),
   sourcesDrawer: document.getElementById('sourcesDrawer'),
+  mappingSection: document.getElementById('mappingSection'),
+  mappingDrawer: document.getElementById('mappingDrawer'),
 
   kpiUsage: document.getElementById('kpiUsage'),
   kpiUsageNote: document.getElementById('kpiUsageNote'),
@@ -1361,6 +1712,7 @@ const els = {
   plotEvents: document.getElementById('plotEvents'),
 
   log: document.getElementById('log'),
+  debugDrawer: document.getElementById('debugLogDrawer'),
   toast: document.getElementById('toast'),
 
   tablist: document.getElementById('tablist'),
@@ -1451,8 +1803,33 @@ function setStatus(text, tone='neutral'){
   st.parentElement.style.background = map[tone] || map.neutral;
 }
 function log(line){
-  state.notes.push(line);
+  const stamp = new Date().toLocaleTimeString([], { hour12:false });
+  const msg = typeof line === 'string' ? line : JSON.stringify(line, null, 2);
+  state.notes.push(`[${stamp}] ${msg}`);
   els.log.textContent = state.notes.join('\n');
+  if (els.debugDrawer?.open){
+    els.log.scrollTop = els.log.scrollHeight;
+  }
+}
+function summarizeHeader(header){
+  return {
+    start: header?.start?.toISOString?.() || null,
+    signals: header?.numSignals ?? 0,
+    records: header?.numRecords ?? null,
+    recordDurationSec: header?.recordDuration ?? null,
+    headerBytes: header?.headerBytes ?? 0,
+  };
+}
+function summarizeSeries(series){
+  if (!series?.t?.length) return null;
+  return {
+    points: series.t.length,
+    label: series.label || '',
+    unit: series.unit || '',
+    start: series.t[0]?.toISOString?.() || null,
+    end: series.t[series.t.length - 1]?.toISOString?.() || null,
+    source: series._source || ''
+  };
 }
 function setDrawerOpen(drawer, open=true){
   const el = typeof drawer === 'string' ? document.getElementById(drawer) : drawer;
@@ -1710,25 +2087,86 @@ els.tablist.addEventListener('keydown', (e)=>{
 });
 
 /* ---------- Upload handling ---------- */
+function isOnboardingOpen(){
+  return !!els.onboardingModal && !els.onboardingModal.hidden;
+}
+function setInertState(el, inert){
+  if (!el) return;
+  if (inert){
+    el.setAttribute('inert', '');
+    el.setAttribute('aria-hidden', 'true');
+  } else {
+    el.removeAttribute('inert');
+    el.removeAttribute('aria-hidden');
+  }
+}
+function setOnboardingBlocking(blocking){
+  document.body.classList.toggle('onboarding-open', blocking);
+  setInertState(els.appShell, blocking);
+  setInertState(els.floatingSidebarBtn, blocking);
+}
+function getOnboardingFocusable(){
+  if (!els.onboardingModal) return [];
+  return Array.from(els.onboardingModal.querySelectorAll('button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'))
+    .filter((el)=> !el.hasAttribute('hidden') && (el.offsetWidth > 0 || el.offsetHeight > 0 || el === document.activeElement));
+}
+function focusOnboardingStart(){
+  const focusTarget = els.onboardingAgree || getOnboardingFocusable()[0] || els.onboardingDialog;
+  focusTarget?.focus({ preventScroll:true });
+}
+function handleOnboardingKeydown(e){
+  if (!isOnboardingOpen()) return;
+  if (e.key === 'Escape'){
+    e.preventDefault();
+    e.stopPropagation();
+    return;
+  }
+  if (e.key !== 'Tab') return;
+  const focusable = getOnboardingFocusable();
+  if (!focusable.length){
+    e.preventDefault();
+    els.onboardingDialog?.focus({ preventScroll:true });
+    return;
+  }
+  const active = document.activeElement;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (!els.onboardingModal?.contains(active)){
+    e.preventDefault();
+    (e.shiftKey ? last : first).focus({ preventScroll:true });
+    return;
+  }
+  if (!e.shiftKey && active === last){
+    e.preventDefault();
+    first.focus({ preventScroll:true });
+  } else if (e.shiftKey && active === first){
+    e.preventDefault();
+    last.focus({ preventScroll:true });
+  }
+}
 function maybeShowOnboarding(){
   if (!els.onboardingModal) return;
   if (state.skipOnboarding) return;
-  els.onboardingModal.style.display = 'block';
+  els.onboardingModal.hidden = false;
   els.onboardingModal.setAttribute('aria-hidden','false');
+  setOnboardingBlocking(true);
+  if (els.onboardingDialog) els.onboardingDialog.scrollTop = 0;
   if (els.onboardingAgree) els.onboardingAgree.checked = false;
   if (els.onboardingCloseBtn) els.onboardingCloseBtn.disabled = true;
+  requestAnimationFrame(focusOnboardingStart);
 }
-function closeOnboarding(){
+function closeOnboarding({ restoreFocus=true } = {}){
   if (!els.onboardingModal) return;
-  els.onboardingModal.style.display = 'none';
+  els.onboardingModal.hidden = true;
   els.onboardingModal.setAttribute('aria-hidden','true');
+  setOnboardingBlocking(false);
+  if (restoreFocus) els.dropZone?.focus({ preventScroll:true });
 }
 els.onboardingAgree?.addEventListener('change', ()=>{
   if (els.onboardingCloseBtn) els.onboardingCloseBtn.disabled = !els.onboardingAgree.checked;
 });
-els.onboardingCloseBtn?.addEventListener('click', closeOnboarding);
-els.onboardingModal?.addEventListener('click', (e)=>{ if (e.target === els.onboardingModal) closeOnboarding(); });
-document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && els.onboardingModal?.style.display === 'block') closeOnboarding(); });
+els.onboardingCloseBtn?.addEventListener('click', ()=> closeOnboarding({ restoreFocus:true }));
+document.addEventListener('keydown', handleOnboardingKeydown, true);
 setTimeout(maybeShowOnboarding, 120);
 
 els.dropZone.addEventListener('dragover', (e)=>{ e.preventDefault(); });
@@ -2230,7 +2668,7 @@ async function handleZip(file){
   els.fileBadge.textContent = file.name;
   setStatus('Reading ZIP…','neutral');
   progress('Reading ZIP', 2, `${file.name} — ${(file.size/1024/1024).toFixed(2)} MB`);
-  log(`ZIP: ${file.name} (${(file.size/1024/1024).toFixed(2)} MB)`);
+  log(`ZIP selected: ${file.name} (${(file.size/1024/1024).toFixed(2)} MB)`);
 
   try{
     const buf = await readFileAsArrayBufferWithProgress(file, (loaded, total)=>{
@@ -2261,7 +2699,14 @@ async function handleZip(file){
     const idCount = entries.filter(e => e.path.toLowerCase().endsWith('identification.json')).length;
 
     els.zipStats.textContent = `${entries.length} files • ${edfCount} edf • id:${idCount? 'yes':'no'}`;
-    log(`Files: ${entries.length} | EDF: ${edfCount} | Identification.json: ${idCount? 'yes':'no'} | prefix: ${prefix || '(none)'}`);
+    log({
+      phase: 'zip-scan',
+      fileCount: entries.length,
+      edfCount,
+      hasIdentification: !!idCount,
+      prefix: prefix || '(none)',
+      markers
+    });
     progress('Scanning ZIP', 35, `Found ${entries.length} files. EDF: ${edfCount}. Identification.json: ${idCount? 'yes':'no'}.`);
     await tick();
     assertActive(jobId);
@@ -2380,6 +2825,7 @@ async function indexSessionsFromSDStructure(entries, jobId){
   const edfs = entries.filter(e => e.path.toLowerCase().endsWith('.edf'));
   const dayFolders = new Map();
   let strEntry = null;
+  log(`Indexing EDF files: ${edfs.length} candidate file(s).`);
 
   for (const e of edfs){
     assertActive(jobId);
@@ -2421,6 +2867,11 @@ async function indexSessionsFromSDStructure(entries, jobId){
         const buf = await files[fi].entry.async('arraybuffer');
         assertActive(jobId);
         const header = parseEDFHeader(buf);
+        log({
+          phase: 'index-header',
+          file: files[fi].path,
+          summary: summarizeHeader(header)
+        });
         const parsedStart = bestFileStartDate(files[fi].path, header?.start, dateISO);
         if (parsedStart && Number.isFinite(parsedStart.getTime())){
           const durSec = estimateDurationSeconds(buf, header);
@@ -2441,6 +2892,13 @@ async function indexSessionsFromSDStructure(entries, jobId){
       files
     };
     sessionsByDate.set(dateISO, { dateISO, sessions:[session] });
+    log({
+      phase: 'indexed-session',
+      dateISO,
+      fileCount: files.length,
+      start: session.start?.toISOString?.() || null,
+      end: session.end?.toISOString?.() || null
+    });
   }
 
   if (strEntry){
@@ -2497,7 +2955,7 @@ async function indexSessionsFromSDStructure(entries, jobId){
     }
   }
 
-  log(`Indexed dates: ${sessionsByDate.size} (folder-based)`);
+  log(`Indexed dates: ${sessionsByDate.size} (folder-based).`);
   return { sessionsByDate };
 }
 
@@ -2665,6 +3123,7 @@ function flattenObject(obj, depth=5){
 async function readCurrentSettings(entries, jobId){
   const csEntry = entries.find(e => e.path.toLowerCase().endsWith('currentsettings.json'));
   if (!csEntry){
+    log('CurrentSettings.json not found.');
     state.currentSettings = null;
     els.settingsArea.innerHTML = `<div class="row"><span>No CurrentSettings.json found</span><span class="badge">info</span></div>`;
     return;
@@ -2675,8 +3134,10 @@ async function readCurrentSettings(entries, jobId){
     assertActive(jobId);
     const json = JSON.parse(txt);
     state.currentSettings = json;
+    log(`CurrentSettings.json loaded: ${csEntry.path}`);
     renderCurrentSettings(json);
   }catch(_e){
+    log('CurrentSettings.json present but failed to parse.');
     state.currentSettings = null;
     els.settingsArea.innerHTML = `<div class="row"><span>CurrentSettings.json parse failed</span><span class="badge">warn</span></div>`;
   }
@@ -3554,6 +4015,13 @@ function enablePicker(autoSelectMostRecent){
   els.rangeControls.classList.remove('disabled');
   els.rangeControls.classList.add('ready');
   renderCalendar();
+  log({
+    phase: 'picker-ready',
+    dateCount: dates.length,
+    selectedDateISO: state.selectedDateISO,
+    earliestDate: min,
+    latestDate: max
+  });
 }
 
 function formatHours(sec){ return `${(sec/3600).toFixed(2)}h`; }
@@ -3698,7 +4166,14 @@ async function loadSessionsAggregate(sessions, label, jobId = state.jobId){
   setStatus('Loading selection…','neutral');
   progress('Loading selection', 62, `Loading ${state.current.session.files.length} EDF file(s)… This can take a bit for large ranges.`);
   toast('Loading selection…');
-  log(`Loading: ${label} (${state.current.session.files.length} EDF file(s))`);
+  log({
+    phase: 'load-selection',
+    label,
+    fileCount: state.current.session.files.length,
+    start: state.current.session.start?.toISOString?.() || null,
+    end: state.current.session.end?.toISOString?.() || null,
+    files: state.current.session.files.map(f => f.path)
+  });
 
   const n = state.current.session.files.length;
   for (let i=0;i<n;i++){
@@ -3721,6 +4196,13 @@ async function loadSessionsAggregate(sessions, label, jobId = state.jobId){
       recordingId: header.recordingId,
       signals: header.signals.map(s => ({ label:s.label, unit:s.physDim, sr:+(s.sampleRate||0).toFixed(3), spr:s.samplesPerRecord }))
     };
+    log({
+      phase: 'loaded-edf-header',
+      file: seg.path,
+      folderDateISO: seg._folderDateISO || null,
+      summary: summarizeHeader(header),
+      labels: header.signals.map(s => `${s.index}:${s.label}${s.physDim ? ` [${s.physDim}]` : ''}`)
+    });
   }
 
   progress('Cataloging signals', 82, 'Building signal catalog…');
@@ -3751,6 +4233,17 @@ async function loadSessionsAggregate(sessions, label, jobId = state.jobId){
     uniq.push(c);
   }
   state.current.signalCatalog = uniq;
+  log({
+    phase: 'signal-catalog',
+    uniqueSignals: uniq.length,
+    preview: uniq.slice(0, 24).map(c => ({
+      file: c.file,
+      index: c.signalIndex,
+      label: c.label,
+      unit: c.unit,
+      sr: +(c.sr || 0).toFixed(3)
+    }))
+  });
 
   progress('Auto-mapping', 85, `Found ${uniq.length} unique signals. Auto-detecting…`);
   await tick();
@@ -3902,7 +4395,10 @@ function autoMapSignals(){
   state.current.mapping.spo2 = pickBest('spo2');
   state.current.mapping.annotations = pickBest('annotations');
 
-  log(`Auto-map: ${JSON.stringify(state.current.mapping)}`);
+  log({
+    phase: 'auto-map',
+    mapping: state.current.mapping
+  });
 }
 
 function renderMappingUI(){
@@ -3994,7 +4490,10 @@ function applyMappingFromUI(){
     spo2: spo2||null,
     annotations: annotations||null
   };
-  log(`Applied manual mapping: ${JSON.stringify(state.current.mapping)}`);
+  log({
+    phase: 'manual-map',
+    mapping: state.current.mapping
+  });
   renderRawDump();
 }
 
@@ -4018,6 +4517,13 @@ async function extractSignalsAndRender(){
     progress('Extracting signals', pct, `Parsing EDF ${i+1}/${n}: ${f.path.split('/').pop()} — please wait for large ranges…`);
 
     const { series, events } = await readSelectedSignalsFromEDF(f, mapping, 90000);
+    log({
+      phase: 'extract-edf',
+      file: f.path,
+      extracted: Object.fromEntries(Object.entries(series || {}).map(([key, value]) => [key, summarizeSeries(value)])),
+      eventCount: events?.t?.length || 0,
+      eventSource: events?.source || null
+    });
     merged.leak = mergeSeriesPickBest(merged.leak, series.leak);
     merged.pressure = mergeSeriesPickBest(merged.pressure, series.pressure);
     merged.flow = mergeSeriesPickBest(merged.flow, series.flow);
@@ -4068,6 +4574,11 @@ async function extractSignalsAndRender(){
     spo2: clippedSpo2
   };
   state.current.events = eventsOut;
+  log({
+    phase: 'extract-merged',
+    signals: Object.fromEntries(Object.entries(state.current.signals).map(([key, value]) => [key, summarizeSeries(value)])),
+    events: eventsOut?.t?.length || 0
+  });
 
   progress('Analyzing', 97, 'Computing stats + writing explanations…');
   try {
@@ -4179,6 +4690,12 @@ function analyzeAndRender(){
     stats.ahiEst = stats.ahiLikeCount / stats.usageHrs;
   }
   state.current.stats = stats;
+  log({
+    phase: 'analysis',
+    stats,
+    eventCount: ev?.t?.length || 0,
+    sessionLabel: sess?.label || ''
+  });
 
   els.kpiUsage.textContent = stats.usageHrs != null ? `${stats.usageHrs.toFixed(2)} h` : '—';
   els.kpiUsageNote.textContent = stats.usageHrs != null ? 'Merged anchored-night session span.' : 'No usable time span.';
@@ -4579,7 +5096,7 @@ function renderPlotsAndText(){
 const startupOptions = getStartupOptions();
 state.skipOnboarding = startupOptions.skipOnboarding;
 if (startupOptions.demo){
-  closeOnboarding();
+  closeOnboarding({ restoreFocus:false });
   loadDemoData({ tabId: resolveTabId(startupOptions.tab), skipToast:true, datasetId: startupOptions.demoSet });
 } else {
   const startupTabId = resolveTabId(startupOptions.tab);
