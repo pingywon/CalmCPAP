@@ -51,26 +51,20 @@
     .app{ height:100%; display:grid; grid-template-rows:auto 1fr; }
 
     header{
-      padding:18px 18px 12px;
-      display:flex;
+      padding:18px;
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) auto minmax(0, 1fr);
+      grid-template-areas:"meta brand actions";
       align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      border-bottom:1px solid rgba(255,255,255,.08);
+      gap:16px 20px;
       background: rgba(11,42,49,.35);
       backdrop-filter: blur(10px);
     }
-    .brand{ display:flex; gap:12px; align-items:center; min-width:260px; }
-    .logo{
-      width:46px;height:46px;border-radius:16px;
-      background:
-        radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.35), transparent 70%),
-        linear-gradient(135deg, rgba(97,212,195,.95), rgba(122,167,255,.85));
-      box-shadow: var(--shadow);
+    .headerMetaZone{
+      grid-area:meta;
+      justify-self:start;
+      min-width:0;
     }
-    h1{ margin:0; font-size:22px; letter-spacing:.2px; }
-    .brandStack{ display:grid; gap:5px; }
-    .headerMeta{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
     .versionTag{
       display:inline-flex;
       align-items:center;
@@ -85,29 +79,107 @@
       letter-spacing:.18px;
       box-shadow: inset 0 0 0 1px rgba(122,167,255,.08);
     }
-    .subtitle{ margin:0; color:var(--muted); font-size:12.5px; line-height:1.35; max-width:640px; }
-
-    .top-actions{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
-    .headerLink{
+    .brandLockup{
+      grid-area:brand;
+      display:grid;
+      justify-items:center;
+      gap:6px;
+      min-width:0;
+      text-align:center;
+    }
+    .brandMain{
       display:inline-flex;
       align-items:center;
       justify-content:center;
+      gap:14px;
+      min-width:0;
+    }
+    .brandMark{
+      width:62px;
+      height:62px;
+      flex:0 0 auto;
+      filter: drop-shadow(0 14px 20px rgba(0,0,0,.28));
+    }
+    .brandWordmark{
+      margin:0;
+      display:inline-flex;
+      align-items:baseline;
+      gap:.12em;
+      font-size:31px;
+      font-weight:950;
+      letter-spacing:.08em;
+      line-height:1;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .brandWordmark span:first-child{ color:rgba(231,246,246,.98); }
+    .brandWordmark span:last-child{
+      color:var(--accent);
+      text-shadow:0 0 18px rgba(97,212,195,.18);
+    }
+    .brandNote{
+      margin:0;
+      max-width:560px;
+      color:var(--muted2);
+      font-size:12.5px;
+      line-height:1.4;
+    }
+    .top-actions{
+      grid-area:actions;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      justify-self:end;
+      min-width:0;
+    }
+    .headerStatus{
+      display:flex;
+      align-items:center;
       gap:8px;
-      min-height:42px;
-      padding:10px 14px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+      min-width:0;
+    }
+    .statusTag,
+    .headerStatus .badge{
+      display:inline-flex;
+      align-items:center;
+      min-height:36px;
+      padding:7px 12px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.12);
       background: rgba(255,255,255,.06);
-      color: var(--text);
-      text-decoration:none;
+      color: rgba(231,246,246,.96);
+      font-size:12px;
       font-weight:850;
+      line-height:1.2;
+      white-space:nowrap;
+    }
+    .statusTag{ transition: background .12s ease; }
+    .headerStatus .badge{
+      max-width:min(34vw, 260px);
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .headerLink{
+      display:inline-flex;
+      align-items:center;
+      min-height:auto;
+      padding:0;
+      border:none;
+      background:none;
+      color: var(--muted);
+      text-decoration:underline;
+      text-underline-offset:3px;
+      font-weight:800;
       box-shadow:none;
-      transition: transform .12s ease, filter .12s ease, border-color .12s ease;
+      transition: color .12s ease, text-decoration-color .12s ease;
     }
     .headerLink:hover{
-      transform: translateY(-1px);
-      filter:brightness(1.04);
-      border-color: rgba(122,167,255,.45);
+      color: rgba(231,246,246,.98);
+      text-decoration-color: var(--accent2);
     }
     .badge{
       font-size:11px;
@@ -160,11 +232,46 @@
       main{ grid-template-columns: clamp(400px, 40vw, 540px) minmax(0, 1fr); }
     }
 
+    @media (max-width: 1240px){
+      header{
+        grid-template-columns:minmax(0, 1fr) auto;
+        grid-template-areas:
+          "meta actions"
+          "brand brand";
+      }
+      .brandLockup{ justify-self:center; }
+    }
+
     @media (max-width: 1050px){
       body{ overflow:auto; }
       main{ grid-template-columns:1fr; height:auto; overflow:visible; }
       #leftPanelCard{ position:static; }
       .app{ height:auto; }
+      header{
+        grid-template-columns:1fr;
+        grid-template-areas:
+          "meta"
+          "brand"
+          "actions";
+        justify-items:stretch;
+        padding:16px;
+      }
+      .headerMetaZone{ justify-self:center; }
+      .brandLockup{ justify-self:center; }
+      .top-actions{
+        justify-self:stretch;
+        justify-content:center;
+      }
+      .headerStatus{ justify-content:center; }
+    }
+
+    @media (max-width: 760px){
+      .brandMain{ gap:10px; }
+      .brandMark{ width:54px; height:54px; }
+      .brandWordmark{ font-size:24px; }
+      .brandNote{ font-size:12px; }
+      .top-actions{ gap:8px; }
+      .headerStatus .badge{ max-width:100%; }
     }
 
     .card{
@@ -200,27 +307,6 @@
       min-height:0;
     }
     #rightPanelCard{ min-width:0; }
-
-    .drop{
-      border:1px dashed rgba(255,255,255,.25);
-      border-radius: var(--radius2);
-      background: rgba(11,42,49,.55);
-      padding:16px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      cursor:pointer;
-      transition: border-color .12s ease, transform .12s ease, filter .12s ease;
-    }
-    .drop:hover{
-      border-color: rgba(97,212,195,.65);
-      transform: translateY(-1px);
-      filter: brightness(1.03);
-    }
-    .drop strong{ font-size: 14px; }
-    .drop p{ margin:0; color:var(--muted); font-size:12.5px; line-height: 1.35; }
-    .drop .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; }
-    .drop .row .left{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
 
     .hr{ height:1px; background: rgba(255,255,255,.08); margin:12px 0; }
     .tiny{ font-size:12px; color:var(--muted2); }
@@ -980,19 +1066,27 @@
 <body>
 <div class="app">
   <header>
-    <div class="brand">
-      <div class="logo" aria-hidden="true"></div>
-      <div class="brandStack">
-        <h1>CalmCPAP</h1>
-        <div class="headerMeta">
-          <span class="versionTag" id="headerVersion">Version 0.9-alpha</span>
-          <span class="badge">Single-file app</span>
-        </div>
-        <div class="subtitle">Drop in a CPAP ZIP, review one anchored night at a time, and get plain-language charts, events, and source summaries without sending anything to a server.</div>
+    <div class="headerMetaZone">
+      <span class="versionTag" id="headerVersion">Version 0.9-alpha</span>
+    </div>
+
+    <div class="brandLockup">
+      <div class="brandMain">
+        <img class="brandMark" src="assets/calmcpap-favicon.svg" alt="" />
+        <h1 class="brandWordmark"><span>Calm</span><span>CPAP</span></h1>
       </div>
+      <p class="brandNote">Tested on ResMed AirSense 11 only. Your mileage may vary with other machines.</p>
     </div>
 
     <div class="top-actions">
+      <div class="headerStatus" aria-live="polite">
+        <span class="statusTag"><b id="statusText">Waiting</b></span>
+        <span class="badge" id="fileBadge">No file</span>
+        <span class="badge" id="zipStats">—</span>
+      </div>
+      <label class="btn" id="chooseZipBtn" for="zipInput">Choose ZIP</label>
+      <input id="zipInput" type="file" accept=".zip,application/zip" />
+      <button class="btn ghost" id="demoBtn" type="button">Load demo</button>
       <a class="headerLink" href="https://github.com/pingywon/CalmCPAP" target="_blank" rel="noreferrer">GitHub</a>
     </div>
   </header>
@@ -1001,7 +1095,7 @@
     <!-- LEFT -->
     <section class="card" id="leftPanelCard">
       <div class="hd">
-        <h2>Upload & Session</h2>
+        <h2>Session</h2>
         <div style="display:flex; gap:8px; align-items:center;">
           <button class="btn ghost" id="toggleLeftBtn" aria-pressed="false">Hide Sidebar</button>
           <span class="badge">Local only ✔️</span>
@@ -1009,55 +1103,6 @@
       </div>
 
       <div class="bd">
-        <div class="drop" id="dropZone" role="button" tabindex="0" aria-label="Upload zip">
-          <div class="row">
-            <div class="left">
-              <strong>Drop your CPAP ZIP here</strong>
-              <span class="badge" id="zipStats">—</span>
-            </div>
-            <div class="left">
-              <label class="btn" id="chooseZipBtn" for="zipInput">Choose ZIP</label>
-              <input id="zipInput" type="file" accept=".zip,application/zip" />
-              <button class="btn ghost" id="demoBtn" type="button">Load demo</button>
-            </div>
-          </div>
-          <p>
-            Runs completely in your browser. Progress updates show an upward file counter so it never feels frozen.
-          </p>
-        </div>
-
-        <div class="progressWrap" style="margin-top:10px;">
-          <div class="progressTop" style="margin-bottom:0;">
-            <div class="tiny"><b id="statusText">Waiting</b></div>
-            <span class="badge" id="fileBadge">No file</span>
-          </div>
-        </div>
-
-        <details class="drawer" id="calendarDrawer"><summary>Calendar</summary><div class="drawerBody drawerScroll calendarDrawerBody"><div class="rangeControls disabled" id="rangeControls">
-          <div class="calendarWrap">
-            <div class="calHead">
-              <div class="calNav">
-                <button type="button" id="calPrev" aria-label="Previous month">◀</button>
-                <button type="button" id="calToday" aria-label="Jump to selected month">Today</button>
-              </div>
-              <select id="calMonthSelect" class="calMonthSelect" aria-label="Choose month"></select>
-              <div class="calNav">
-                <button type="button" id="calNext" aria-label="Next month">▶</button>
-              </div>
-            </div>
-            <div class="dow"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
-            <div class="calGrid" id="calGrid"></div>
-          </div>
-          <div class="seg" id="rangeModeSeg" aria-label="Range mode">
-            <button type="button" id="modeNight" class="active">Night</button>
-            <button type="button" id="modeCustom" style="display:none">Custom</button>
-            <button type="button" id="loadRangeBtn" style="display:none">Load Range</button>
-          </div>
-          <div class="rangeHint" id="rangeHint">Upload ZIP to enable.</div>
-        </div></div></details>
-
-        <div class="hr"></div>
-
         <details class="drawer" id="statsDrawer"><summary>Session Stats</summary><div class="drawerBody"><div class="progressWrap">
           <div class="progressTop">
             <div class="tiny"><b id="progressStep">Idle</b></div>
@@ -1090,9 +1135,30 @@
           </div>
         </div>
 
-        <div class="hr"></div>
-
         </div></details>
+
+        <details class="drawer" id="calendarDrawer" open><summary>Calendar</summary><div class="drawerBody drawerScroll calendarDrawerBody"><div class="rangeControls disabled" id="rangeControls">
+          <div class="calendarWrap">
+            <div class="calHead">
+              <div class="calNav">
+                <button type="button" id="calPrev" aria-label="Previous month">◀</button>
+                <button type="button" id="calToday" aria-label="Jump to selected month">Today</button>
+              </div>
+              <select id="calMonthSelect" class="calMonthSelect" aria-label="Choose month"></select>
+              <div class="calNav">
+                <button type="button" id="calNext" aria-label="Next month">▶</button>
+              </div>
+            </div>
+            <div class="dow"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+            <div class="calGrid" id="calGrid"></div>
+          </div>
+          <div class="seg" id="rangeModeSeg" aria-label="Range mode">
+            <button type="button" id="modeNight" class="active">Night</button>
+            <button type="button" id="modeCustom" style="display:none">Custom</button>
+            <button type="button" id="loadRangeBtn" style="display:none">Load Range</button>
+          </div>
+          <div class="rangeHint" id="rangeHint">Upload ZIP to enable.</div>
+        </div></div></details>
 
         <details class="drawer" id="deviceDrawer">
           <summary>Device & Profile (Identification.json)</summary>
@@ -1281,8 +1347,6 @@
 
 const els = {
   zipInput: document.getElementById('zipInput'),
-  dropZone: document.getElementById('dropZone'),
-  chooseZipBtn: document.getElementById('chooseZipBtn'),
   fileBadge: document.getElementById('fileBadge'),
   zipStats: document.getElementById('zipStats'),
 
@@ -1320,6 +1384,7 @@ const els = {
 
   mapGrid: document.getElementById('mapGrid'),
   applyMappingBtn: document.getElementById('applyMappingBtn'),
+  calendarDrawer: document.getElementById('calendarDrawer'),
   statsDrawer: document.getElementById('statsDrawer'),
   sourcesDrawer: document.getElementById('sourcesDrawer'),
 
@@ -1460,14 +1525,20 @@ function setDrawerOpen(drawer, open=true){
   if (open) el.setAttribute('open', '');
   else el.removeAttribute('open');
 }
-function collapseSidebarDrawers(){
-  document.querySelectorAll('#leftPanelCard details.drawer').forEach(drawer => drawer.removeAttribute('open'));
+function collapseSidebarDrawers(exceptIds=[]){
+  const keepOpen = new Set(Array.isArray(exceptIds) ? exceptIds : [exceptIds]);
+  document.querySelectorAll('#leftPanelCard details.drawer').forEach(drawer => {
+    if (keepOpen.has(drawer.id)) drawer.setAttribute('open', '');
+    else drawer.removeAttribute('open');
+  });
 }
 function autoOpenLoadStart(){
   setDrawerOpen(els.statsDrawer, true);
+  setDrawerOpen(els.calendarDrawer, true);
 }
 function autoOpenLoadComplete(){
   setDrawerOpen(els.statsDrawer, true);
+  setDrawerOpen(els.calendarDrawer, true);
   setDrawerOpen(els.sourcesDrawer, true);
 }
 
@@ -1653,7 +1724,7 @@ function resetAll(){
 
   els.rawSummary.innerHTML = '';
   els.rawDump.textContent = '';
-  collapseSidebarDrawers();
+  collapseSidebarDrawers(['calendarDrawer']);
   applyRangeMode('night');
   renderCalendar();
 
@@ -1730,28 +1801,6 @@ els.onboardingCloseBtn?.addEventListener('click', closeOnboarding);
 els.onboardingModal?.addEventListener('click', (e)=>{ if (e.target === els.onboardingModal) closeOnboarding(); });
 document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape' && els.onboardingModal?.style.display === 'block') closeOnboarding(); });
 setTimeout(maybeShowOnboarding, 120);
-
-els.dropZone.addEventListener('dragover', (e)=>{ e.preventDefault(); });
-els.dropZone.addEventListener('drop', (e)=>{
-  e.preventDefault();
-  const f = e.dataTransfer.files?.[0];
-  if (f) handleZip(f);
-});
-els.dropZone.addEventListener('click', (e)=>{
-  const clickedControl = e.target.closest('label,button,input,select,a');
-  if (clickedControl) return;
-  els.zipInput.click();
-});
-els.dropZone.addEventListener('keydown', (e)=>{
-  if (e.key === 'Enter' || e.key === ' ') {
-    const focusedControl = document.activeElement?.closest?.('label,button,input,select,a');
-    if (focusedControl) return;
-    e.preventDefault();
-    els.zipInput.click();
-  }
-});
-els.chooseZipBtn.addEventListener('click', (e)=> e.stopPropagation());
-els.demoBtn.addEventListener('click', (e)=> e.stopPropagation());
 
 els.zipInput.addEventListener('change', ()=>{
   const f = els.zipInput.files?.[0];
