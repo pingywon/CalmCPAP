@@ -188,6 +188,25 @@
       justify-content:flex-start;
       min-width:0;
     }
+    .sidebarUploadActions{
+      gap:8px;
+      justify-content:flex-start;
+    }
+    .workflowMetaBadges{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      min-width:0;
+    }
+    .workflowMetaBadges .badge{
+      max-width:100%;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    #statusBadge{
+      border-color:rgba(97,212,195,.28);
+      color:rgba(231,246,246,.96);
+    }
     .headerSpacer{
       grid-area:actions;
       min-width:0;
@@ -403,7 +422,16 @@
     }
     @media (min-width: 1320px){
       body.sidebar-layout-organized .sidebarBody{
-        gap:18px;
+        gap:14px;
+      }
+      body.sidebar-layout-organized .workflowDrawer{
+        margin-top:0;
+      }
+      body.sidebar-layout-organized .workflowDrawer > summary{
+        padding:16px 17px;
+      }
+      body.sidebar-layout-organized .workflowDrawer > .drawerBody{
+        padding:13px 15px 17px;
       }
       body.sidebar-layout-organized .sidebarGroup{
         gap:12px;
@@ -445,6 +473,9 @@
     @media (min-width: 1320px){
       body.sidebar-layout-classic .sidebarBody{
         gap:0;
+      }
+      body.sidebar-layout-classic .workflowDrawer{
+        margin-top:12px;
       }
       body.sidebar-layout-classic .sidebarGroup{
         gap:12px;
@@ -767,24 +798,112 @@
     .drawer > summary::-webkit-details-marker{ display:none; }
     .drawer > summary::after{ content:'▾'; color:rgba(231,246,246,.92); font-size:14px; }
     .drawer:not([open]) > summary::after{ content:'▸'; }
-    .drawerBody{ padding:10px 13px 14px; font-size:14px; }
-    .drawerScroll{ overflow:auto; scrollbar-gutter:stable both-edges; }
-    .calendarDrawerBody{ max-height:min(46vh, 430px); }
-    .sourceDrawerBody{ max-height:min(36vh, 320px); }
-    .mappingDrawerBody{ max-height:min(42vh, 410px); display:flex; flex-direction:column; gap:12px; }
+    .drawerBody{ padding:12px 14px 16px; font-size:14px; display:grid; gap:12px; }
+    .drawerScroll{ overflow:visible; scrollbar-gutter:auto; }
+    .calendarDrawerBody,
+    .sourceDrawerBody,
+    .mappingDrawerBody,
+    .rawDebugDrawerBody{
+      max-height:none;
+      overflow:visible;
+    }
+    .mappingDrawerBody{ display:flex; flex-direction:column; gap:12px; }
     .mappingActions{
-      position:sticky;
-      bottom:-14px;
-      padding-top:12px;
+      position:static;
+      bottom:auto;
+      padding-top:0;
       margin-top:auto;
-      background: linear-gradient(180deg, rgba(11,42,49,0), rgba(11,42,49,.96) 46%);
+      background:none;
     }
     .rawDebugDrawerBody{
-      max-height:min(40vh, 360px);
       display:grid;
       gap:10px;
     }
-    .rawDebugDrawerBody #rawDump{ max-height:260px; }
+    .rawDebugDrawerBody #rawDump{ max-height:none; }
+    .workflowDrawer{ margin-top:0; }
+    .workflowDrawer > summary{
+      font-size:14px;
+      letter-spacing:.24px;
+    }
+    .workflowStageNote{
+      line-height:1.45;
+    }
+    .workflowStageNote b{
+      display:block;
+      margin-bottom:4px;
+    }
+    .workflowSectionLabel{
+      margin:2px 0 -2px;
+      font-size:11px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color:rgba(151,235,223,.86);
+    }
+    .signalChipGrid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+      gap:8px;
+    }
+    .signalChip{
+      display:grid;
+      gap:4px;
+      padding:10px 11px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(11,42,49,.52);
+    }
+    .signalChip strong{
+      color:rgba(231,246,246,.97);
+      font-size:12.5px;
+      font-weight:900;
+      line-height:1.2;
+    }
+    .signalChip small{
+      color:var(--muted2);
+      font-size:11.25px;
+      line-height:1.3;
+    }
+    .signalChip.active{
+      border-color:rgba(97,212,195,.35);
+      background:linear-gradient(135deg, rgba(97,212,195,.14), rgba(122,167,255,.12));
+    }
+    .signalChip.missing{
+      opacity:.72;
+      filter:saturate(.7);
+    }
+    .subDrawer{
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:14px;
+      background:rgba(8,36,43,.46);
+      overflow:hidden;
+    }
+    .subDrawer > summary{
+      cursor:pointer;
+      list-style:none;
+      padding:12px 14px;
+      font-size:12.5px;
+      color:rgba(231,246,246,.96);
+      font-weight:850;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      background:rgba(14,48,56,.62);
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+    .subDrawer > summary::-webkit-details-marker{ display:none; }
+    .subDrawer > summary::after{ content:'▾'; color:rgba(231,246,246,.88); font-size:12px; }
+    .subDrawer:not([open]) > summary::after{ content:'▸'; }
+    .subDrawer .drawerBody{
+      padding:12px 13px 14px;
+      display:grid;
+      gap:10px;
+    }
+    .stageMetricRows:empty,
+    #availableSourceArea:empty,
+    #currentSignalArea:empty{
+      display:none;
+    }
 
     .picker{
       display:flex; gap:10px; align-items:center; flex-wrap:wrap;
@@ -912,8 +1031,8 @@
     }
     pre.log{
       white-space:pre-wrap;
-      max-height: 320px;
-      overflow:auto;
+      max-height:none;
+      overflow:visible;
       margin:0;
       font-size:12px;
       line-height:1.45;
@@ -1548,11 +1667,6 @@
   <header>
     <div class="headerMetaZone">
       <div class="headerUtilityStack">
-        <div class="top-actions">
-          <label class="btn" id="chooseZipBtn" for="zipInput">Choose ZIP</label>
-          <input id="zipInput" type="file" accept=".zip,application/zip" />
-          <button class="btn ghost" id="demoBtn" type="button">Load demo</button>
-        </div>
         <a class="versionTag" id="headerVersion" href="https://github.com/pingywon/CalmCPAP" target="_blank" rel="noreferrer noopener" aria-label="Open CalmCPAP GitHub repository">
           <span class="versionTagIcon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="currentColor">
@@ -1585,7 +1699,7 @@
     <!-- LEFT -->
     <section class="card" id="leftPanelCard">
       <div class="hd">
-        <h2>Session</h2>
+        <h2>Workflow</h2>
         <div class="sidebarHeaderActions">
           <button class="btn ghost" id="toggleLeftBtn" aria-pressed="false">Hide Sidebar</button>
           <div class="sidebarLayoutSwitch" id="sidebarLayoutSwitch" role="group" aria-label="Sidebar layout">
@@ -1597,117 +1711,164 @@
       </div>
 
       <div class="bd sidebarBody" id="leftSidebarBody">
-        <section class="sidebarGroup" data-sidebar-group="session">
-          <h3 class="sidebarGroupTitle">Session & Night</h3>
-          <details class="drawer" id="statsDrawer"><summary>Session Stats</summary><div class="drawerBody"><div class="progressWrap">
-            <div class="progressTop">
-              <div class="tiny"><b id="progressStep">Idle</b></div>
-              <div class="badge" id="progressPct">0%</div>
+        <details class="drawer workflowDrawer" id="statsDrawer">
+          <summary>1. Load ZIP</summary>
+          <div class="drawerBody">
+            <div class="top-actions sidebarUploadActions">
+              <label class="btn" id="chooseZipBtn" for="zipInput">Choose ZIP</label>
+              <input id="zipInput" type="file" accept=".zip,application/zip" />
+              <button class="btn ghost" id="demoBtn" type="button">Load demo</button>
             </div>
-            <div class="bar"><div id="progressBar"></div></div>
-            <div class="tiny" style="margin-top:8px;" id="progressDetail">Upload a ZIP to begin.</div>
-          </div>
-
-          <div class="kpiGrid">
-            <div class="kpi">
-              <div class="label">Usage (hours)</div>
-              <div class="value" id="kpiUsage">—</div>
-              <div class="note" id="kpiUsageNote">Select a day.</div>
+            <div class="workflowMetaBadges">
+              <span class="badge" id="statusBadge"><span id="statusText">Waiting</span></span>
+              <span class="badge" id="fileBadge">No file</span>
+              <span class="badge" id="zipStats">—</span>
             </div>
-            <div class="kpi">
-              <div class="label">Leak (95th %)</div>
-              <div class="value" id="kpiLeak95">—</div>
-              <div class="note" id="kpiLeak95Note">Needs leak signal.</div>
-            </div>
-            <div class="kpi">
-              <div class="label">Pressure (median)</div>
-              <div class="value" id="kpiP50">—</div>
-              <div class="note" id="kpiP50Note">Needs pressure signal.</div>
-            </div>
-            <div class="kpi">
-              <div class="label">AHI (estimate)</div>
-              <div class="value" id="kpiAHI">—</div>
-              <div class="note" id="kpiAHINote">From annotations if found.</div>
+            <div class="callout workflowStageNote" id="loadStageSummary"><b>Start here</b>Choose a ZIP or load demo data. CalmCPAP will scan the archive, read settings, index anchored nights, and auto-load the latest night.</div>
+            <div class="progressWrap">
+              <div class="progressTop">
+                <div class="tiny"><b id="progressStep">Idle</b></div>
+                <div class="badge" id="progressPct">0%</div>
+              </div>
+              <div class="bar"><div id="progressBar"></div></div>
+              <div class="tiny" style="margin-top:8px;" id="progressDetail">Upload a ZIP to begin.</div>
             </div>
           </div>
+        </details>
 
-          </div></details>
-
-          <details class="drawer" id="calendarDrawer" open><summary>Calendar</summary><div class="drawerBody drawerScroll calendarDrawerBody"><div class="rangeControls disabled" id="rangeControls">
-            <div class="calendarWrap">
-              <div class="calHead">
-                <div class="calNav">
-                  <button type="button" id="calPrev" aria-label="Previous month">◀</button>
-                  <button type="button" id="calToday" aria-label="Jump to selected month">Today</button>
+        <details class="drawer workflowDrawer" id="calendarDrawer">
+          <summary>2. Available Nights</summary>
+          <div class="drawerBody calendarDrawerBody">
+            <div class="callout workflowStageNote" id="availableSummary"><b>Availability</b>Upload a ZIP to see anchored nights, date range, and source families before switching nights.</div>
+            <div class="kv stageMetricRows" id="availableMetaArea">
+              <div class="row"><span>Nights found</span><span><b>—</b></span></div>
+            </div>
+            <div class="signalChipGrid" id="availableSourceArea"></div>
+            <div class="rangeControls disabled" id="rangeControls">
+              <div class="calendarWrap">
+                <div class="calHead">
+                  <div class="calNav">
+                    <button type="button" id="calPrev" aria-label="Previous month">◀</button>
+                    <button type="button" id="calToday" aria-label="Jump to selected month">Today</button>
+                  </div>
+                  <select id="calMonthSelect" class="calMonthSelect" aria-label="Choose month"></select>
+                  <div class="calNav">
+                    <button type="button" id="calNext" aria-label="Next month">▶</button>
+                  </div>
                 </div>
-                <select id="calMonthSelect" class="calMonthSelect" aria-label="Choose month"></select>
-                <div class="calNav">
-                  <button type="button" id="calNext" aria-label="Next month">▶</button>
+                <div class="dow"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+                <div class="calGrid" id="calGrid"></div>
+              </div>
+              <div class="seg" id="rangeModeSeg" aria-label="Range mode">
+                <button type="button" id="modeNight" class="active">Night</button>
+                <button type="button" id="modeCustom" style="display:none">Custom</button>
+                <button type="button" id="loadRangeBtn" style="display:none">Load Range</button>
+              </div>
+              <div class="rangeHint" id="rangeHint">Upload ZIP to enable.</div>
+            </div>
+          </div>
+        </details>
+
+        <details class="drawer workflowDrawer" id="currentNightDrawer">
+          <summary>3. Current Night</summary>
+          <div class="drawerBody">
+            <div class="callout workflowStageNote" id="currentNightStatus"><b>Status</b>No night loaded yet. Upload a ZIP to auto-load the latest anchored night.</div>
+            <div class="kv stageMetricRows" id="currentNightArea">
+              <div class="row"><span>Loaded night</span><span><b>—</b></span></div>
+            </div>
+            <div class="workflowSectionLabel">Data available for this loaded night</div>
+            <div class="signalChipGrid" id="currentSignalArea"></div>
+            <div class="kpiGrid">
+              <div class="kpi">
+                <div class="label">Usage (hours)</div>
+                <div class="value" id="kpiUsage">—</div>
+                <div class="note" id="kpiUsageNote">Select a day.</div>
+              </div>
+              <div class="kpi">
+                <div class="label">Leak (95th %)</div>
+                <div class="value" id="kpiLeak95">—</div>
+                <div class="note" id="kpiLeak95Note">Needs leak signal.</div>
+              </div>
+              <div class="kpi">
+                <div class="label">Pressure (median)</div>
+                <div class="value" id="kpiP50">—</div>
+                <div class="note" id="kpiP50Note">Needs pressure signal.</div>
+              </div>
+              <div class="kpi">
+                <div class="label">AHI (estimate)</div>
+                <div class="value" id="kpiAHI">—</div>
+                <div class="note" id="kpiAHINote">From annotations if found.</div>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <details class="drawer workflowDrawer" id="deviceSettingsDrawer">
+          <summary>4. Device & Settings</summary>
+          <div class="drawerBody">
+            <div class="callout workflowStageNote" id="settingsSummaryNote"><b>Settings</b>Upload a ZIP to read device metadata and current therapy settings.</div>
+            <div class="kv stageMetricRows" id="settingsSummaryArea">
+              <div class="row"><span>Device</span><span><b>Waiting for upload…</b></span></div>
+            </div>
+            <details class="subDrawer" id="deviceDrawer">
+              <summary>Device details</summary>
+              <div class="drawerBody">
+                <div class="kv" id="idArea" style="margin-top:0;">
+                  <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
                 </div>
               </div>
-              <div class="dow"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
-              <div class="calGrid" id="calGrid"></div>
-            </div>
-            <div class="seg" id="rangeModeSeg" aria-label="Range mode">
-              <button type="button" id="modeNight" class="active">Night</button>
-              <button type="button" id="modeCustom" style="display:none">Custom</button>
-              <button type="button" id="loadRangeBtn" style="display:none">Load Range</button>
-            </div>
-            <div class="rangeHint" id="rangeHint">Upload ZIP to enable.</div>
-          </div></div></details>
-        </section>
+            </details>
 
-        <section class="sidebarGroup" data-sidebar-group="therapy">
-          <h3 class="sidebarGroupTitle">Device & Therapy</h3>
-          <details class="drawer" id="deviceDrawer">
-            <summary>Device & Profile (Identification.json)</summary>
-            <div class="drawerBody">
-              <div class="kv" id="idArea" style="margin-top:0;">
-                <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
+            <details class="subDrawer" id="settingsDrawer">
+              <summary>Current settings details</summary>
+              <div class="drawerBody">
+                <div class="kv" id="settingsArea" style="margin-top:0;">
+                  <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
+                </div>
               </div>
-            </div>
-          </details>
+            </details>
+          </div>
+        </details>
 
-          <details class="drawer" id="settingsDrawer">
-            <summary>Current Settings (CurrentSettings.json)</summary>
-            <div class="drawerBody">
-              <div class="kv" id="settingsArea" style="margin-top:0;">
-                <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
+        <details class="drawer workflowDrawer" id="advancedDrawer">
+          <summary>5. Advanced</summary>
+          <div class="drawerBody">
+            <div class="callout workflowStageNote" id="advancedSummary"><b>Advanced tools</b>Use these only if auto-detection missed something or you want the raw source/debug view.</div>
+            <details class="subDrawer" id="sourcesDrawer">
+              <summary>Data Sources</summary>
+              <div class="drawerBody sourceDrawerBody">
+                <div class="sourceHint">File families found for the current selection, what they contribute, and whether the report is using them.</div>
+                <div class="sourceGrid" id="sourceArea"></div>
               </div>
-            </div>
-          </details>
+            </details>
 
-          <details class="drawer" id="sourcesDrawer">
-            <summary>Data Sources</summary>
-            <div class="drawerBody drawerScroll sourceDrawerBody">
-              <div class="sourceHint">File families found for the current selection, what they contribute, and whether the report is using them.</div>
-              <div class="sourceGrid" id="sourceArea"></div>
-            </div>
-          </details>
-
-          <details class="drawer" id="mappingDrawer">
-            <summary>Manual Signal Mapping</summary>
-            <div class="drawerBody drawerScroll mappingDrawerBody">
-              <div class="mapHint">If auto-mapping misses labels, pick one entry per signal type here from the deduplicated signal list.</div>
-              <div class="mapGrid" id="mapGrid"></div>
-              <div class="mappingActions">
-                <button class="btn ghost" id="applyMappingBtn" disabled>Apply mapping</button>
+            <details class="subDrawer" id="mappingDrawer">
+              <summary>Manual Signal Mapping</summary>
+              <div class="drawerBody mappingDrawerBody">
+                <div class="mapHint">If auto-mapping misses labels, pick one entry per signal type here from the deduplicated signal list.</div>
+                <div class="mapGrid" id="mapGrid"></div>
+                <div class="mappingActions">
+                  <button class="btn ghost" id="applyMappingBtn" disabled>Apply mapping</button>
+                </div>
               </div>
-            </div>
-          </details>
-        </section>
+            </details>
 
-        <section class="sidebarGroup" data-sidebar-group="advanced">
-          <h3 class="sidebarGroupTitle">Advanced & Debug</h3>
-          <details class="drawer" id="rawDebugDrawer">
-            <summary>Raw / Debug Snapshot</summary>
-            <div class="drawerBody drawerScroll rawDebugDrawerBody">
-              <div class="callout" id="rawSummary"></div>
-              <pre class="callout log" id="rawDump"></pre>
-            </div>
-          </details>
-          <details class="drawer" id="debugLogDrawer"><summary>Debug log</summary><div class="drawerBody"><pre class="callout log" id="log"></pre></div></details>
-        </section>
+            <details class="subDrawer" id="rawDebugDrawer">
+              <summary>Raw / Debug Snapshot</summary>
+              <div class="drawerBody rawDebugDrawerBody">
+                <div class="callout" id="rawSummary"></div>
+                <pre class="callout log" id="rawDump"></pre>
+              </div>
+            </details>
+
+            <details class="subDrawer" id="debugLogDrawer">
+              <summary>Debug log</summary>
+              <div class="drawerBody">
+                <pre class="callout log" id="log"></pre>
+              </div>
+            </details>
+          </div>
+        </details>
       </div>
     </section>
 
@@ -1847,6 +2008,16 @@ const els = {
   zipInput: document.getElementById('zipInput'),
   fileBadge: document.getElementById('fileBadge'),
   zipStats: document.getElementById('zipStats'),
+  loadStageSummary: document.getElementById('loadStageSummary'),
+  availableSummary: document.getElementById('availableSummary'),
+  availableMetaArea: document.getElementById('availableMetaArea'),
+  availableSourceArea: document.getElementById('availableSourceArea'),
+  currentNightStatus: document.getElementById('currentNightStatus'),
+  currentNightArea: document.getElementById('currentNightArea'),
+  currentSignalArea: document.getElementById('currentSignalArea'),
+  settingsSummaryArea: document.getElementById('settingsSummaryArea'),
+  settingsSummaryNote: document.getElementById('settingsSummaryNote'),
+  advancedSummary: document.getElementById('advancedSummary'),
 
   toggleLeftBtn: document.getElementById('toggleLeftBtn'),
   sidebarLayoutOrganized: document.getElementById('sidebarLayoutOrganized'),
@@ -1885,6 +2056,9 @@ const els = {
   applyMappingBtn: document.getElementById('applyMappingBtn'),
   calendarDrawer: document.getElementById('calendarDrawer'),
   statsDrawer: document.getElementById('statsDrawer'),
+  currentNightDrawer: document.getElementById('currentNightDrawer'),
+  deviceSettingsDrawer: document.getElementById('deviceSettingsDrawer'),
+  advancedDrawer: document.getElementById('advancedDrawer'),
   sourcesDrawer: document.getElementById('sourcesDrawer'),
 
   kpiUsage: document.getElementById('kpiUsage'),
@@ -1935,9 +2109,11 @@ const state = {
   jobId: 0,
   skipOnboarding: false,
   sidebarLayoutMode: 'organized',
+  sidebarPhase: 'empty',
 
   zip: null,
   entries: [],
+  zipSourceSummary: [],
   meta: { prefix:'', rootMarkers:{} },
   identification: null,
   currentSettings: null,
@@ -1955,7 +2131,8 @@ const state = {
     events: null,
     stats: {},
     raw: {},
-    sourceSummary: []
+    sourceSummary: [],
+    loadContext: { mode:'none', note:'', inProgress:false }
   },
   notes: [],
   demoSetId: null
@@ -2019,6 +2196,334 @@ function setStatus(text, tone='neutral'){
 function setTextIfPresent(node, text){
   if (node) node.textContent = text;
 }
+const WORKFLOW_SIGNAL_DEFS = [
+  { key:'leak', label:'Leak' },
+  { key:'pressure', label:'Pressure' },
+  { key:'flow', label:'Flow' },
+  { key:'snore', label:'Snore' },
+  { key:'respRate', label:'Respiratory Rate' },
+  { key:'tidalVolume', label:'Tidal Volume' },
+  { key:'epr', label:'Exhalation Pressure' },
+  { key:'pulse', label:'Pulse' },
+  { key:'spo2', label:'SpO2' },
+  { key:'annotations', label:'Events' }
+];
+function workflowDrawerSelector(){
+  return '#leftSidebarBody > details.workflowDrawer';
+}
+function secondaryWorkflowDrawerIds(){
+  return ['deviceSettingsDrawer', 'advancedDrawer'];
+}
+function collectOpenSecondaryDrawers(){
+  return secondaryWorkflowDrawerIds().filter(id => document.getElementById(id)?.hasAttribute('open'));
+}
+function setSidebarPhase(phase){
+  state.sidebarPhase = phase;
+  renderSidebarWorkflow();
+}
+function knownSessionDates(){
+  return Array.from(state.sessionsByDate.keys()).filter(d => d !== 'unknown').sort();
+}
+function renderRowList(target, rows = [], fallbackLabel = 'No data yet'){
+  if (!target) return;
+  const safeRows = Array.isArray(rows) ? rows.filter(Boolean) : [];
+  if (!safeRows.length){
+    target.innerHTML = `<div class="row"><span>${escapeHtml(fallbackLabel)}</span><span class="badge">—</span></div>`;
+    return;
+  }
+  target.innerHTML = safeRows.map(row => `
+    <div class="row">
+      <span>${escapeHtml(row.label || '')}</span>
+      <span><b>${escapeHtml(row.value ?? '—')}</b></span>
+    </div>
+  `).join('');
+}
+function renderChipGrid(target, items = []){
+  if (!target) return;
+  const safeItems = Array.isArray(items) ? items.filter(Boolean) : [];
+  if (!safeItems.length){
+    target.innerHTML = '';
+    return;
+  }
+  target.innerHTML = safeItems.map(item => `
+    <div class="signalChip ${item.active ? 'active' : 'missing'}">
+      <strong>${escapeHtml(item.label || '')}</strong>
+      <small>${escapeHtml(item.detail || (item.active ? 'Ready' : 'Missing'))}</small>
+    </div>
+  `).join('');
+}
+function buildZipSourceSummary(entries = state.entries){
+  const counts = new Map();
+  for (const entry of entries || []){
+    const family = classifySourceFamily(entry?.path || '');
+    if (!family || family === 'Other') continue;
+    const current = counts.get(family) || { family, count:0, samplePath:entry.path };
+    current.count += 1;
+    if (!current.samplePath && entry?.path) current.samplePath = entry.path;
+    counts.set(family, current);
+  }
+  const order = ['Identification.json','CurrentSettings.json','PLD','BRP','EVE','CSL','SA2','STR.edf','Identification.crc','CurrentSettings.crc'];
+  return order
+    .map(family => counts.get(family))
+    .filter(Boolean)
+    .map(item => {
+      const meta = SOURCE_FAMILY_DEFS[item.family] || { title:item.family, role:'Retained for reference.', pill:'retained' };
+      return { ...item, ...meta };
+    });
+}
+function extractIdentificationMeta(obj = state.identification){
+  if (!obj || typeof obj !== 'object'){
+    return {
+      manufacturer:'',
+      model:'',
+      mode:'',
+      serial:'',
+      productName:'',
+      productGeographicIdentifier:'',
+      headline:''
+    };
+  }
+  const flat = flattenObject(obj, 5);
+  const items = Object.entries(flat).map(([k, v]) => ({ key: shortenIdKey(k), value: v }));
+  const get = (...needles) => {
+    for (const needle of needles){
+      const n = String(needle || '').toLowerCase();
+      const hit = items.find(it => String(it.key).toLowerCase() === n) ||
+                  items.find(it => String(it.key).toLowerCase().includes(n));
+      if (hit && hit.value != null && String(hit.value).trim() !== '') return String(hit.value);
+    }
+    return '';
+  };
+  const manufacturer = get('manufacturer', 'brand', 'fg p1.manufacturer');
+  const model = get('model', 'machinemodel', 'fg p1.model');
+  const mode = get('mode', 'papmode', 'fg p1.mode');
+  const serial = get('serialnumber', 'deviceserial', 'fg p1.serialnumber', 'fg p1.deviceserial');
+  const productName = get('productname', 'product product name');
+  const productGeographicIdentifier = get('productgeographicidentifier', 'product geographic identifier', 'geographicidentifier');
+  const headline = [manufacturer, model].filter(Boolean).join(' ').trim() || productName || 'Unknown device';
+  return { manufacturer, model, mode, serial, productName, productGeographicIdentifier, headline };
+}
+function collectIdentificationRows(obj, limit = 14){
+  if (!obj || typeof obj !== 'object') return [];
+  const flat = flattenObject(obj, 5);
+  const items = Object.entries(flat)
+    .map(([k, v]) => ({ key:k, short: shortenIdKey(k), value:v }))
+    .filter(item => item.value != null && String(item.value).trim() !== '');
+  const priorityShort = [
+    'Manufacturer','Brand','Model','MachineModel','Mode','PAPMode',
+    'SerialNumber','DeviceSerial','DeviceSerialNumber','Patient','Profile','Name','User',
+    'FG P1.Manufacturer','FG P1.Model','FG P1.SerialNumber','FG P1.DeviceSerial',
+    'FG P1.Mode','FG P1.PAPMode'
+  ].map(s => s.toLowerCase());
+  items.sort((a, b) => {
+    const ai = priorityShort.indexOf(a.short.toLowerCase());
+    const bi = priorityShort.indexOf(b.short.toLowerCase());
+    if (ai !== -1 || bi !== -1){
+      if (ai === -1) return 1;
+      if (bi === -1) return -1;
+      return ai - bi;
+    }
+    return a.short.localeCompare(b.short);
+  });
+  const rows = [];
+  const used = new Set();
+  for (const item of items){
+    if (rows.length >= limit) break;
+    if (used.has(item.short)) continue;
+    if (typeof item.value === 'object') continue;
+    const label = humanizeWords(item.short)
+      .replace(/^Product\s+/i, '')
+      .replace(/^Detected\s+Device$/i, '')
+      .trim();
+    if (!label || /^Product\s*Code$/i.test(label) || /^Detected\s+Device$/i.test(label)) continue;
+    rows.push({ label, value: shortValue(item.value) });
+    used.add(item.short);
+  }
+  return rows;
+}
+function collectSettingRows(obj, limit = 14){
+  const sp = obj?.FlowGenerator?.SettingProfiles;
+  const activeName = sp?.ActiveProfiles?.TherapyProfile || '';
+  const therapyProfiles = sp?.TherapyProfiles || {};
+  const featureProfiles = sp?.FeatureProfiles || {};
+  const activeTherapy = activeName && therapyProfiles[activeName] ? therapyProfiles[activeName] : null;
+  const rows = [];
+  if (activeName) rows.push({ label:'Active Therapy Profile', value: activeName });
+  if (activeTherapy){
+    for (const [key, value] of Object.entries(activeTherapy)){
+      rows.push({ label: formatSettingsLabel(key), value: shortValue(value) });
+      if (rows.length >= limit) return rows.slice(0, limit);
+    }
+  }
+  const featureNames = Array.isArray(sp?.ActiveProfiles?.FeatureProfiles) ? sp.ActiveProfiles.FeatureProfiles : [];
+  for (const name of featureNames.slice(0, 10)){
+    const cfg = featureProfiles[name];
+    if (!cfg || typeof cfg !== 'object') continue;
+    const vals = Object.entries(cfg).slice(0, 2).map(([key, value]) => `${formatSettingsLabel(key)}: ${shortValue(value)}`).join(' • ');
+    rows.push({ label: formatSettingsLabel(name), value: vals || 'Configured' });
+    if (rows.length >= limit) break;
+  }
+  return rows.slice(0, limit);
+}
+function currentSignalItems(){
+  return WORKFLOW_SIGNAL_DEFS.map(def => {
+    if (def.key === 'annotations'){
+      const count = state.current.events?.t?.length || 0;
+      return {
+        label: def.label,
+        detail: count ? `${count} event${count === 1 ? '' : 's'}` : 'Missing',
+        active: count > 0
+      };
+    }
+    const series = state.current.signals?.[def.key];
+    const count = series?.t?.length || 0;
+    return {
+      label: def.label,
+      detail: count ? (series?.unit ? `Ready • ${series.unit}` : 'Ready') : 'Missing',
+      active: count > 0
+    };
+  });
+}
+function renderLoadStage(){
+  if (!els.loadStageSummary) return;
+  let html = '<b>Start here</b>Choose a ZIP or load demo data. CalmCPAP will scan the archive, read settings, index anchored nights, and auto-load the latest night.';
+  if (state.demoSetId){
+    html = `<b>Demo ready</b>Embedded demo dataset ${state.demoSetId} is loaded. Use Available Nights to see the demo date and Current Night to review what was auto-loaded.`;
+  } else if (state.sidebarPhase === 'zip-loaded'){
+    html = `<b>ZIP scanned</b>${state.entries.length} file${state.entries.length === 1 ? '' : 's'} found. CalmCPAP is reading metadata and indexing anchored nights.`;
+  } else if (state.sidebarPhase === 'nights-indexed'){
+    const dates = knownSessionDates();
+    html = dates.length
+      ? `<b>Nights indexed</b>${dates.length} anchored night${dates.length === 1 ? '' : 's'} found. The latest highlighted night will auto-load unless you pick another one.`
+      : '<b>No anchored nights found</b>This ZIP was scanned, but CalmCPAP could not find usable DATALOG/YYYYMMDD session folders.';
+  } else if (state.sidebarPhase === 'night-loaded'){
+    html = '<b>ZIP ready</b>Available Nights shows what is in the archive, and Current Night shows the session that is currently loaded.';
+  } else if (state.sidebarPhase === 'error'){
+    html = '<b>Load failed</b>Check the progress message and debug log, then try another ZIP or load the demo data.';
+  }
+  els.loadStageSummary.innerHTML = html;
+}
+function renderAvailableStage(){
+  if (!els.availableSummary) return;
+  const dates = knownSessionDates();
+  let summary = '<b>Availability</b>Upload a ZIP to see anchored nights, date range, and source families before switching nights.';
+  let rows = [];
+  if (state.demoSetId && dates.length){
+    summary = `<b>Demo availability</b>This embedded demo exposes ${dates.length} anchored night${dates.length === 1 ? '' : 's'}. Click the highlighted date to reload it like a normal ZIP night.`;
+  } else if (state.sidebarPhase === 'zip-loaded'){
+    summary = `<b>Indexing nights</b>${state.entries.length} scanned file${state.entries.length === 1 ? '' : 's'} found so far. CalmCPAP is still reading metadata and finding anchored nights.`;
+    rows = [
+      { label:'Files scanned', value: String(state.entries.length) },
+      { label:'Source families', value: String(state.zipSourceSummary?.length || 0) }
+    ];
+  } else if (state.entries.length && !dates.length){
+    summary = '<b>No anchored nights found</b>The ZIP scanned successfully, but CalmCPAP could not find usable DATALOG/YYYYMMDD EDF folders.';
+    rows = [
+      { label:'Files scanned', value: String(state.entries.length) },
+      { label:'Expected layout', value:'DATALOG/YYYYMMDD/*.edf' }
+    ];
+  } else if (dates.length){
+    const latest = dates[dates.length - 1];
+    const current = getSessionAnchorDate(state.current.session) || state.selectedDateISO || latest;
+    summary = state.current.loadContext?.mode === 'auto'
+      ? `<b>${dates.length} anchored night${dates.length === 1 ? '' : 's'} found</b>The latest night was loaded automatically. Click any highlighted date to switch immediately.`
+      : `<b>${dates.length} anchored night${dates.length === 1 ? '' : 's'} found</b>Pick any highlighted date to load that night immediately.`;
+    rows = [
+      { label:'Nights found', value: String(dates.length) },
+      { label:'Earliest anchor', value: dates[0] },
+      { label:'Latest anchor', value: latest },
+      { label:'Calendar selection', value: current }
+    ];
+  }
+  els.availableSummary.innerHTML = summary;
+  renderRowList(els.availableMetaArea, rows, 'Nights found');
+  renderChipGrid(els.availableSourceArea, (state.zipSourceSummary || []).map(item => ({
+    label: item.title,
+    detail: `${item.count} file${item.count === 1 ? '' : 's'}`,
+    active: item.pill !== 'reference'
+  })));
+}
+function renderCurrentNightStage(){
+  if (!els.currentNightStatus) return;
+  const sess = state.current.session;
+  let summary = '<b>Status</b>No night loaded yet. Upload a ZIP to auto-load the latest anchored night.';
+  let rows = [];
+  let chips = [];
+  if (state.sidebarPhase === 'error'){
+    summary = '<b>Load error</b>CalmCPAP hit a problem while reading this session. Check the progress detail or debug log, then try another date or ZIP.';
+  } else if (state.demoSetId && sess){
+    summary = `<b>Demo night loaded</b>${state.current.loadContext?.note || 'Embedded demo data is ready.'}`;
+  } else if (sess && state.current.loadContext?.inProgress){
+    summary = '<b>Loading current night</b>CalmCPAP is extracting signals and computing summaries for the selected night.';
+  } else if (sess){
+    summary = `<b>${escapeHtml((state.current.loadContext?.mode === 'auto') ? 'Latest night loaded automatically' : 'Current night loaded')}</b>${escapeHtml(state.current.loadContext?.note || 'Use Available Nights to switch to another date any time.')}`;
+  } else if (state.sidebarPhase === 'zip-loaded'){
+    summary = '<b>Waiting for nights</b>The ZIP was scanned. CalmCPAP is indexing anchored nights before it can load the latest one.';
+  } else if (state.sidebarPhase === 'nights-indexed'){
+    summary = '<b>Preparing latest night</b>CalmCPAP found nights and is loading the latest one now.';
+  } else if (state.entries.length && !knownSessionDates().length){
+    summary = '<b>No current night</b>This ZIP did not produce a usable anchored night to load.';
+  }
+  if (sess){
+    const loading = !!state.current.loadContext?.inProgress;
+    const activeSignalCount = currentSignalItems().filter(item => item.active).length;
+    const activeSources = (state.current.sourceSummary || []).filter(item => item.pill === 'active').map(item => item.title).join(', ');
+    rows = [
+      { label:'Loaded night', value: getSessionAnchorDate(sess) || state.selectedDateISO || 'Unknown' },
+      { label:'Session window', value: formatSessionRange(sess) },
+      { label:'Files loaded', value: `${sess.files?.length || 0} source file${(sess.files?.length || 0) === 1 ? '' : 's'}` },
+      { label:'Signals ready', value: loading ? 'Loading…' : `${activeSignalCount}/${WORKFLOW_SIGNAL_DEFS.length}` },
+      { label:'Source families', value: activeSources || 'Not detected yet' }
+    ];
+    chips = loading ? [] : currentSignalItems();
+  }
+  els.currentNightStatus.innerHTML = summary;
+  renderRowList(els.currentNightArea, rows, 'Loaded night');
+  renderChipGrid(els.currentSignalArea, chips);
+}
+function renderSettingsSummary(){
+  if (!els.settingsSummaryArea || !els.settingsSummaryNote) return;
+  const idMeta = extractIdentificationMeta(state.identification);
+  const settingRows = collectSettingRows(state.currentSettings, 4);
+  const rows = [];
+  let note = '<b>Settings</b>Upload a ZIP to read device metadata and current therapy settings.';
+  if (state.demoSetId){
+    note = '<b>Demo device + settings</b>These are shifted demo values that follow the same layout as a real ZIP.';
+  } else if (state.entries.length){
+    if (!state.identification && !state.currentSettings){
+      note = '<b>Metadata scan complete</b>No readable Identification.json or CurrentSettings.json was found in this ZIP.';
+    } else if (!state.identification){
+      note = '<b>Settings found, device details missing</b>CurrentSettings.json loaded, but Identification.json was not available.';
+    } else if (!state.currentSettings){
+      note = '<b>Device found, settings missing</b>Identification.json loaded, but CurrentSettings.json was not available.';
+    } else {
+      note = '<b>Device + settings ready</b>The summary below shows the main machine/profile context first. Open the detail drawers for the full lists.';
+    }
+  }
+  if (idMeta.headline) rows.push({ label:'Device', value: idMeta.headline });
+  if (idMeta.mode) rows.push({ label:'Mode', value: idMeta.mode });
+  if (idMeta.serial) rows.push({ label:'Serial', value: idMeta.serial });
+  rows.push(...settingRows.slice(0, Math.max(0, 5 - rows.length)));
+  els.settingsSummaryNote.innerHTML = note;
+  renderRowList(els.settingsSummaryArea, rows, 'Device');
+}
+function renderAdvancedSummary(){
+  if (!els.advancedSummary) return;
+  if (!state.entries.length && !state.demoSetId){
+    els.advancedSummary.innerHTML = '<b>Advanced tools</b>Use these only if auto-detection missed something or you want the raw source/debug view.';
+    return;
+  }
+  const signalCount = state.current.signalCatalog?.length || 0;
+  const sourceCount = state.current.sourceSummary?.length || state.zipSourceSummary?.length || 0;
+  els.advancedSummary.innerHTML = `<b>Advanced tools</b>${signalCount} signal label${signalCount === 1 ? '' : 's'} detected across ${sourceCount} source famil${sourceCount === 1 ? 'y' : 'ies'}. Open these tools only if something looks missing or you want raw provenance/debug output.`;
+}
+function renderSidebarWorkflow(){
+  renderLoadStage();
+  renderAvailableStage();
+  renderCurrentNightStage();
+  renderSettingsSummary();
+  renderAdvancedSummary();
+}
 function log(line){
   const stamp = new Date().toLocaleTimeString([], { hour12:false });
   const msg = typeof line === 'string' ? line : JSON.stringify(line, null, 2);
@@ -2056,19 +2561,18 @@ function setDrawerOpen(drawer, open=true){
 }
 function collapseSidebarDrawers(exceptIds=[]){
   const keepOpen = new Set(Array.isArray(exceptIds) ? exceptIds : [exceptIds]);
-  document.querySelectorAll('#leftPanelCard details.drawer').forEach(drawer => {
+  document.querySelectorAll(workflowDrawerSelector()).forEach(drawer => {
     if (keepOpen.has(drawer.id)) drawer.setAttribute('open', '');
     else drawer.removeAttribute('open');
   });
 }
 function autoOpenLoadStart(){
-  setDrawerOpen(els.statsDrawer, true);
-  setDrawerOpen(els.calendarDrawer, true);
+  const keep = collectOpenSecondaryDrawers();
+  collapseSidebarDrawers([...keep, 'statsDrawer']);
 }
 function autoOpenLoadComplete(){
-  setDrawerOpen(els.statsDrawer, true);
-  setDrawerOpen(els.calendarDrawer, true);
-  setDrawerOpen(els.sourcesDrawer, true);
+  const keep = collectOpenSecondaryDrawers();
+  collapseSidebarDrawers([...keep, 'calendarDrawer', 'currentNightDrawer']);
 }
 
 const progressState = { step:'Idle', pct:0, detail:'', raf:0 };
@@ -2198,8 +2702,10 @@ function placeholderPlots(){
 function resetAll(){
   newJob();
 
+  state.sidebarPhase = 'empty';
   state.zip = null;
   state.entries = [];
+  state.zipSourceSummary = [];
   state.meta = { prefix:'', rootMarkers:{} };
   state.identification = null;
   state.currentSettings = null;
@@ -2210,7 +2716,8 @@ function resetAll(){
   state.current = {
     session:null, edfFiles:[], signalCatalog:[],
     mapping:{ leak:null, pressure:null, flow:null, snore:null, respRate:null, tidalVolume:null, epr:null, pulse:null, spo2:null, annotations:null },
-    signals:{}, events:null, stats:{}, raw:{}, sourceSummary:[]
+    signals:{}, events:null, stats:{}, raw:{}, sourceSummary:[],
+    loadContext:{ mode:'none', note:'', inProgress:false }
   };
   state.notes = [];
   state.demoSetId = null;
@@ -2253,9 +2760,10 @@ function resetAll(){
 
   els.rawSummary.innerHTML = '';
   els.rawDump.textContent = '';
-  collapseSidebarDrawers(['calendarDrawer']);
+  collapseSidebarDrawers([]);
   applyRangeMode('night');
   renderCalendar();
+  renderSidebarWorkflow();
 
   progress('Idle', 0, 'Upload a ZIP to begin.');
   setStatus('Waiting','neutral');
@@ -2398,6 +2906,7 @@ els.calMonthSelect.addEventListener('change', ()=>{
     state.selectedDateISO = mDates[mDates.length-1];
     applyRangeMode(state.selectedRange.mode || 'night');
   }
+  renderSidebarWorkflow();
   renderCalendar();
 });
 els.applyMappingBtn.addEventListener('click', async ()=>{
@@ -2755,6 +3264,7 @@ function loadDemoData({ tabId='', skipToast=false, datasetId=null } = {}){
   autoOpenLoadStart();
   const seed = pickDemoDataset(datasetId);
   const demo = materializeDemoDataset(seed);
+  state.sidebarPhase = 'night-loaded';
   state.demoSetId = seed.id;
   state.identification = demo.identification;
   state.currentSettings = demo.currentSettings;
@@ -2763,6 +3273,8 @@ function loadDemoData({ tabId='', skipToast=false, datasetId=null } = {}){
   state.current.signals = demo.signals;
   state.current.events = demo.events;
   state.current.signalCatalog = demo.signalCatalog;
+  state.current.loadContext = { mode:'demo', note:'Embedded demo night loaded. Pick the highlighted date to reload it like a normal session.', inProgress:false };
+  state.zipSourceSummary = demo.sourceSummary;
   state.current.mapping = {
     leak:'demo::0', pressure:'demo::1', flow:'demo::2', snore:'demo::3',
     respRate:'demo::4', tidalVolume:'demo::5', epr:'demo::6', pulse:'demo::7', spo2:'demo::8', annotations:'embedded-demo-events'
@@ -2800,6 +3312,7 @@ function loadDemoData({ tabId='', skipToast=false, datasetId=null } = {}){
   renderMappingUI();
   renderRawDump();
   analyzeAndRender();
+  renderSidebarWorkflow();
   autoOpenLoadComplete();
   if (tabId) setActiveTab(tabId);
   if (!skipToast) toast('Demo data ready ✔️');
@@ -2847,8 +3360,10 @@ async function handleZip(file){
 
     const { entries, prefix, markers } = enumerateZipEntries(state.zip);
     state.entries = entries;
+    state.zipSourceSummary = buildZipSourceSummary(entries);
     state.meta.prefix = prefix;
     state.meta.rootMarkers = markers;
+    setSidebarPhase('zip-loaded');
 
     const edfCount = entries.filter(e => e.path.toLowerCase().endsWith('.edf')).length;
     const idCount = entries.filter(e => e.path.toLowerCase().endsWith('identification.json')).length;
@@ -2862,6 +3377,7 @@ async function handleZip(file){
       prefix: prefix || '(none)',
       markers
     });
+    renderSidebarWorkflow();
     progress('Scanning ZIP', 35, `Found ${entries.length} files. EDF: ${edfCount}. Identification.json: ${idCount? 'yes':'no'}.`);
     await tick();
     assertActive(jobId);
@@ -2876,6 +3392,7 @@ async function handleZip(file){
 
     const index = await indexSessionsFromSDStructure(entries, jobId);
     state.sessionsByDate = index.sessionsByDate;
+    setSidebarPhase('nights-indexed');
 
     if (!state.sessionsByDate.size){
       setStatus('No sessions','warn');
@@ -2883,6 +3400,8 @@ async function handleZip(file){
       els.overviewSummary.innerHTML = `<b>Status</b><br/>Couldn’t find sessions. Expected: <b>DATALOG/YYYYMMDD/*.edf</b>.`;
       els.rawSummary.innerHTML = `<b>Raw / debug snapshot:</b><br/>Couldn’t index sessions.`;
       els.rawDump.textContent = entries.slice(0,400).map(e=>e.path).join('\n');
+      collapseSidebarDrawers(['statsDrawer', 'calendarDrawer']);
+      renderSidebarWorkflow();
       return;
     }
 
@@ -2897,12 +3416,14 @@ async function handleZip(file){
     const pack = state.sessionsByDate.get(maxDate);
     const firstKey = pack?.sessions?.[0]?.key;
     if (maxDate && firstKey){
-      await loadSession(maxDate, firstKey, jobId);
+      await loadSession(maxDate, firstKey, jobId, { mode:'auto', note:`${maxDate} was loaded automatically because it is the latest anchored night in this ZIP.` });
     } else {
       setStatus('Ready','good');
       progress('Ready', 100, 'Choose a date + session, then click Load.');
+      renderSidebarWorkflow();
     }
 
+    setSidebarPhase('night-loaded');
     autoOpenLoadComplete();
     toast('ZIP ready ✔️');
   }catch(err){
@@ -2914,6 +3435,7 @@ async function handleZip(file){
     setStatus('Error','bad');
     progress('Error', 100, err?.message || String(err));
     log('❌ ' + (err?.message || String(err)));
+    setSidebarPhase('error');
   }
 }
 
@@ -3123,6 +3645,7 @@ async function readIdentification(entries, jobId){
     state.identification = null;
     els.idArea.innerHTML = `<div class="row"><span>No Identification.json found</span><span class="badge">info</span></div>`;
     progress('Reading Identification', 38, 'No Identification.json found.');
+    renderSidebarWorkflow();
     return;
   }
   try{
@@ -3140,88 +3663,36 @@ async function readIdentification(entries, jobId){
     log('Identification.json present but failed to parse.');
     els.idArea.innerHTML = `<div class="row"><span>Identification.json parse failed</span><span class="badge">warn</span></div>`;
     progress('Reading Identification', 39, 'Identification.json parse failed.');
+    state.identification = null;
   }
+  renderSidebarWorkflow();
 }
 
 function renderIdentification(obj){
-  const flat = flattenObject(obj, 5);
-  const items = Object.entries(flat)
-    .map(([k,v])=>({ key:k, short: shortenIdKey(k), val:v }))
-    .filter(it => it.val != null && String(it.val).trim() !== '');
-
-  const priorityShort = [
-    'Manufacturer','Brand','Model','MachineModel','Mode','PAPMode',
-    'SerialNumber','DeviceSerial','DeviceSerialNumber','Patient','Profile','Name','User',
-    'FG P1.Manufacturer','FG P1.Model','FG P1.SerialNumber','FG P1.DeviceSerial',
-    'FG P1.Mode','FG P1.PAPMode'
-  ].map(s => s.toLowerCase());
-
-  items.sort((a,b)=>{
-    const ai = priorityShort.indexOf(a.short.toLowerCase());
-    const bi = priorityShort.indexOf(b.short.toLowerCase());
-    if (ai !== -1 || bi !== -1){
-      if (ai === -1) return 1;
-      if (bi === -1) return -1;
-      return ai - bi;
-    }
-    return a.short.localeCompare(b.short);
-  });
-
-  const getLike = (needle) => {
-    const n = needle.toLowerCase();
-    const hit = items.find(it => it.short.toLowerCase() === n) ||
-                items.find(it => it.short.toLowerCase().includes(n));
-    return hit ? String(hit.val ?? '') : '';
-  };
-
-  const make = getLike('Manufacturer') || getLike('Brand') || getLike('FG P1.Manufacturer') || '';
-  const model = getLike('Model') || getLike('MachineModel') || getLike('FG P1.Model') || '';
-  const mode  = getLike('Mode') || getLike('PAPMode') || getLike('FG P1.Mode') || '';
-  const serial = getLike('SerialNumber') || getLike('DeviceSerial') || getLike('FG P1.SerialNumber') || getLike('FG P1.DeviceSerial') || '';
-  const productCode = getLike('ProductCode') || getLike('Product Code') || '';
-  const productGeographicIdentifier = getLike('ProductGeographicIdentifier') || getLike('Product Geographic Identifier') || getLike('GeographicIdentifier') || '';
-  const productName = getLike('ProductName') || getLike('Product Name') || getLike('Product Product Name') || '';
-
-  const headline = (make + ' ' + model).trim() || 'Unknown';
+  const meta = extractIdentificationMeta(obj);
+  const detailRows = collectIdentificationRows(obj, 14);
 
   const headerRow = `
-    ${productName ? `
+    ${meta.productName ? `
       <div class="row">
         <span style="opacity:.85">Product Name</span>
-        <span><b>${escapeHtml(productName)}</b></span>
+        <span><b>${escapeHtml(meta.productName)}</b></span>
       </div>
     ` : ''}
-    ${productGeographicIdentifier ? `
+    ${meta.productGeographicIdentifier ? `
       <div class="row">
         <span style="opacity:.85">Product Geographic Identifier</span>
-        <span><b>${escapeHtml(productGeographicIdentifier)}</b></span>
+        <span><b>${escapeHtml(meta.productGeographicIdentifier)}</b></span>
       </div>
     ` : ''}
   `;
 
-  const rows = [];
-  const used = new Set();
-  for (const it of items){
-    if (rows.length >= 14) break;
-    const sk = it.short;
-    if (used.has(sk)) continue;
-    if (typeof it.val === 'object') continue;
-    const label = humanizeWords(sk)
-      .replace(/^Product\s+/i, '')
-      .replace(/^Detected\s+Device$/i, '')
-      .trim();
-    if (!label) continue;
-    if (/^Product\s*Code$/i.test(label) || /^Detected\s+Device$/i.test(label)) continue;
-    rows.push(`
+  els.idArea.innerHTML = headerRow + (detailRows.map(row => `
       <div class="row">
-        <span>${escapeHtml(label)}</span>
-        <span><b>${escapeHtml(shortValue(it.val))}</b></span>
+        <span>${escapeHtml(row.label)}</span>
+        <span><b>${escapeHtml(row.value)}</b></span>
       </div>
-    `);
-    used.add(sk);
-  }
-
-  els.idArea.innerHTML = headerRow + (rows.join('') || `<div class="row"><span>No readable fields</span><span class="badge">json</span></div>`);
+    `).join('') || `<div class="row"><span>No readable fields</span><span class="badge">json</span></div>`);
 }
 
 function shortenIdKey(path){
@@ -3278,6 +3749,7 @@ async function readCurrentSettings(entries, jobId){
     log('CurrentSettings.json not found.');
     state.currentSettings = null;
     els.settingsArea.innerHTML = `<div class="row"><span>No CurrentSettings.json found</span><span class="badge">info</span></div>`;
+    renderSidebarWorkflow();
     return;
   }
   try{
@@ -3293,36 +3765,16 @@ async function readCurrentSettings(entries, jobId){
     state.currentSettings = null;
     els.settingsArea.innerHTML = `<div class="row"><span>CurrentSettings.json parse failed</span><span class="badge">warn</span></div>`;
   }
+  renderSidebarWorkflow();
 }
 
 function renderCurrentSettings(obj){
-  const sp = obj?.FlowGenerator?.SettingProfiles;
-  const activeName = sp?.ActiveProfiles?.TherapyProfile || '';
-  const therapyProfiles = sp?.TherapyProfiles || {};
-  const featureProfiles = sp?.FeatureProfiles || {};
-  const activeTherapy = activeName && therapyProfiles[activeName] ? therapyProfiles[activeName] : null;
-
-  const rows = [];
-  if (activeName) rows.push(`<div class="row"><span>Active Therapy Profile</span><span><b>${escapeHtml(activeName)}</b></span></div>`);
-  if (activeTherapy){
-    for (const [k,v] of Object.entries(activeTherapy)){
-      rows.push(`<div class="row"><span>${escapeHtml(formatSettingsLabel(k))}</span><span><b>${escapeHtml(shortValue(v))}</b></span></div>`);
-    }
-  }
-
-  const featureNames = Array.isArray(sp?.ActiveProfiles?.FeatureProfiles) ? sp.ActiveProfiles.FeatureProfiles : [];
-  for (const name of featureNames.slice(0,10)){
-    const cfg = featureProfiles[name];
-    if (!cfg || typeof cfg !== 'object') continue;
-    const vals = Object.entries(cfg).slice(0,2).map(([k,v])=>`${formatSettingsLabel(k)}: ${shortValue(v)}`).join(' • ');
-    rows.push(`<div class="row" title="${escapeHtml(vals)}"><span>${escapeHtml(formatSettingsLabel(name))}</span><span><b>${escapeHtml(vals || 'Configured')}</b></span></div>`);
-  }
-
+  const rows = collectSettingRows(obj, 14);
   if (!rows.length){
     els.settingsArea.innerHTML = `<div class="row"><span>No TherapyProfiles settings found</span><span class="badge">json</span></div>`;
     return;
   }
-  els.settingsArea.innerHTML = rows.slice(0,14).join('');
+  els.settingsArea.innerHTML = rows.map(row => `<div class="row"><span>${escapeHtml(row.label)}</span><span><b>${escapeHtml(row.value)}</b></span></div>`).join('');
 }
 
 const SOURCE_FAMILY_DEFS = {
@@ -4174,6 +4626,7 @@ function enablePicker(autoSelectMostRecent){
     earliestDate: min,
     latestDate: max
   });
+  renderSidebarWorkflow();
 }
 
 function formatHours(sec){ return `${(sec/3600).toFixed(2)}h`; }
@@ -4212,6 +4665,7 @@ function applyRangeMode(mode){
 
   updateRangeHint();
   renderCalendar();
+  renderSidebarWorkflow();
 }
 
 function updateRangeHint(){
@@ -4259,7 +4713,8 @@ function renderCalendar(){
       renderCalendar();
       const day = state.sessionsByDate.get(iso);
       const firstKey = day?.sessions?.[0]?.key;
-      if (firstKey) await loadSession(iso, firstKey);
+      renderSidebarWorkflow();
+      if (firstKey) await loadSession(iso, firstKey, state.jobId, { mode:'manual', note:`${iso} was loaded from the Available Nights calendar.` });
     });
     els.calGrid.appendChild(b);
   }
@@ -4284,15 +4739,15 @@ async function loadRange(){
    Load session
    ============================ */
 
-async function loadSession(dateISO, sessionKey, jobId = state.jobId){
+async function loadSession(dateISO, sessionKey, jobId = state.jobId, loadContext = null){
   assertActive(jobId);
   const pack = state.sessionsByDate.get(dateISO);
   const sess = pack?.sessions?.find(s => s.key === sessionKey);
   if (!sess) return;
-  await loadSessionsAggregate([sess], sess.label || dateISO, jobId);
+  await loadSessionsAggregate([sess], sess.label || dateISO, jobId, loadContext);
 }
 
-async function loadSessionsAggregate(sessions, label, jobId = state.jobId){
+async function loadSessionsAggregate(sessions, label, jobId = state.jobId, loadContext = null){
   assertActive(jobId);
   const safeSessions = (sessions || []).filter(Boolean);
   if (!safeSessions.length) return;
@@ -4312,8 +4767,10 @@ async function loadSessionsAggregate(sessions, label, jobId = state.jobId){
   state.current.stats = {};
   state.current.raw = {};
   state.current.sourceSummary = buildSourceSummary({ files: state.current.session.files });
+  state.current.loadContext = { ...(loadContext || state.current.loadContext || { mode:'manual', note:'' }), inProgress:true };
 
   renderSourceSummary(state.current.sourceSummary);
+  renderSidebarWorkflow();
 
   setStatus('Loading selection…','neutral');
   progress('Loading selection', 62, `Loading ${state.current.session.files.length} EDF file(s)… This can take a bit for large ranges.`);
@@ -4404,12 +4861,14 @@ async function loadSessionsAggregate(sessions, label, jobId = state.jobId){
   autoMapSignals();
   renderMappingUI();
   renderRawDump();
+  renderSidebarWorkflow();
 
   progress('Extracting signals', 88, 'Reading samples for mapped signals…');
   await tick();
   assertActive(jobId);
 
   await extractSignalsAndRender();
+  renderSidebarWorkflow();
   setStatus('Ready','good');
   toast('Selection ready ✔️');
 }
@@ -4744,6 +5203,8 @@ async function extractSignalsAndRender(){
     setStatus('Error','bad');
     progress('Error', 100, `Analysis failed: ${err?.message || err}`);
     log('❌ Analysis failed: ' + (err?.message || err));
+    state.current.loadContext = { ...(state.current.loadContext || { mode:'manual', note:'' }), inProgress:false };
+    setSidebarPhase('error');
   }
 }
 
@@ -4766,23 +5227,11 @@ function timeSpanHours(series){
   return (series.t[series.t.length-1] - series.t[0]) / 1000 / 3600;
 }
 function deviceHeadline(){
-  const id = state.identification;
-  if (!id) return 'Unknown device';
-  const flat = flattenObject(id, 5);
-  const items = Object.entries(flat).map(([k,v])=>({k:shortenIdKey(k), v}));
-  const get = (needle) => {
-    const n = needle.toLowerCase();
-    const hit = items.find(it => String(it.k).toLowerCase() === n) ||
-                items.find(it => String(it.k).toLowerCase().includes(n));
-    return hit ? String(hit.v ?? '') : '';
-  };
-  const make = get('Manufacturer') || get('Brand') || get('FG P1.Manufacturer');
-  const model = get('Model') || get('MachineModel') || get('FG P1.Model');
-  const mode = get('Mode') || get('PAPMode') || get('FG P1.Mode');
-  const serial = get('SerialNumber') || get('DeviceSerial') || get('FG P1.SerialNumber') || get('FG P1.DeviceSerial');
-  return [ [make,model].filter(Boolean).join(' ').trim() || 'Unknown',
-           [mode?`Mode: ${mode}`:'', serial?`SN: ${serial}`:''].filter(Boolean).join(' • ')
-         ].filter(Boolean).join(' — ');
+  const meta = extractIdentificationMeta(state.identification);
+  return [
+    meta.headline || 'Unknown device',
+    [meta.mode ? `Mode: ${meta.mode}` : '', meta.serial ? `SN: ${meta.serial}` : ''].filter(Boolean).join(' • ')
+  ].filter(Boolean).join(' — ');
 }
 
 function analyzeAndRender(){
@@ -4844,6 +5293,8 @@ function analyzeAndRender(){
     stats.ahiEst = stats.ahiLikeCount / stats.usageHrs;
   }
   state.current.stats = stats;
+  state.current.loadContext = { ...(state.current.loadContext || { mode:'manual', note:'' }), inProgress:false };
+  state.sidebarPhase = 'night-loaded';
   log({
     phase: 'analysis',
     stats,
@@ -4863,6 +5314,7 @@ function analyzeAndRender(){
   renderPlotsAndText();
   renderComparePlot();
   renderRawDump();
+  renderSidebarWorkflow();
 }
 
 
@@ -5253,6 +5705,7 @@ if (startupOptions.demo){
   closeOnboarding();
   loadDemoData({ tabId: resolveTabId(startupOptions.tab), skipToast:true, datasetId: startupOptions.demoSet });
 } else {
+  resetAll();
   const startupTabId = resolveTabId(startupOptions.tab);
   if (startupTabId) setActiveTab(startupTabId);
 }
