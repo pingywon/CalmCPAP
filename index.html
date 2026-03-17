@@ -317,11 +317,7 @@
       header{
         align-items:start;
       }
-      .sidebarLayoutSwitch{
-        display:inline-flex;
-      }
-      body.sidebar-layout-organized main,
-      body.sidebar-layout-classic main{
+      main{
         grid-template-columns: clamp(420px, 30vw, 520px) minmax(0, 1fr);
         gap:18px;
       }
@@ -339,12 +335,13 @@
       min-height:0;
     }
     .card .hd{
-      padding:12px 14px;
-      border-bottom:1px solid rgba(255,255,255,.08);
+      padding:8px 14px;
+      border-bottom:1px solid rgba(255,255,255,.06);
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
+      min-height:40px;
     }
     .card .hd h2{
       margin:0;
@@ -353,136 +350,43 @@
       color: rgba(231,246,246,.92);
       text-transform: uppercase;
     }
+    .sidebarPrivacyHint{
+      display:flex;
+      align-items:center;
+      gap:5px;
+      font-size:11px;
+      color:var(--muted);
+      letter-spacing:.15px;
+    }
+    .sidebarPrivacyHint svg{ width:13px; height:13px; color:var(--accent); flex-shrink:0; }
+    #toggleLeftBtn.iconCollapse{
+      background:none; border:none; padding:6px; cursor:pointer; color:var(--muted); border-radius:8px; transition: background .12s ease, color .12s ease;
+    }
+    #toggleLeftBtn.iconCollapse:hover{ background:rgba(255,255,255,.06); color:var(--text); }
+    #toggleLeftBtn.iconCollapse svg{ width:16px; height:16px; display:block; transition: transform .2s ease; }
+    body.left-collapsed #toggleLeftBtn.iconCollapse svg{ transform:rotate(180deg); }
     .card .bd{
-      padding:14px;
+      padding:10px 0;
       overflow-y:auto;
       overflow-x:hidden;
       min-height:0;
     }
-    .sidebarHeaderActions{
-      display:flex;
-      align-items:center;
-      justify-content:flex-end;
-      gap:8px;
-      flex-wrap:wrap;
-    }
-    .sidebarLayoutSwitch{
-      display:none;
-      align-items:center;
-      gap:4px;
-      padding:4px;
+    #rightPanelCard .bd{ padding:14px; }
+    .drawerSummaryBadge{
+      margin-left:auto;
+      font-size:10px;
+      font-weight:800;
+      padding:2px 7px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-    }
-    .sidebarLayoutSwitch button{
-      border:none;
-      border-radius:999px;
-      background:transparent;
-      color:var(--muted);
-      padding:7px 11px;
-      font-size:11.5px;
-      font-weight:850;
-      cursor:pointer;
-      transition: background .12s ease, color .12s ease, transform .12s ease;
-    }
-    .sidebarLayoutSwitch button:hover{
-      color:var(--text);
-      transform: translateY(-1px);
-    }
-    .sidebarLayoutSwitch button.active{
-      color:#062026;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 8px 18px rgba(97,212,195,.16);
+      background:rgba(97,212,195,.12);
+      color:var(--accent);
+      letter-spacing:.15px;
     }
     .sidebarBody{
       display:grid;
       gap:0;
       align-content:start;
       min-height:0;
-    }
-    .sidebarGroup{
-      display:grid;
-      gap:12px;
-      align-content:start;
-      min-height:0;
-    }
-    .sidebarGroup + .sidebarGroup{
-      margin-top:12px;
-      padding-top:12px;
-      border-top:1px solid rgba(255,255,255,.08);
-    }
-    .sidebarGroupTitle{
-      display:none;
-      margin:0;
-      font-size:11px;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      color:rgba(151,235,223,.86);
-    }
-    @media (min-width: 1320px){
-      body.sidebar-layout-organized .sidebarBody{
-        gap:14px;
-      }
-      body.sidebar-layout-organized .workflowDrawer{
-        margin-top:0;
-      }
-      body.sidebar-layout-organized .workflowDrawer > summary{
-        padding:16px 17px;
-      }
-      body.sidebar-layout-organized .workflowDrawer > .drawerBody{
-        padding:13px 15px 17px;
-      }
-      body.sidebar-layout-organized .sidebarGroup{
-        gap:12px;
-        padding:14px;
-        border-radius:18px;
-        border:1px solid rgba(255,255,255,.10);
-        background: rgba(11,42,49,.38);
-        box-shadow: inset 0 0 0 1px rgba(122,167,255,.05);
-      }
-      body.sidebar-layout-organized .sidebarGroup + .sidebarGroup{
-        margin-top:0;
-        padding-top:14px;
-        border-top:none;
-      }
-      body.sidebar-layout-organized .sidebarGroupTitle{
-        display:block;
-      }
-      body.sidebar-layout-organized #leftPanelCard .bd{
-        padding:16px;
-      }
-      body.sidebar-layout-organized #leftPanelCard .drawer{
-        margin-top:0;
-      }
-      body.sidebar-layout-organized .calendarDrawerBody,
-      body.sidebar-layout-organized .sourceDrawerBody,
-      body.sidebar-layout-organized .mappingDrawerBody{
-        max-height:none;
-        overflow:visible;
-        scrollbar-gutter:auto;
-      }
-      body.sidebar-layout-organized .mappingActions{
-        position:static;
-        bottom:auto;
-        padding-top:0;
-        margin-top:0;
-        background:none;
-      }
-    }
-    @media (min-width: 1320px){
-      body.sidebar-layout-classic .sidebarBody{
-        gap:0;
-      }
-      body.sidebar-layout-classic .workflowDrawer{
-        margin-top:12px;
-      }
-      body.sidebar-layout-classic .sidebarGroup{
-        gap:12px;
-      }
-      body.sidebar-layout-classic .sidebarGroupTitle{
-        display:none;
-      }
     }
 
     .drop{
@@ -509,21 +413,35 @@
     .hr{ height:1px; background: rgba(255,255,255,.08); margin:12px 0; }
     .tiny{ font-size:12px; color:var(--muted2); }
 
-    .kpiGrid{
+    /* --- KPI Strip (always-visible at top of sidebar) --- */
+    .kpiStrip{
       display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-      margin-top:12px;
+      grid-template-columns: repeat(4, 1fr);
+      gap:6px;
+      padding:2px 14px 10px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      margin-bottom:2px;
     }
-    .kpi{
-      padding:12px;
-      border-radius: var(--radius2);
-      background: rgba(11,42,49,.55);
-      border:1px solid rgba(255,255,255,.08);
+    .kpiCard{
+      text-align:center;
+      padding:8px 4px 6px;
+      border-radius:10px;
+      background:rgba(11,42,49,.35);
+      border:1px solid rgba(255,255,255,.06);
+      transition: background .15s ease, border-color .15s ease;
+      cursor:default;
     }
-    .kpi .label{ font-size: 11px; color: var(--muted2); text-transform: uppercase; letter-spacing:.25px; }
-    .kpi .value{ margin-top:6px; font-size: 18px; font-weight: 900; }
-    .kpi .note{ margin-top:6px; font-size: 12px; color: var(--muted); line-height:1.35; }
+    .kpiCard:hover{ background:rgba(11,42,49,.55); border-color:rgba(255,255,255,.12); }
+    .kpiCard .kpiValue{ font-size:20px; font-weight:900; line-height:1.15; color:var(--text); }
+    .kpiCard .kpiLabel{ font-size:10px; color:var(--muted2); text-transform:uppercase; letter-spacing:.2px; margin-top:2px; }
+    .kpiCard .kpiUnit{ font-size:10.5px; color:var(--muted); }
+    .kpiCard .kpiNote{ display:none; }
+    .kpiCard[data-status="good"]{ border-color:rgba(97,212,195,.4); }
+    .kpiCard[data-status="good"] .kpiValue{ color:rgba(97,212,195,1); }
+    .kpiCard[data-status="warn"]{ border-color:rgba(255,204,102,.45); }
+    .kpiCard[data-status="warn"] .kpiValue{ color:rgba(255,204,102,1); }
+    .kpiCard[data-status="bad"]{ border-color:rgba(255,107,122,.45); }
+    .kpiCard[data-status="bad"] .kpiValue{ color:rgba(255,107,122,1); }
 
     .callout{
       padding:12px 12px;
@@ -793,12 +711,16 @@
     }
     .kv .row b{ color: rgba(231,246,246,.93); font-weight:850; }
 
-    .drawer{ margin-top:12px; border:1px solid rgba(122,167,255,.35); border-radius:16px; background:rgba(11,42,49,.52); overflow:hidden; box-shadow:0 12px 24px rgba(0,0,0,.18); }
-    .drawer > summary{ cursor:pointer; list-style:none; padding:15px 16px; font-size:15px; color:rgba(231,246,246,.98); font-weight:900; display:flex; align-items:center; justify-content:space-between; letter-spacing:.2px; background:rgba(18,58,68,.68); border-bottom:1px solid rgba(255,255,255,.12); }
+    .drawer{ margin-top:0; border:none; border-radius:0; background:transparent; overflow:hidden; box-shadow:none; border-bottom:1px solid rgba(255,255,255,.06); }
+    .drawer:last-child{ border-bottom:none; }
+    .drawer > summary{ cursor:pointer; list-style:none; padding:10px 14px; font-size:13px; color:rgba(151,235,223,.86); font-weight:800; display:flex; align-items:center; gap:7px; letter-spacing:.2px; background:transparent; border-bottom:none; transition: background .12s ease; }
+    .drawer > summary:hover{ background:rgba(255,255,255,.03); }
     .drawer > summary::-webkit-details-marker{ display:none; }
-    .drawer > summary::after{ content:'▾'; color:rgba(231,246,246,.92); font-size:14px; }
-    .drawer:not([open]) > summary::after{ content:'▸'; }
-    .drawerBody{ padding:12px 14px 16px; font-size:14px; display:grid; gap:12px; }
+    .drawer > summary .drawerIcon{ width:14px; height:14px; flex-shrink:0; color:var(--accent); }
+    .drawer > summary .drawerChevron{ margin-left:auto; width:12px; height:12px; flex-shrink:0; color:rgba(231,246,246,.5); transition: transform .2s ease; }
+    .drawer[open] > summary .drawerChevron{ transform:rotate(90deg); }
+    .drawer > summary::after{ content:none; }
+    .drawerBody{ padding:4px 14px 14px; font-size:13px; display:grid; gap:10px; }
     .drawerScroll{ overflow:visible; scrollbar-gutter:auto; }
     .calendarDrawerBody,
     .sourceDrawerBody,
@@ -822,45 +744,41 @@
     .rawDebugDrawerBody #rawDump{ max-height:none; }
     .workflowDrawer{ margin-top:0; }
     .workflowDrawer > summary{
-      font-size:14px;
+      font-size:13px;
       letter-spacing:.24px;
     }
     .workflowStageNote{
-      line-height:1.45;
+      display:none;
     }
     .workflowStageNote b{
       display:block;
       margin-bottom:4px;
     }
     .workflowSectionLabel{
-      margin:2px 0 -2px;
-      font-size:11px;
-      letter-spacing:.18em;
-      text-transform:uppercase;
-      color:rgba(151,235,223,.86);
+      display:none;
     }
     .signalChipGrid{
       display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
-      gap:8px;
+      grid-template-columns:repeat(auto-fit, minmax(100px, 1fr));
+      gap:5px;
     }
     .signalChip{
       display:grid;
-      gap:4px;
-      padding:10px 11px;
-      border-radius:12px;
+      gap:2px;
+      padding:6px 8px;
+      border-radius:10px;
       border:1px solid rgba(255,255,255,.08);
       background:rgba(11,42,49,.52);
     }
     .signalChip strong{
       color:rgba(231,246,246,.97);
-      font-size:12.5px;
+      font-size:11px;
       font-weight:900;
       line-height:1.2;
     }
     .signalChip small{
       color:var(--muted2);
-      font-size:11.25px;
+      font-size:10px;
       line-height:1.3;
     }
     .signalChip.active{
@@ -930,7 +848,7 @@
     #loadRangeBtn{ background: linear-gradient(135deg, var(--accent), var(--accent2)); color:#062026; border:none; box-shadow:0 10px 18px rgba(97,212,195,.22); font-weight:900; }
     #loadRangeBtn:disabled{ opacity:.55; filter:saturate(.7); }
     .seg button.active{ background:linear-gradient(135deg, rgba(97,212,195,.24), rgba(122,167,255,.25)); border-color:rgba(97,212,195,.65); }
-    .calendarWrap{ border:1px solid rgba(255,255,255,.10); background:rgba(11,42,49,.45); border-radius:14px; padding:10px; }
+    .calendarWrap{ border:1px solid rgba(255,255,255,.06); background:rgba(11,42,49,.30); border-radius:12px; padding:10px; }
     .calHead{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
     .calHead .month{ font-size:12px; color:var(--muted); font-weight:700; }
     .calMonthSelect{ background:rgba(255,255,255,.08); color:var(--text); border:1px solid rgba(255,255,255,.16); border-radius:10px; padding:6px 8px; font-size:12px; min-width:180px; }
@@ -940,8 +858,10 @@
     .dow div{ text-align:center; font-size:10.5px; color:var(--muted2); text-transform:uppercase; }
     .day{ min-height:32px; border-radius:10px; border:1px solid rgba(255,255,255,.08); font-size:12px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.03); color:var(--muted); }
     .day.muted{ opacity:.45; }
-    .day.hasData{ color:var(--text); border-color:rgba(97,212,195,.45); }
-    .day.selected{ background:linear-gradient(135deg, rgba(255,204,102,.42), rgba(255,107,122,.34)); color:#ffffff; border-color:rgba(255,204,102,.95); box-shadow: inset 0 0 0 1px rgba(255,255,255,.24); font-weight:900; }
+    .day.hasData{ color:var(--text); border-color:rgba(97,212,195,.45); cursor:pointer; transition: transform .12s ease, background .12s ease; }
+    .day.hasData:hover{ transform:scale(1.05); background:rgba(97,212,195,.12); }
+    .day.selected{ background:linear-gradient(135deg, var(--accent), var(--accent2)); color:#062026; border-color:rgba(97,212,195,.95); box-shadow: 0 0 10px rgba(97,212,195,.3); font-weight:900; }
+    .day.selected:hover{ transform:scale(1.05); }
     .day.boundary{ background:linear-gradient(135deg, rgba(255,107,122,.62), rgba(122,167,255,.62)); border-color:#ffffff; color:#ffffff; box-shadow:0 0 0 2px rgba(255,255,255,.24); }
     .rangeHint{ font-size:11.5px; color:var(--muted2); }
     .picker input[type="date"], .picker select{
@@ -1662,7 +1582,7 @@
   </style>
 </head>
 
-<body class="sidebar-layout-organized">
+<body>
 <div class="app" id="appShell">
   <header>
     <div class="headerMetaZone">
@@ -1699,20 +1619,40 @@
     <!-- LEFT -->
     <section class="card" id="leftPanelCard">
       <div class="hd">
-        <h2>Workflow</h2>
-        <div class="sidebarHeaderActions">
-          <button class="btn ghost" id="toggleLeftBtn" aria-pressed="false">Hide Sidebar</button>
-          <div class="sidebarLayoutSwitch" id="sidebarLayoutSwitch" role="group" aria-label="Sidebar layout">
-            <button type="button" id="sidebarLayoutOrganized" class="active" aria-pressed="true">Organized</button>
-            <button type="button" id="sidebarLayoutClassic" aria-pressed="false">Classic</button>
-          </div>
-          <span class="badge">Local only ✔️</span>
-        </div>
+        <span class="sidebarPrivacyHint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Local</span>
+        <button class="iconCollapse" id="toggleLeftBtn" aria-pressed="false" aria-label="Toggle sidebar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
       </div>
 
       <div class="bd sidebarBody" id="leftSidebarBody">
+        <div class="kpiStrip" id="kpiStrip">
+          <div class="kpiCard" id="kpiCardUsage">
+            <div class="kpiValue" id="kpiUsage">—</div>
+            <div class="kpiUnit">hrs</div>
+            <div class="kpiLabel">Usage</div>
+            <div class="kpiNote" id="kpiUsageNote">Select a day.</div>
+          </div>
+          <div class="kpiCard" id="kpiCardLeak">
+            <div class="kpiValue" id="kpiLeak95">—</div>
+            <div class="kpiUnit">L/min</div>
+            <div class="kpiLabel">Leak 95th</div>
+            <div class="kpiNote" id="kpiLeak95Note">Needs leak signal.</div>
+          </div>
+          <div class="kpiCard" id="kpiCardPressure">
+            <div class="kpiValue" id="kpiP50">—</div>
+            <div class="kpiUnit">cmH₂O</div>
+            <div class="kpiLabel">Pressure</div>
+            <div class="kpiNote" id="kpiP50Note">Needs pressure signal.</div>
+          </div>
+          <div class="kpiCard" id="kpiCardAHI">
+            <div class="kpiValue" id="kpiAHI">—</div>
+            <div class="kpiUnit">/hr</div>
+            <div class="kpiLabel">AHI</div>
+            <div class="kpiNote" id="kpiAHINote">From annotations if found.</div>
+          </div>
+        </div>
+
         <details class="drawer workflowDrawer" id="statsDrawer">
-          <summary>1. Load ZIP</summary>
+          <summary><svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Load Data<svg class="drawerChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></summary>
           <div class="drawerBody">
             <div class="top-actions sidebarUploadActions">
               <label class="btn" id="chooseZipBtn" for="zipInput">Choose ZIP</label>
@@ -1724,7 +1664,7 @@
               <span class="badge" id="fileBadge">No file</span>
               <span class="badge" id="zipStats">—</span>
             </div>
-            <div class="callout workflowStageNote" id="loadStageSummary"><b>Start here</b>Choose a ZIP or load demo data. CalmCPAP will scan the archive, read settings, index anchored nights, and auto-load the latest night.</div>
+            <span hidden id="loadStageSummary"></span>
             <div class="progressWrap">
               <div class="progressTop">
                 <div class="tiny"><b id="progressStep">Idle</b></div>
@@ -1737,13 +1677,13 @@
         </details>
 
         <details class="drawer workflowDrawer" id="calendarDrawer">
-          <summary>2. Available Nights</summary>
+          <summary><svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Nights<span class="drawerSummaryBadge" id="nightsCountBadge"></span><svg class="drawerChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></summary>
           <div class="drawerBody calendarDrawerBody">
-            <div class="callout workflowStageNote" id="availableSummary"><b>Availability</b>Upload a ZIP to see anchored nights, date range, and source families before switching nights.</div>
+            <span hidden id="availableSummary"></span>
             <div class="kv stageMetricRows" id="availableMetaArea">
               <div class="row"><span>Nights found</span><span><b>—</b></span></div>
             </div>
-            <div class="signalChipGrid" id="availableSourceArea"></div>
+            <div class="signalChipGrid" id="availableSourceArea" hidden></div>
             <div class="rangeControls disabled" id="rangeControls">
               <div class="calendarWrap">
                 <div class="calHead">
@@ -1756,7 +1696,7 @@
                     <button type="button" id="calNext" aria-label="Next month">▶</button>
                   </div>
                 </div>
-                <div class="dow"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+                <div class="dow"><div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div></div>
                 <div class="calGrid" id="calGrid"></div>
               </div>
               <div class="seg" id="rangeModeSeg" aria-label="Range mode">
@@ -1770,43 +1710,20 @@
         </details>
 
         <details class="drawer workflowDrawer" id="currentNightDrawer">
-          <summary>3. Current Night</summary>
+          <summary><svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>Session<span class="drawerSummaryBadge" id="sessionDateBadge"></span><svg class="drawerChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></summary>
           <div class="drawerBody">
-            <div class="callout workflowStageNote" id="currentNightStatus"><b>Status</b>No night loaded yet. Upload a ZIP to auto-load the latest anchored night.</div>
+            <span hidden id="currentNightStatus"></span>
             <div class="kv stageMetricRows" id="currentNightArea">
               <div class="row"><span>Loaded night</span><span><b>—</b></span></div>
             </div>
-            <div class="workflowSectionLabel">Data available for this loaded night</div>
             <div class="signalChipGrid" id="currentSignalArea"></div>
-            <div class="kpiGrid">
-              <div class="kpi">
-                <div class="label">Usage (hours)</div>
-                <div class="value" id="kpiUsage">—</div>
-                <div class="note" id="kpiUsageNote">Select a day.</div>
-              </div>
-              <div class="kpi">
-                <div class="label">Leak (95th %)</div>
-                <div class="value" id="kpiLeak95">—</div>
-                <div class="note" id="kpiLeak95Note">Needs leak signal.</div>
-              </div>
-              <div class="kpi">
-                <div class="label">Pressure (median)</div>
-                <div class="value" id="kpiP50">—</div>
-                <div class="note" id="kpiP50Note">Needs pressure signal.</div>
-              </div>
-              <div class="kpi">
-                <div class="label">AHI (estimate)</div>
-                <div class="value" id="kpiAHI">—</div>
-                <div class="note" id="kpiAHINote">From annotations if found.</div>
-              </div>
-            </div>
           </div>
         </details>
 
         <details class="drawer workflowDrawer" id="deviceSettingsDrawer">
-          <summary>4. Device & Settings</summary>
+          <summary><svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Device<svg class="drawerChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></summary>
           <div class="drawerBody">
-            <div class="callout workflowStageNote" id="settingsSummaryNote"><b>Settings</b>Upload a ZIP to read device metadata and current therapy settings.</div>
+            <span hidden id="settingsSummaryNote"></span>
             <div class="kv stageMetricRows" id="settingsSummaryArea">
               <div class="row"><span>Device</span><span><b>Waiting for upload…</b></span></div>
             </div>
@@ -1831,9 +1748,9 @@
         </details>
 
         <details class="drawer workflowDrawer" id="advancedDrawer">
-          <summary>5. Advanced</summary>
+          <summary><svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Advanced<svg class="drawerChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></summary>
           <div class="drawerBody">
-            <div class="callout workflowStageNote" id="advancedSummary"><b>Advanced tools</b>Use these only if auto-detection missed something or you want the raw source/debug view.</div>
+            <span hidden id="advancedSummary"></span>
             <details class="subDrawer" id="sourcesDrawer">
               <summary>Data Sources</summary>
               <div class="drawerBody sourceDrawerBody">
@@ -2023,6 +1940,13 @@ const els = {
   sidebarLayoutOrganized: document.getElementById('sidebarLayoutOrganized'),
   sidebarLayoutClassic: document.getElementById('sidebarLayoutClassic'),
   floatingSidebarBtn: document.getElementById('floatingSidebarBtn'),
+  kpiStrip: document.getElementById('kpiStrip'),
+  nightsCountBadge: document.getElementById('nightsCountBadge'),
+  sessionDateBadge: document.getElementById('sessionDateBadge'),
+  kpiCardUsage: document.getElementById('kpiCardUsage'),
+  kpiCardLeak: document.getElementById('kpiCardLeak'),
+  kpiCardPressure: document.getElementById('kpiCardPressure'),
+  kpiCardAHI: document.getElementById('kpiCardAHI'),
   onboardingModal: document.getElementById('onboardingModal'),
   onboardingCloseBtn: document.getElementById('onboardingCloseBtn'),
   globalLoadOverlay: document.getElementById('globalLoadOverlay'),
@@ -2108,7 +2032,6 @@ const els = {
 const state = {
   jobId: 0,
   skipOnboarding: false,
-  sidebarLayoutMode: 'organized',
   sidebarPhase: 'empty',
 
   zip: null,
@@ -2385,23 +2308,19 @@ function currentSignalItems(){
   });
 }
 function renderLoadStage(){
-  if (!els.loadStageSummary) return;
-  let html = '<b>Start here</b>Choose a ZIP or load demo data. CalmCPAP will scan the archive, read settings, index anchored nights, and auto-load the latest night.';
+  const st = document.getElementById('statusText');
   if (state.demoSetId){
-    html = `<b>Demo ready</b>Embedded demo dataset ${state.demoSetId} is loaded. Use Available Nights to see the demo date and Current Night to review what was auto-loaded.`;
+    if (st) st.textContent = `Demo ${state.demoSetId}`;
   } else if (state.sidebarPhase === 'zip-loaded'){
-    html = `<b>ZIP scanned</b>${state.entries.length} file${state.entries.length === 1 ? '' : 's'} found. CalmCPAP is reading metadata and indexing anchored nights.`;
+    if (st) st.textContent = 'Scanned';
   } else if (state.sidebarPhase === 'nights-indexed'){
-    const dates = knownSessionDates();
-    html = dates.length
-      ? `<b>Nights indexed</b>${dates.length} anchored night${dates.length === 1 ? '' : 's'} found. The latest highlighted night will auto-load unless you pick another one.`
-      : '<b>No anchored nights found</b>This ZIP was scanned, but CalmCPAP could not find usable DATALOG/YYYYMMDD session folders.';
+    if (st) st.textContent = 'Indexed';
   } else if (state.sidebarPhase === 'night-loaded'){
-    html = '<b>ZIP ready</b>Available Nights shows what is in the archive, and Current Night shows the session that is currently loaded.';
+    if (st) st.textContent = 'Ready';
   } else if (state.sidebarPhase === 'error'){
-    html = '<b>Load failed</b>Check the progress message and debug log, then try another ZIP or load the demo data.';
+    if (st) st.textContent = 'Error';
   }
-  els.loadStageSummary.innerHTML = html;
+  if (els.loadStageSummary) els.loadStageSummary.innerHTML = '';
 }
 function renderAvailableStage(){
   if (!els.availableSummary) return;
@@ -2437,11 +2356,7 @@ function renderAvailableStage(){
   }
   els.availableSummary.innerHTML = summary;
   renderRowList(els.availableMetaArea, rows, 'Nights found');
-  renderChipGrid(els.availableSourceArea, (state.zipSourceSummary || []).map(item => ({
-    label: item.title,
-    detail: `${item.count} file${item.count === 1 ? '' : 's'}`,
-    active: item.pill !== 'reference'
-  })));
+  if (els.nightsCountBadge) els.nightsCountBadge.textContent = dates.length ? String(dates.length) : '';
 }
 function renderCurrentNightStage(){
   if (!els.currentNightStatus) return;
@@ -2480,6 +2395,10 @@ function renderCurrentNightStage(){
   els.currentNightStatus.innerHTML = summary;
   renderRowList(els.currentNightArea, rows, 'Loaded night');
   renderChipGrid(els.currentSignalArea, chips);
+  if (els.sessionDateBadge){
+    const dateLabel = sess ? (getSessionAnchorDate(sess) || state.selectedDateISO || '') : '';
+    els.sessionDateBadge.textContent = dateLabel;
+  }
 }
 function renderSettingsSummary(){
   if (!els.settingsSummaryArea || !els.settingsSummaryNote) return;
@@ -2742,6 +2661,7 @@ function resetAll(){
   els.kpiLeak95.textContent = '—'; els.kpiLeak95Note.textContent = 'Needs leak signal.';
   els.kpiP50.textContent = '—'; els.kpiP50Note.textContent = 'Needs pressure signal.';
   els.kpiAHI.textContent = '—'; els.kpiAHINote.textContent = 'From annotations if found.';
+  updateKPIStatus();
 
   els.overviewSummary.innerHTML = `<b>Status</b><br/>Upload a ZIP to begin.`;
   els.overviewNarrative.innerHTML = '';
@@ -2846,32 +2766,26 @@ function resizeAllPlots(){
   });
 }
 
-function setSidebarLayoutMode(mode='organized'){
-  const next = mode === 'classic' ? 'classic' : 'organized';
-  state.sidebarLayoutMode = next;
-  document.body.classList.toggle('sidebar-layout-organized', next === 'organized');
-  document.body.classList.toggle('sidebar-layout-classic', next === 'classic');
-  if (els.sidebarLayoutOrganized){
-    const active = next === 'organized';
-    els.sidebarLayoutOrganized.classList.toggle('active', active);
-    els.sidebarLayoutOrganized.setAttribute('aria-pressed', active ? 'true' : 'false');
-  }
-  if (els.sidebarLayoutClassic){
-    const active = next === 'classic';
-    els.sidebarLayoutClassic.classList.toggle('active', active);
-    els.sidebarLayoutClassic.setAttribute('aria-pressed', active ? 'true' : 'false');
-  }
-  setTimeout(resizeAllPlots, 40);
-}
+function setSidebarLayoutMode(){ setTimeout(resizeAllPlots, 40); }
 
 function updateSidebarToggleUI(collapsed){
-  els.toggleLeftBtn.textContent = collapsed ? 'Open Sidebar' : 'Hide Sidebar';
   els.toggleLeftBtn.setAttribute('aria-pressed', collapsed ? 'true' : 'false');
   if (els.floatingSidebarBtn){
     els.floatingSidebarBtn.style.display = collapsed ? 'inline-flex' : 'none';
     els.floatingSidebarBtn.textContent = 'Open Sidebar';
   }
   setTimeout(resizeAllPlots, 40);
+}
+
+function updateKPIStatus(){
+  const usage = parseFloat(els.kpiUsage?.textContent);
+  const leak = parseFloat(els.kpiLeak95?.textContent);
+  const pressure = parseFloat(els.kpiP50?.textContent);
+  const ahi = parseFloat(els.kpiAHI?.textContent);
+  if (els.kpiCardUsage) els.kpiCardUsage.dataset.status = isNaN(usage) ? '' : usage >= 4 ? 'good' : usage >= 2 ? 'warn' : 'bad';
+  if (els.kpiCardLeak) els.kpiCardLeak.dataset.status = isNaN(leak) ? '' : leak <= 24 ? 'good' : leak <= 40 ? 'warn' : 'bad';
+  if (els.kpiCardPressure) els.kpiCardPressure.dataset.status = isNaN(pressure) ? '' : '';
+  if (els.kpiCardAHI) els.kpiCardAHI.dataset.status = isNaN(ahi) ? '' : ahi < 5 ? 'good' : ahi < 15 ? 'warn' : 'bad';
 }
 
 els.toggleLeftBtn.addEventListener('click', ()=>{
@@ -5310,6 +5224,7 @@ function analyzeAndRender(){
   els.kpiP50Note.textContent = stats.p50 != null ? 'Median therapy pressure.' : 'Pressure not mapped.';
   els.kpiAHI.textContent = stats.ahiEst != null ? stats.ahiEst.toFixed(2) : '—';
   els.kpiAHINote.textContent = stats.ahiEst != null ? 'Estimated from apnea/hypopnea-like annotations.' : 'No qualifying annotations mapped/found.';
+  updateKPIStatus();
 
   renderPlotsAndText();
   renderComparePlot();
