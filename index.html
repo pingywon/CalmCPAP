@@ -253,8 +253,9 @@
       overflow:hidden;
     }
 
-    body.left-collapsed main{ grid-template-columns: 1fr; }
-    body.left-collapsed #leftPanelCard{ display:none; }
+    body.left-collapsed main{ grid-template-columns: 24px minmax(0, 1fr); }
+    body.left-collapsed #leftPanelCard{ display:flex !important; width:24px; min-width:24px; overflow:hidden; }
+    body.left-collapsed #leftSidebarBody, body.left-collapsed .sidebarPrivacyFooter{ display:none; }
 
     #leftPanelCard{
       position:relative;
@@ -350,21 +351,102 @@
       color: rgba(231,246,246,.92);
       text-transform: uppercase;
     }
-    .sidebarPrivacyHint{
+    /* Sidebar rail toggle */
+    .sidebarRail{
+      position:absolute;
+      top:50%;
+      right:-12px;
+      transform:translateY(-50%);
+      z-index:10;
+      width:22px;
+      height:44px;
+      border-radius:0 10px 10px 0;
+      border:1px solid rgba(255,255,255,.14);
+      border-left:none;
+      background:rgba(15,50,58,.92);
+      color:var(--muted);
+      cursor:pointer;
       display:flex;
       align-items:center;
-      gap:5px;
+      justify-content:center;
+      padding:0;
+      transition: background .12s ease, color .12s ease;
+    }
+    .sidebarRail:hover{ background:rgba(30,70,82,.98); color:var(--text); }
+    .sidebarRail svg{ width:14px; height:14px; display:block; transition: transform .2s ease; flex-shrink:0; }
+    body.left-collapsed .sidebarRail svg{ transform:rotate(180deg); }
+    /* Workflow steps */
+    .wfStep{ border-bottom:1px solid rgba(255,255,255,.06); }
+    .wfStepHead{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 14px;
+      cursor:pointer;
+      user-select:none;
+      transition: background .12s ease;
+    }
+    .wfStepHead:hover{ background:rgba(255,255,255,.04); }
+    .wfStepNum{
+      width:20px; height:20px;
+      border-radius:50%;
+      background:rgba(97,212,195,.18);
+      border:1px solid rgba(97,212,195,.38);
+      color:var(--accent);
       font-size:11px;
-      color:var(--muted);
-      letter-spacing:.15px;
+      font-weight:800;
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0;
     }
-    .sidebarPrivacyHint svg{ width:13px; height:13px; color:var(--accent); flex-shrink:0; }
-    #toggleLeftBtn.iconCollapse{
-      background:none; border:none; padding:6px; cursor:pointer; color:var(--muted); border-radius:8px; transition: background .12s ease, color .12s ease;
+    .wfStepLabel{
+      flex:1;
+      font-size:13px;
+      font-weight:600;
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      gap:6px;
     }
-    #toggleLeftBtn.iconCollapse:hover{ background:rgba(255,255,255,.06); color:var(--text); }
-    #toggleLeftBtn.iconCollapse svg{ width:16px; height:16px; display:block; transition: transform .2s ease; }
-    body.left-collapsed #toggleLeftBtn.iconCollapse svg{ transform:rotate(180deg); }
+    .wfStepLabel svg.drawerIcon{ width:15px; height:15px; color:var(--muted2); flex-shrink:0; }
+    .wfStepToggle{
+      background:none; border:none; padding:4px; cursor:pointer; color:var(--muted); border-radius:6px;
+      display:flex; align-items:center; justify-content:center;
+      transition: background .12s ease, color .12s ease;
+    }
+    .wfStepToggle:hover{ background:rgba(255,255,255,.06); color:var(--text); }
+    .wfStepToggle svg{ width:15px; height:15px; display:block; transition: transform .2s ease; }
+    .wfStep[data-open="false"] .wfStepToggle svg{ transform:rotate(-90deg); }
+    .wfStepBody{ padding:0 14px 12px; }
+    .wfStep[data-open="false"] .wfStepBody{ display:none; }
+    /* Advanced divider */
+    .wfAdvancedDivider{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 14px 4px;
+      font-size:10.5px;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.3px;
+      color:var(--muted2);
+      opacity:.65;
+    }
+    .wfAdvancedDivider::before,.wfAdvancedDivider::after{
+      content:''; flex:1; height:1px; background:rgba(255,255,255,.08);
+    }
+    /* Privacy footer */
+    .sidebarPrivacyFooter{
+      flex-shrink:0;
+      border-top:1px solid rgba(255,255,255,.06);
+      padding:8px 14px;
+      font-size:11px;
+      color:var(--muted2);
+      display:flex;
+      align-items:center;
+      gap:6px;
+      letter-spacing:.1px;
+    }
+    .sidebarPrivacyFooter svg{ width:12px; height:12px; color:var(--accent); flex-shrink:0; }
     .card .bd{
       padding:10px 0;
       overflow-y:auto;
@@ -413,14 +495,11 @@
     .hr{ height:1px; background: rgba(255,255,255,.08); margin:12px 0; }
     .tiny{ font-size:12px; color:var(--muted2); }
 
-    /* --- KPI Strip (always-visible at top of sidebar) --- */
+    /* --- KPI Strip (in right-panel info strip) --- */
     .kpiStrip{
       display:grid;
       grid-template-columns: repeat(4, 1fr);
       gap:6px;
-      padding:2px 14px 10px;
-      border-bottom:1px solid rgba(255,255,255,.06);
-      margin-bottom:2px;
     }
     .kpiCard{
       text-align:center;
@@ -442,6 +521,75 @@
     .kpiCard[data-status="warn"] .kpiValue{ color:rgba(255,204,102,1); }
     .kpiCard[data-status="bad"]{ border-color:rgba(255,107,122,.45); }
     .kpiCard[data-status="bad"] .kpiValue{ color:rgba(255,107,122,1); }
+
+    /* --- Info Strip (right panel, above chart tabs) --- */
+    .infoStrip{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+      padding:12px 14px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      background:rgba(11,42,49,.18);
+      flex:0 0 auto;
+    }
+    .infoStripRow{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    @media (max-width: 900px){
+      .infoStripRow{ grid-template-columns:1fr; }
+      .kpiStrip{ grid-template-columns: repeat(2, 1fr); }
+    }
+    .infoCard{
+      padding:10px 12px;
+      border-radius:12px;
+      background:rgba(11,42,49,.55);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .infoCardLabel{
+      font-size:11px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.3px;
+      color:rgba(151,235,223,.86);
+      margin-bottom:6px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .infoCardLabel svg{ width:13px; height:13px; flex-shrink:0; }
+    .infoCard .kv{ margin-top:0; }
+    .infoCard .kv .row{ padding:6px 8px; font-size:12px; }
+    .infoCard .signalChipGrid{ margin-top:6px; }
+
+    /* --- Advanced Tabs (sidebar) --- */
+    .advancedTabs{
+      display:flex;
+      gap:5px;
+      flex-wrap:wrap;
+      padding:0 0 8px;
+    }
+    .advancedTab{
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      color:rgba(231,246,246,.75);
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:11.5px;
+      font-weight:700;
+      user-select:none;
+      transition: filter .12s ease, transform .12s ease, background .12s ease;
+    }
+    .advancedTab:hover{ filter:brightness(1.1); transform:translateY(-1px); }
+    .advancedTab.active{
+      border-color:rgba(97,212,195,.5);
+      background:linear-gradient(135deg, rgba(97,212,195,.16), rgba(122,167,255,.12));
+      color:rgba(231,246,246,.96);
+    }
+    .advancedTabPanel{ display:none; }
+    .advancedTabPanel.active{ display:block; }
 
     .callout{
       padding:12px 12px;
@@ -925,12 +1073,11 @@
       background: linear-gradient(135deg, rgba(97,212,195,.18), rgba(122,167,255,.14));
       box-shadow: 0 10px 18px rgba(0,0,0,.18);
     }
-    .report{ min-height:0; overflow:auto; }
+    .report{ min-height:0; overflow:auto; flex:1 1 0; }
     .panel{ display:none; padding:14px; }
     .panel.active{ display:block; }
 
-    #floatingSidebarBtn{ box-shadow: var(--shadow); border:1px solid rgba(255,255,255,.2); background:rgba(11,42,49,.92); }
-    body.left-collapsed #floatingSidebarBtn{ display:inline-flex !important; }
+    #floatingSidebarBtn{ display:none !important; }
 
     .explain{
       display:grid;
@@ -1618,42 +1765,24 @@
   <main>
     <!-- LEFT -->
     <section class="card" id="leftPanelCard">
-      <div class="hd">
-        <span class="sidebarPrivacyHint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>Local</span>
-        <button class="iconCollapse" id="toggleLeftBtn" aria-pressed="false" aria-label="Toggle sidebar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></button>
-      </div>
+      <button class="sidebarRail" id="toggleLeftBtn" aria-label="Hide sidebar" title="Hide sidebar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
 
       <div class="bd sidebarBody" id="leftSidebarBody">
-        <div class="kpiStrip" id="kpiStrip">
-          <div class="kpiCard" id="kpiCardUsage">
-            <div class="kpiValue" id="kpiUsage">—</div>
-            <div class="kpiUnit">hrs</div>
-            <div class="kpiLabel">Usage</div>
-            <div class="kpiNote" id="kpiUsageNote">Select a day.</div>
-          </div>
-          <div class="kpiCard" id="kpiCardLeak">
-            <div class="kpiValue" id="kpiLeak95">—</div>
-            <div class="kpiUnit">L/min</div>
-            <div class="kpiLabel">Leak 95th</div>
-            <div class="kpiNote" id="kpiLeak95Note">Needs leak signal.</div>
-          </div>
-          <div class="kpiCard" id="kpiCardPressure">
-            <div class="kpiValue" id="kpiP50">—</div>
-            <div class="kpiUnit">cmH₂O</div>
-            <div class="kpiLabel">Pressure</div>
-            <div class="kpiNote" id="kpiP50Note">Needs pressure signal.</div>
-          </div>
-          <div class="kpiCard" id="kpiCardAHI">
-            <div class="kpiValue" id="kpiAHI">—</div>
-            <div class="kpiUnit">/hr</div>
-            <div class="kpiLabel">AHI</div>
-            <div class="kpiNote" id="kpiAHINote">From annotations if found.</div>
-          </div>
-        </div>
 
-        <details class="drawer workflowDrawer" id="statsDrawer">
-          <summary><svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Load Data<svg class="drawerChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></summary>
-          <div class="drawerBody">
+        <div class="wfStep workflowDrawer" id="statsDrawer" data-open="true">
+          <div class="wfStepHead">
+            <span class="wfStepNum">1</span>
+            <span class="wfStepLabel">
+              <svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              Load Data
+            </span>
+            <button class="wfStepToggle" type="button" aria-label="Toggle Load Data">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+          <div class="wfStepBody drawerBody">
             <div class="top-actions sidebarUploadActions">
               <label class="btn" id="chooseZipBtn" for="zipInput">Choose ZIP</label>
               <input id="zipInput" type="file" accept=".zip,application/zip" />
@@ -1674,11 +1803,21 @@
               <div class="tiny" style="margin-top:8px;" id="progressDetail">Upload a ZIP to begin.</div>
             </div>
           </div>
-        </details>
+        </div>
 
-        <details class="drawer workflowDrawer" id="calendarDrawer">
-          <summary><svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Nights<span class="drawerSummaryBadge" id="nightsCountBadge"></span><svg class="drawerChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></summary>
-          <div class="drawerBody calendarDrawerBody">
+        <div class="wfStep workflowDrawer" id="calendarDrawer" data-open="true">
+          <div class="wfStepHead">
+            <span class="wfStepNum">2</span>
+            <span class="wfStepLabel">
+              <svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Pick a Night
+              <span class="drawerSummaryBadge" id="nightsCountBadge"></span>
+            </span>
+            <button class="wfStepToggle" type="button" aria-label="Toggle Pick a Night">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+          <div class="wfStepBody drawerBody calendarDrawerBody">
             <span hidden id="availableSummary"></span>
             <div class="kv stageMetricRows" id="availableMetaArea">
               <div class="row"><span>Nights found</span><span><b>—</b></span></div>
@@ -1707,90 +1846,107 @@
               <div class="rangeHint" id="rangeHint">Upload ZIP to enable.</div>
             </div>
           </div>
-        </details>
+        </div>
 
-        <details class="drawer workflowDrawer" id="currentNightDrawer">
-          <summary><svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>Session<span class="drawerSummaryBadge" id="sessionDateBadge"></span><svg class="drawerChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></summary>
-          <div class="drawerBody">
-            <span hidden id="currentNightStatus"></span>
-            <div class="kv stageMetricRows" id="currentNightArea">
-              <div class="row"><span>Loaded night</span><span><b>—</b></span></div>
-            </div>
-            <div class="signalChipGrid" id="currentSignalArea"></div>
-          </div>
-        </details>
-
-        <details class="drawer workflowDrawer" id="deviceSettingsDrawer">
-          <summary><svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Device<svg class="drawerChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></summary>
-          <div class="drawerBody">
-            <span hidden id="settingsSummaryNote"></span>
-            <div class="kv stageMetricRows" id="settingsSummaryArea">
-              <div class="row"><span>Device</span><span><b>Waiting for upload…</b></span></div>
-            </div>
-            <details class="subDrawer" id="deviceDrawer">
-              <summary>Device details</summary>
-              <div class="drawerBody">
-                <div class="kv" id="idArea" style="margin-top:0;">
-                  <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
-                </div>
-              </div>
-            </details>
-
-            <details class="subDrawer" id="settingsDrawer">
-              <summary>Current settings details</summary>
-              <div class="drawerBody">
-                <div class="kv" id="settingsArea" style="margin-top:0;">
-                  <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
-                </div>
-              </div>
-            </details>
-          </div>
-        </details>
+        <div class="wfAdvancedDivider">Advanced</div>
 
         <details class="drawer workflowDrawer" id="advancedDrawer">
           <summary><svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Advanced<svg class="drawerChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></summary>
           <div class="drawerBody">
             <span hidden id="advancedSummary"></span>
-            <details class="subDrawer" id="sourcesDrawer">
-              <summary>Data Sources</summary>
-              <div class="drawerBody sourceDrawerBody">
+            <div class="advancedTabs" id="advancedTabStrip">
+              <button class="advancedTab active" data-adv-tab="sources" type="button">Data Sources</button>
+              <button class="advancedTab" data-adv-tab="mapping" type="button">Signal Mapping</button>
+              <button class="advancedTab" data-adv-tab="raw" type="button">Raw / Debug</button>
+              <button class="advancedTab" data-adv-tab="debuglog" type="button">Debug Log</button>
+            </div>
+            <div class="advancedTabPanel active" id="advPanel-sources">
+              <div class="sourceDrawerBody">
                 <div class="sourceHint">File families found for the current selection, what they contribute, and whether the report is using them.</div>
                 <div class="sourceGrid" id="sourceArea"></div>
               </div>
-            </details>
-
-            <details class="subDrawer" id="mappingDrawer">
-              <summary>Manual Signal Mapping</summary>
-              <div class="drawerBody mappingDrawerBody">
+            </div>
+            <div class="advancedTabPanel" id="advPanel-mapping">
+              <div class="mappingDrawerBody">
                 <div class="mapHint">If auto-mapping misses labels, pick one entry per signal type here from the deduplicated signal list.</div>
                 <div class="mapGrid" id="mapGrid"></div>
                 <div class="mappingActions">
                   <button class="btn ghost" id="applyMappingBtn" disabled>Apply mapping</button>
                 </div>
               </div>
-            </details>
-
-            <details class="subDrawer" id="rawDebugDrawer">
-              <summary>Raw / Debug Snapshot</summary>
-              <div class="drawerBody rawDebugDrawerBody">
+            </div>
+            <div class="advancedTabPanel" id="advPanel-raw">
+              <div class="rawDebugDrawerBody">
                 <div class="callout" id="rawSummary"></div>
                 <pre class="callout log" id="rawDump"></pre>
               </div>
-            </details>
-
-            <details class="subDrawer" id="debugLogDrawer">
-              <summary>Debug log</summary>
-              <div class="drawerBody">
-                <pre class="callout log" id="log"></pre>
-              </div>
-            </details>
+            </div>
+            <div class="advancedTabPanel" id="advPanel-debuglog">
+              <pre class="callout log" id="log"></pre>
+            </div>
           </div>
         </details>
+
+      </div>
+      <div class="sidebarPrivacyFooter">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        All data stays local — nothing leaves your browser
       </div>
     </section>
 
     <!-- RIGHT -->
     <section class="card" id="rightPanelCard">
+      <div class="infoStrip" id="infoStrip" style="display:none">
+        <div class="kpiStrip" id="kpiStrip">
+          <div class="kpiCard" id="kpiCardUsage">
+            <div class="kpiValue" id="kpiUsage">—</div>
+            <div class="kpiUnit">hrs</div>
+            <div class="kpiLabel">Usage</div>
+            <div class="kpiNote" id="kpiUsageNote">Select a day.</div>
+          </div>
+          <div class="kpiCard" id="kpiCardLeak">
+            <div class="kpiValue" id="kpiLeak95">—</div>
+            <div class="kpiUnit">L/min</div>
+            <div class="kpiLabel">Leak 95th</div>
+            <div class="kpiNote" id="kpiLeak95Note">Needs leak signal.</div>
+          </div>
+          <div class="kpiCard" id="kpiCardPressure">
+            <div class="kpiValue" id="kpiP50">—</div>
+            <div class="kpiUnit">cmH₂O</div>
+            <div class="kpiLabel">Pressure</div>
+            <div class="kpiNote" id="kpiP50Note">Needs pressure signal.</div>
+          </div>
+          <div class="kpiCard" id="kpiCardAHI">
+            <div class="kpiValue" id="kpiAHI">—</div>
+            <div class="kpiUnit">/hr</div>
+            <div class="kpiLabel">AHI</div>
+            <div class="kpiNote" id="kpiAHINote">From annotations if found.</div>
+          </div>
+        </div>
+        <div class="infoStripRow">
+          <div class="infoCard" id="infoCardSession">
+            <div class="infoCardLabel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>Session <span id="sessionDateBadge"></span></div>
+            <span hidden id="currentNightStatus"></span>
+            <div class="kv stageMetricRows" id="currentNightArea">
+              <div class="row"><span>Loaded night</span><span><b>—</b></span></div>
+            </div>
+            <div class="signalChipGrid" id="currentSignalArea"></div>
+          </div>
+          <div class="infoCard" id="infoCardDevice">
+            <div class="infoCardLabel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Device</div>
+            <span hidden id="settingsSummaryNote"></span>
+            <div class="kv stageMetricRows" id="settingsSummaryArea">
+              <div class="row"><span>Device</span><span><b>Waiting for upload…</b></span></div>
+            </div>
+            <div class="kv" id="idArea" style="margin-top:6px; display:none;">
+              <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
+            </div>
+            <div class="kv" id="settingsArea" style="margin-top:6px; display:none;">
+              <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="tabs" role="tablist" aria-label="Report sections" id="tablist">
         <button class="tab active" role="tab" aria-selected="true" tabindex="0" data-tab="overview" id="tab-overview" aria-controls="panel-overview">Overview</button>
         <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="leaks" id="tab-leaks" aria-controls="panel-leaks">Leak</button>
@@ -1873,7 +2029,7 @@
 </div>
 
 <div class="toast" id="toast"></div>
-<button id="floatingSidebarBtn" class="btn ghost" style="display:none; position:fixed; left:14px; bottom:18px; z-index:30;">Open Sidebar</button>
+<button id="floatingSidebarBtn" class="btn ghost" style="display:none !important; position:fixed; left:14px; bottom:18px; z-index:30;" aria-hidden="true">Open Sidebar</button>
 <div id="onboardingModal" class="modalShell" aria-hidden="true">
   <div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle" aria-describedby="onboardingLead">
     <div class="modalEyebrow">Read this first</div>
@@ -1980,10 +2136,9 @@ const els = {
   applyMappingBtn: document.getElementById('applyMappingBtn'),
   calendarDrawer: document.getElementById('calendarDrawer'),
   statsDrawer: document.getElementById('statsDrawer'),
-  currentNightDrawer: document.getElementById('currentNightDrawer'),
-  deviceSettingsDrawer: document.getElementById('deviceSettingsDrawer'),
   advancedDrawer: document.getElementById('advancedDrawer'),
-  sourcesDrawer: document.getElementById('sourcesDrawer'),
+  infoStrip: document.getElementById('infoStrip'),
+  advancedTabStrip: document.getElementById('advancedTabStrip'),
 
   kpiUsage: document.getElementById('kpiUsage'),
   kpiUsageNote: document.getElementById('kpiUsageNote'),
@@ -2132,13 +2287,17 @@ const WORKFLOW_SIGNAL_DEFS = [
   { key:'annotations', label:'Events' }
 ];
 function workflowDrawerSelector(){
-  return '#leftSidebarBody > details.workflowDrawer';
+  return '#leftSidebarBody > details.workflowDrawer, #leftSidebarBody > .wfStep.workflowDrawer';
 }
 function secondaryWorkflowDrawerIds(){
-  return ['deviceSettingsDrawer', 'advancedDrawer'];
+  return ['advancedDrawer'];
 }
 function collectOpenSecondaryDrawers(){
-  return secondaryWorkflowDrawerIds().filter(id => document.getElementById(id)?.hasAttribute('open'));
+  return secondaryWorkflowDrawerIds().filter(id => {
+    const el = document.getElementById(id);
+    if (!el) return false;
+    return el.classList.contains('wfStep') ? el.dataset.open === 'true' : el.hasAttribute('open');
+  });
 }
 function setSidebarPhase(phase){
   state.sidebarPhase = phase;
@@ -2416,7 +2575,7 @@ function renderSettingsSummary(){
     } else if (!state.currentSettings){
       note = '<b>Device found, settings missing</b>Identification.json loaded, but CurrentSettings.json was not available.';
     } else {
-      note = '<b>Device + settings ready</b>The summary below shows the main machine/profile context first. Open the detail drawers for the full lists.';
+      note = '<b>Device + settings ready</b>The summary below shows the main machine/profile context.';
     }
   }
   if (idMeta.headline) rows.push({ label:'Device', value: idMeta.headline });
@@ -2441,6 +2600,8 @@ function renderSidebarWorkflow(){
   renderAvailableStage();
   renderCurrentNightStage();
   renderSettingsSummary();
+  const hasData = state.current.session || state.identification || state.currentSettings || state.entries.length;
+  showInfoStrip(!!hasData);
   renderAdvancedSummary();
 }
 function log(line){
@@ -2448,7 +2609,7 @@ function log(line){
   const msg = typeof line === 'string' ? line : JSON.stringify(line, null, 2);
   state.notes.push(`[${stamp}] ${msg}`);
   els.log.textContent = state.notes.join('\n');
-  if (els.debugDrawer?.open){
+  if (els.debugDrawer?.classList?.contains('active')){
     els.log.scrollTop = els.log.scrollHeight;
   }
 }
@@ -2475,14 +2636,17 @@ function summarizeSeries(series){
 function setDrawerOpen(drawer, open=true){
   const el = typeof drawer === 'string' ? document.getElementById(drawer) : drawer;
   if (!el) return;
-  if (open) el.setAttribute('open', '');
-  else el.removeAttribute('open');
+  if (el.classList.contains('wfStep')){
+    el.dataset.open = open ? 'true' : 'false';
+  } else {
+    if (open) el.setAttribute('open', '');
+    else el.removeAttribute('open');
+  }
 }
 function collapseSidebarDrawers(exceptIds=[]){
   const keepOpen = new Set(Array.isArray(exceptIds) ? exceptIds : [exceptIds]);
   document.querySelectorAll(workflowDrawerSelector()).forEach(drawer => {
-    if (keepOpen.has(drawer.id)) drawer.setAttribute('open', '');
-    else drawer.removeAttribute('open');
+    setDrawerOpen(drawer, keepOpen.has(drawer.id));
   });
 }
 function autoOpenLoadStart(){
@@ -2491,7 +2655,26 @@ function autoOpenLoadStart(){
 }
 function autoOpenLoadComplete(){
   const keep = collectOpenSecondaryDrawers();
-  collapseSidebarDrawers([...keep, 'calendarDrawer', 'currentNightDrawer']);
+  collapseSidebarDrawers([...keep, 'calendarDrawer']);
+  showInfoStrip(true);
+}
+
+function showInfoStrip(show){
+  if (els.infoStrip) els.infoStrip.style.display = show ? '' : 'none';
+}
+
+/* --- Advanced tab switching --- */
+if (els.advancedTabStrip){
+  els.advancedTabStrip.addEventListener('click', e => {
+    const tab = e.target.closest('.advancedTab');
+    if (!tab) return;
+    const key = tab.dataset.advTab;
+    els.advancedTabStrip.querySelectorAll('.advancedTab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.advancedTabPanel').forEach(p => p.classList.remove('active'));
+    const panel = document.getElementById('advPanel-' + key);
+    if (panel) panel.classList.add('active');
+  });
 }
 
 const progressState = { step:'Idle', pct:0, detail:'', raf:0 };
@@ -2646,7 +2829,9 @@ function resetAll(){
   setTextIfPresent(els.zipStats, '—');
 
   els.idArea.innerHTML = `<div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>`;
+  els.idArea.style.display = 'none';
   els.settingsArea.innerHTML = `<div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>`;
+  els.settingsArea.style.display = 'none';
   els.sourceArea.innerHTML = '';
 
   els.loadRangeBtn.disabled = true;
@@ -2680,6 +2865,7 @@ function resetAll(){
 
   els.rawSummary.innerHTML = '';
   els.rawDump.textContent = '';
+  showInfoStrip(false);
   collapseSidebarDrawers([]);
   applyRangeMode('night');
   renderCalendar();
@@ -2769,11 +2955,10 @@ function resizeAllPlots(){
 function setSidebarLayoutMode(){ setTimeout(resizeAllPlots, 40); }
 
 function updateSidebarToggleUI(collapsed){
-  els.toggleLeftBtn.setAttribute('aria-pressed', collapsed ? 'true' : 'false');
-  if (els.floatingSidebarBtn){
-    els.floatingSidebarBtn.style.display = collapsed ? 'inline-flex' : 'none';
-    els.floatingSidebarBtn.textContent = 'Open Sidebar';
-  }
+  const label = collapsed ? 'Show sidebar' : 'Hide sidebar';
+  els.toggleLeftBtn.setAttribute('aria-label', label);
+  els.toggleLeftBtn.setAttribute('title', label);
+  if (els.floatingSidebarBtn) els.floatingSidebarBtn.style.display = 'none';
   setTimeout(resizeAllPlots, 40);
 }
 
@@ -2800,6 +2985,16 @@ els.floatingSidebarBtn?.addEventListener('click', ()=>{
 });
 window.addEventListener('resize', resizeAllPlots);
 setSidebarLayoutMode(state.sidebarLayoutMode);
+
+/* ---------- Workflow step toggles ---------- */
+document.querySelectorAll('.wfStep .wfStepHead').forEach(head => {
+  head.addEventListener('click', () => {
+    const step = head.closest('.wfStep');
+    if (!step) return;
+    const isOpen = step.dataset.open === 'true';
+    step.dataset.open = isOpen ? 'false' : 'true';
+  });
+});
 
 /* ---------- Picker ---------- */
 els.modeNight.addEventListener('click', ()=> applyRangeMode('night'));
@@ -3558,6 +3753,7 @@ async function readIdentification(entries, jobId){
     log('Identification.json not found.');
     state.identification = null;
     els.idArea.innerHTML = `<div class="row"><span>No Identification.json found</span><span class="badge">info</span></div>`;
+    els.idArea.style.display = '';
     progress('Reading Identification', 38, 'No Identification.json found.');
     renderSidebarWorkflow();
     return;
@@ -3572,10 +3768,12 @@ async function readIdentification(entries, jobId){
     state.identification = json;
     log(`Identification.json loaded: ${idEntry.path}`);
     renderIdentification(json);
+    els.idArea.style.display = '';
     progress('Reading Identification', 39, 'Identification.json loaded.');
   }catch(e){
     log('Identification.json present but failed to parse.');
     els.idArea.innerHTML = `<div class="row"><span>Identification.json parse failed</span><span class="badge">warn</span></div>`;
+    els.idArea.style.display = '';
     progress('Reading Identification', 39, 'Identification.json parse failed.');
     state.identification = null;
   }
@@ -3663,6 +3861,7 @@ async function readCurrentSettings(entries, jobId){
     log('CurrentSettings.json not found.');
     state.currentSettings = null;
     els.settingsArea.innerHTML = `<div class="row"><span>No CurrentSettings.json found</span><span class="badge">info</span></div>`;
+    els.settingsArea.style.display = '';
     renderSidebarWorkflow();
     return;
   }
@@ -3674,10 +3873,12 @@ async function readCurrentSettings(entries, jobId){
     state.currentSettings = json;
     log(`CurrentSettings.json loaded: ${csEntry.path}`);
     renderCurrentSettings(json);
+    els.settingsArea.style.display = '';
   }catch(_e){
     log('CurrentSettings.json present but failed to parse.');
     state.currentSettings = null;
     els.settingsArea.innerHTML = `<div class="row"><span>CurrentSettings.json parse failed</span><span class="badge">warn</span></div>`;
+    els.settingsArea.style.display = '';
   }
   renderSidebarWorkflow();
 }
