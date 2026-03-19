@@ -413,14 +413,11 @@
     .hr{ height:1px; background: rgba(255,255,255,.08); margin:12px 0; }
     .tiny{ font-size:12px; color:var(--muted2); }
 
-    /* --- KPI Strip (always-visible at top of sidebar) --- */
+    /* --- KPI Strip (in right-panel info strip) --- */
     .kpiStrip{
       display:grid;
       grid-template-columns: repeat(4, 1fr);
       gap:6px;
-      padding:2px 14px 10px;
-      border-bottom:1px solid rgba(255,255,255,.06);
-      margin-bottom:2px;
     }
     .kpiCard{
       text-align:center;
@@ -442,6 +439,75 @@
     .kpiCard[data-status="warn"] .kpiValue{ color:rgba(255,204,102,1); }
     .kpiCard[data-status="bad"]{ border-color:rgba(255,107,122,.45); }
     .kpiCard[data-status="bad"] .kpiValue{ color:rgba(255,107,122,1); }
+
+    /* --- Info Strip (right panel, above chart tabs) --- */
+    .infoStrip{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+      padding:12px 14px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      background:rgba(11,42,49,.18);
+      flex:0 0 auto;
+    }
+    .infoStripRow{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    @media (max-width: 900px){
+      .infoStripRow{ grid-template-columns:1fr; }
+      .kpiStrip{ grid-template-columns: repeat(2, 1fr); }
+    }
+    .infoCard{
+      padding:10px 12px;
+      border-radius:12px;
+      background:rgba(11,42,49,.55);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    .infoCardLabel{
+      font-size:11px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.3px;
+      color:rgba(151,235,223,.86);
+      margin-bottom:6px;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .infoCardLabel svg{ width:13px; height:13px; flex-shrink:0; }
+    .infoCard .kv{ margin-top:0; }
+    .infoCard .kv .row{ padding:6px 8px; font-size:12px; }
+    .infoCard .signalChipGrid{ margin-top:6px; }
+
+    /* --- Advanced Tabs (sidebar) --- */
+    .advancedTabs{
+      display:flex;
+      gap:5px;
+      flex-wrap:wrap;
+      padding:0 0 8px;
+    }
+    .advancedTab{
+      cursor:pointer;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(255,255,255,.04);
+      color:rgba(231,246,246,.75);
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:11.5px;
+      font-weight:700;
+      user-select:none;
+      transition: filter .12s ease, transform .12s ease, background .12s ease;
+    }
+    .advancedTab:hover{ filter:brightness(1.1); transform:translateY(-1px); }
+    .advancedTab.active{
+      border-color:rgba(97,212,195,.5);
+      background:linear-gradient(135deg, rgba(97,212,195,.16), rgba(122,167,255,.12));
+      color:rgba(231,246,246,.96);
+    }
+    .advancedTabPanel{ display:none; }
+    .advancedTabPanel.active{ display:block; }
 
     .callout{
       padding:12px 12px;
@@ -925,7 +991,7 @@
       background: linear-gradient(135deg, rgba(97,212,195,.18), rgba(122,167,255,.14));
       box-shadow: 0 10px 18px rgba(0,0,0,.18);
     }
-    .report{ min-height:0; overflow:auto; }
+    .report{ min-height:0; overflow:auto; flex:1 1 0; }
     .panel{ display:none; padding:14px; }
     .panel.active{ display:block; }
 
@@ -1624,33 +1690,6 @@
       </div>
 
       <div class="bd sidebarBody" id="leftSidebarBody">
-        <div class="kpiStrip" id="kpiStrip">
-          <div class="kpiCard" id="kpiCardUsage">
-            <div class="kpiValue" id="kpiUsage">—</div>
-            <div class="kpiUnit">hrs</div>
-            <div class="kpiLabel">Usage</div>
-            <div class="kpiNote" id="kpiUsageNote">Select a day.</div>
-          </div>
-          <div class="kpiCard" id="kpiCardLeak">
-            <div class="kpiValue" id="kpiLeak95">—</div>
-            <div class="kpiUnit">L/min</div>
-            <div class="kpiLabel">Leak 95th</div>
-            <div class="kpiNote" id="kpiLeak95Note">Needs leak signal.</div>
-          </div>
-          <div class="kpiCard" id="kpiCardPressure">
-            <div class="kpiValue" id="kpiP50">—</div>
-            <div class="kpiUnit">cmH₂O</div>
-            <div class="kpiLabel">Pressure</div>
-            <div class="kpiNote" id="kpiP50Note">Needs pressure signal.</div>
-          </div>
-          <div class="kpiCard" id="kpiCardAHI">
-            <div class="kpiValue" id="kpiAHI">—</div>
-            <div class="kpiUnit">/hr</div>
-            <div class="kpiLabel">AHI</div>
-            <div class="kpiNote" id="kpiAHINote">From annotations if found.</div>
-          </div>
-        </div>
-
         <details class="drawer workflowDrawer" id="statsDrawer">
           <summary><svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Load Data<svg class="drawerChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></summary>
           <div class="drawerBody">
@@ -1709,81 +1748,40 @@
           </div>
         </details>
 
-        <details class="drawer workflowDrawer" id="currentNightDrawer">
-          <summary><svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>Session<span class="drawerSummaryBadge" id="sessionDateBadge"></span><svg class="drawerChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></summary>
-          <div class="drawerBody">
-            <span hidden id="currentNightStatus"></span>
-            <div class="kv stageMetricRows" id="currentNightArea">
-              <div class="row"><span>Loaded night</span><span><b>—</b></span></div>
-            </div>
-            <div class="signalChipGrid" id="currentSignalArea"></div>
-          </div>
-        </details>
-
-        <details class="drawer workflowDrawer" id="deviceSettingsDrawer">
-          <summary><svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Device<svg class="drawerChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></summary>
-          <div class="drawerBody">
-            <span hidden id="settingsSummaryNote"></span>
-            <div class="kv stageMetricRows" id="settingsSummaryArea">
-              <div class="row"><span>Device</span><span><b>Waiting for upload…</b></span></div>
-            </div>
-            <details class="subDrawer" id="deviceDrawer">
-              <summary>Device details</summary>
-              <div class="drawerBody">
-                <div class="kv" id="idArea" style="margin-top:0;">
-                  <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
-                </div>
-              </div>
-            </details>
-
-            <details class="subDrawer" id="settingsDrawer">
-              <summary>Current settings details</summary>
-              <div class="drawerBody">
-                <div class="kv" id="settingsArea" style="margin-top:0;">
-                  <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
-                </div>
-              </div>
-            </details>
-          </div>
-        </details>
-
         <details class="drawer workflowDrawer" id="advancedDrawer">
           <summary><svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Advanced<svg class="drawerChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></summary>
           <div class="drawerBody">
             <span hidden id="advancedSummary"></span>
-            <details class="subDrawer" id="sourcesDrawer">
-              <summary>Data Sources</summary>
-              <div class="drawerBody sourceDrawerBody">
+            <div class="advancedTabs" id="advancedTabStrip">
+              <button class="advancedTab active" data-adv-tab="sources" type="button">Data Sources</button>
+              <button class="advancedTab" data-adv-tab="mapping" type="button">Signal Mapping</button>
+              <button class="advancedTab" data-adv-tab="raw" type="button">Raw / Debug</button>
+              <button class="advancedTab" data-adv-tab="debuglog" type="button">Debug Log</button>
+            </div>
+            <div class="advancedTabPanel active" id="advPanel-sources">
+              <div class="sourceDrawerBody">
                 <div class="sourceHint">File families found for the current selection, what they contribute, and whether the report is using them.</div>
                 <div class="sourceGrid" id="sourceArea"></div>
               </div>
-            </details>
-
-            <details class="subDrawer" id="mappingDrawer">
-              <summary>Manual Signal Mapping</summary>
-              <div class="drawerBody mappingDrawerBody">
+            </div>
+            <div class="advancedTabPanel" id="advPanel-mapping">
+              <div class="mappingDrawerBody">
                 <div class="mapHint">If auto-mapping misses labels, pick one entry per signal type here from the deduplicated signal list.</div>
                 <div class="mapGrid" id="mapGrid"></div>
                 <div class="mappingActions">
                   <button class="btn ghost" id="applyMappingBtn" disabled>Apply mapping</button>
                 </div>
               </div>
-            </details>
-
-            <details class="subDrawer" id="rawDebugDrawer">
-              <summary>Raw / Debug Snapshot</summary>
-              <div class="drawerBody rawDebugDrawerBody">
+            </div>
+            <div class="advancedTabPanel" id="advPanel-raw">
+              <div class="rawDebugDrawerBody">
                 <div class="callout" id="rawSummary"></div>
                 <pre class="callout log" id="rawDump"></pre>
               </div>
-            </details>
-
-            <details class="subDrawer" id="debugLogDrawer">
-              <summary>Debug log</summary>
-              <div class="drawerBody">
-                <pre class="callout log" id="log"></pre>
-              </div>
-            </details>
+            </div>
+            <div class="advancedTabPanel" id="advPanel-debuglog">
+              <pre class="callout log" id="log"></pre>
+            </div>
           </div>
         </details>
       </div>
@@ -1791,6 +1789,57 @@
 
     <!-- RIGHT -->
     <section class="card" id="rightPanelCard">
+      <div class="infoStrip" id="infoStrip" style="display:none">
+        <div class="kpiStrip" id="kpiStrip">
+          <div class="kpiCard" id="kpiCardUsage">
+            <div class="kpiValue" id="kpiUsage">—</div>
+            <div class="kpiUnit">hrs</div>
+            <div class="kpiLabel">Usage</div>
+            <div class="kpiNote" id="kpiUsageNote">Select a day.</div>
+          </div>
+          <div class="kpiCard" id="kpiCardLeak">
+            <div class="kpiValue" id="kpiLeak95">—</div>
+            <div class="kpiUnit">L/min</div>
+            <div class="kpiLabel">Leak 95th</div>
+            <div class="kpiNote" id="kpiLeak95Note">Needs leak signal.</div>
+          </div>
+          <div class="kpiCard" id="kpiCardPressure">
+            <div class="kpiValue" id="kpiP50">—</div>
+            <div class="kpiUnit">cmH₂O</div>
+            <div class="kpiLabel">Pressure</div>
+            <div class="kpiNote" id="kpiP50Note">Needs pressure signal.</div>
+          </div>
+          <div class="kpiCard" id="kpiCardAHI">
+            <div class="kpiValue" id="kpiAHI">—</div>
+            <div class="kpiUnit">/hr</div>
+            <div class="kpiLabel">AHI</div>
+            <div class="kpiNote" id="kpiAHINote">From annotations if found.</div>
+          </div>
+        </div>
+        <div class="infoStripRow">
+          <div class="infoCard" id="infoCardSession">
+            <div class="infoCardLabel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>Session <span id="sessionDateBadge"></span></div>
+            <span hidden id="currentNightStatus"></span>
+            <div class="kv stageMetricRows" id="currentNightArea">
+              <div class="row"><span>Loaded night</span><span><b>—</b></span></div>
+            </div>
+            <div class="signalChipGrid" id="currentSignalArea"></div>
+          </div>
+          <div class="infoCard" id="infoCardDevice">
+            <div class="infoCardLabel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Device</div>
+            <span hidden id="settingsSummaryNote"></span>
+            <div class="kv stageMetricRows" id="settingsSummaryArea">
+              <div class="row"><span>Device</span><span><b>Waiting for upload…</b></span></div>
+            </div>
+            <div class="kv" id="idArea" style="margin-top:6px; display:none;">
+              <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
+            </div>
+            <div class="kv" id="settingsArea" style="margin-top:6px; display:none;">
+              <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="tabs" role="tablist" aria-label="Report sections" id="tablist">
         <button class="tab active" role="tab" aria-selected="true" tabindex="0" data-tab="overview" id="tab-overview" aria-controls="panel-overview">Overview</button>
         <button class="tab" role="tab" aria-selected="false" tabindex="-1" data-tab="leaks" id="tab-leaks" aria-controls="panel-leaks">Leak</button>
@@ -1980,10 +2029,9 @@ const els = {
   applyMappingBtn: document.getElementById('applyMappingBtn'),
   calendarDrawer: document.getElementById('calendarDrawer'),
   statsDrawer: document.getElementById('statsDrawer'),
-  currentNightDrawer: document.getElementById('currentNightDrawer'),
-  deviceSettingsDrawer: document.getElementById('deviceSettingsDrawer'),
   advancedDrawer: document.getElementById('advancedDrawer'),
-  sourcesDrawer: document.getElementById('sourcesDrawer'),
+  infoStrip: document.getElementById('infoStrip'),
+  advancedTabStrip: document.getElementById('advancedTabStrip'),
 
   kpiUsage: document.getElementById('kpiUsage'),
   kpiUsageNote: document.getElementById('kpiUsageNote'),
@@ -2135,7 +2183,7 @@ function workflowDrawerSelector(){
   return '#leftSidebarBody > details.workflowDrawer';
 }
 function secondaryWorkflowDrawerIds(){
-  return ['deviceSettingsDrawer', 'advancedDrawer'];
+  return ['advancedDrawer'];
 }
 function collectOpenSecondaryDrawers(){
   return secondaryWorkflowDrawerIds().filter(id => document.getElementById(id)?.hasAttribute('open'));
@@ -2416,7 +2464,7 @@ function renderSettingsSummary(){
     } else if (!state.currentSettings){
       note = '<b>Device found, settings missing</b>Identification.json loaded, but CurrentSettings.json was not available.';
     } else {
-      note = '<b>Device + settings ready</b>The summary below shows the main machine/profile context first. Open the detail drawers for the full lists.';
+      note = '<b>Device + settings ready</b>The summary below shows the main machine/profile context.';
     }
   }
   if (idMeta.headline) rows.push({ label:'Device', value: idMeta.headline });
@@ -2441,6 +2489,8 @@ function renderSidebarWorkflow(){
   renderAvailableStage();
   renderCurrentNightStage();
   renderSettingsSummary();
+  const hasData = state.current.session || state.identification || state.currentSettings || state.entries.length;
+  showInfoStrip(!!hasData);
   renderAdvancedSummary();
 }
 function log(line){
@@ -2448,7 +2498,7 @@ function log(line){
   const msg = typeof line === 'string' ? line : JSON.stringify(line, null, 2);
   state.notes.push(`[${stamp}] ${msg}`);
   els.log.textContent = state.notes.join('\n');
-  if (els.debugDrawer?.open){
+  if (els.debugDrawer?.classList?.contains('active')){
     els.log.scrollTop = els.log.scrollHeight;
   }
 }
@@ -2491,7 +2541,26 @@ function autoOpenLoadStart(){
 }
 function autoOpenLoadComplete(){
   const keep = collectOpenSecondaryDrawers();
-  collapseSidebarDrawers([...keep, 'calendarDrawer', 'currentNightDrawer']);
+  collapseSidebarDrawers([...keep, 'calendarDrawer']);
+  showInfoStrip(true);
+}
+
+function showInfoStrip(show){
+  if (els.infoStrip) els.infoStrip.style.display = show ? '' : 'none';
+}
+
+/* --- Advanced tab switching --- */
+if (els.advancedTabStrip){
+  els.advancedTabStrip.addEventListener('click', e => {
+    const tab = e.target.closest('.advancedTab');
+    if (!tab) return;
+    const key = tab.dataset.advTab;
+    els.advancedTabStrip.querySelectorAll('.advancedTab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    document.querySelectorAll('.advancedTabPanel').forEach(p => p.classList.remove('active'));
+    const panel = document.getElementById('advPanel-' + key);
+    if (panel) panel.classList.add('active');
+  });
 }
 
 const progressState = { step:'Idle', pct:0, detail:'', raf:0 };
@@ -2646,7 +2715,9 @@ function resetAll(){
   setTextIfPresent(els.zipStats, '—');
 
   els.idArea.innerHTML = `<div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>`;
+  els.idArea.style.display = 'none';
   els.settingsArea.innerHTML = `<div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>`;
+  els.settingsArea.style.display = 'none';
   els.sourceArea.innerHTML = '';
 
   els.loadRangeBtn.disabled = true;
@@ -2680,6 +2751,7 @@ function resetAll(){
 
   els.rawSummary.innerHTML = '';
   els.rawDump.textContent = '';
+  showInfoStrip(false);
   collapseSidebarDrawers([]);
   applyRangeMode('night');
   renderCalendar();
@@ -3558,6 +3630,7 @@ async function readIdentification(entries, jobId){
     log('Identification.json not found.');
     state.identification = null;
     els.idArea.innerHTML = `<div class="row"><span>No Identification.json found</span><span class="badge">info</span></div>`;
+    els.idArea.style.display = '';
     progress('Reading Identification', 38, 'No Identification.json found.');
     renderSidebarWorkflow();
     return;
@@ -3572,10 +3645,12 @@ async function readIdentification(entries, jobId){
     state.identification = json;
     log(`Identification.json loaded: ${idEntry.path}`);
     renderIdentification(json);
+    els.idArea.style.display = '';
     progress('Reading Identification', 39, 'Identification.json loaded.');
   }catch(e){
     log('Identification.json present but failed to parse.');
     els.idArea.innerHTML = `<div class="row"><span>Identification.json parse failed</span><span class="badge">warn</span></div>`;
+    els.idArea.style.display = '';
     progress('Reading Identification', 39, 'Identification.json parse failed.');
     state.identification = null;
   }
@@ -3663,6 +3738,7 @@ async function readCurrentSettings(entries, jobId){
     log('CurrentSettings.json not found.');
     state.currentSettings = null;
     els.settingsArea.innerHTML = `<div class="row"><span>No CurrentSettings.json found</span><span class="badge">info</span></div>`;
+    els.settingsArea.style.display = '';
     renderSidebarWorkflow();
     return;
   }
@@ -3674,10 +3750,12 @@ async function readCurrentSettings(entries, jobId){
     state.currentSettings = json;
     log(`CurrentSettings.json loaded: ${csEntry.path}`);
     renderCurrentSettings(json);
+    els.settingsArea.style.display = '';
   }catch(_e){
     log('CurrentSettings.json present but failed to parse.');
     state.currentSettings = null;
     els.settingsArea.innerHTML = `<div class="row"><span>CurrentSettings.json parse failed</span><span class="badge">warn</span></div>`;
+    els.settingsArea.style.display = '';
   }
   renderSidebarWorkflow();
 }
