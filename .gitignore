@@ -17,3 +17,4 @@ Thumbs.db
 screenshots/
 *.png
 *.jpg
+.vscode/settings.json

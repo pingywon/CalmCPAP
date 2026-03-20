@@ -563,6 +563,18 @@
     }
     .deviceBody{ overflow:hidden; }
 
+    #sessionToggle{ cursor:pointer; user-select:none; }
+    #sessionToggle:hover{ color:var(--accent); }
+    .sessionChevron{
+      width:12px; height:12px; flex-shrink:0; margin-left:auto;
+      transition:transform .2s ease;
+      transform:rotate(0deg);
+    }
+    #sessionToggle[aria-expanded="true"] .sessionChevron{
+      transform:rotate(90deg);
+    }
+    .sessionBody{ overflow:hidden; }
+
     #currentSettingsToggle{ cursor:pointer; user-select:none; }
     #currentSettingsToggle:hover{ color:var(--accent); }
     .csChevron{
@@ -1979,10 +1991,12 @@
           <div class="draggableComponent" data-component-id="session" draggable="true">
             <div class="dragHandle" title="Drag to reorder">&#x2261;</div>
             <div class="infoCard" id="infoCardSession">
-              <div class="infoCardLabel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>Session <span id="sessionDateBadge"></span></div>
-              <span hidden id="currentNightStatus"></span>
-              <div class="kv stageMetricRows" id="currentNightArea">
-                <div class="row"><span>Loaded night</span><span><b>—</b></span></div>
+              <div class="infoCardLabel" id="sessionToggle" role="button" tabindex="0" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>Session <span id="sessionDateBadge"></span><svg class="sessionChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+              <div class="sessionBody" id="sessionBody" style="display:none">
+                <span hidden id="currentNightStatus"></span>
+                <div class="kv stageMetricRows" id="currentNightArea">
+                  <div class="row"><span>Loaded night</span><span><b>—</b></span></div>
+                </div>
               </div>
             </div>
           </div>
@@ -2413,36 +2427,58 @@ function collectIdentificationRows(obj, limit = 14){
   }
   return rows;
 }
-function collectSettingRows(obj, limit = 14){
+function formatSettingsValue(key, value){
+  const v = shortValue(value);
+  if (/temperature/i.test(key) && typeof value === 'number'){
+    const f = (value * 9/5 + 32).toFixed(1);
+    return `${value}°C (${f}°F)`;
+  }
+  return v;
+}
+function collectSettingRows(obj, limit){
   const sp = obj?.FlowGenerator?.SettingProfiles;
   const activeName = sp?.ActiveProfiles?.TherapyProfile || '';
   const therapyProfiles = sp?.TherapyProfiles || {};
   const featureProfiles = sp?.FeatureProfiles || {};
   const activeTherapy = activeName && therapyProfiles[activeName] ? therapyProfiles[activeName] : null;
   const rows = [];
+  const genericWords = new Set(['features','settings','profile','profiles','configuration','feature']);
+
+  // Active therapy profile and its settings
   if (activeName) rows.push({ label:'Active Therapy Profile', value: activeName });
   if (activeTherapy){
     for (const [key, value] of Object.entries(activeTherapy)){
-      rows.push({ label: formatSettingsLabel(key), value: shortValue(value) });
-      if (rows.length >= limit) return rows.slice(0, limit);
+      rows.push({ label: formatSettingsLabel(key), value: formatSettingsValue(key, value) });
     }
   }
-  const featureNames = Array.isArray(sp?.ActiveProfiles?.FeatureProfiles) ? sp.ActiveProfiles.FeatureProfiles : [];
-  const genericWords = new Set(['features','settings','profile','profiles','configuration','feature']);
-  for (const name of featureNames.slice(0, 10)){
+
+  // All feature profiles — iterate ALL, show ALL settings per feature
+  const featureNames = Array.isArray(sp?.ActiveProfiles?.FeatureProfiles) ? sp.ActiveProfiles.FeatureProfiles : Object.keys(featureProfiles);
+  for (const name of featureNames){
     const cfg = featureProfiles[name];
     if (!cfg || typeof cfg !== 'object') continue;
     const featureLabel = formatSettingsLabel(name);
     const sigWords = featureLabel.split(/\s+/).filter(w => !genericWords.has(w.toLowerCase()));
-    const vals = Object.entries(cfg).slice(0, 2).map(([key, value]) => {
-      let kl = formatSettingsLabel(key);
-      for (const w of sigWords) kl = kl.replace(new RegExp('\\b' + w + '\\b', 'gi'), '').replace(/\s+/g, ' ').trim();
-      return kl ? `${kl}: ${shortValue(value)}` : shortValue(value);
-    }).join(' \u2022 ');
-    rows.push({ label: featureLabel, value: vals || 'Configured' });
-    if (rows.length >= limit) break;
+
+    for (const [key, value] of Object.entries(cfg)){
+      if (value !== null && typeof value === 'object'){
+        // Nested objects (e.g., ReminderFeature.ReminderMask)
+        const flat = flattenObject(value, 3);
+        let nestedLabel = formatSettingsLabel(key);
+        for (const w of sigWords) nestedLabel = nestedLabel.replace(new RegExp('\\b' + w + '\\b', 'gi'), '').replace(/\s+/g, ' ').trim();
+        const parts = Object.entries(flat)
+          .filter(([,v]) => typeof v !== 'object')
+          .map(([k, v]) => `${formatSettingsLabel(k)}: ${formatSettingsValue(k, v)}`);
+        rows.push({ label: `${featureLabel} — ${nestedLabel || key}`, value: parts.join(' • ') || 'Configured' });
+      } else {
+        let kl = formatSettingsLabel(key);
+        for (const w of sigWords) kl = kl.replace(new RegExp('\\b' + w + '\\b', 'gi'), '').replace(/\s+/g, ' ').trim();
+        rows.push({ label: kl ? `${featureLabel} — ${kl}` : featureLabel, value: formatSettingsValue(key, value) });
+      }
+    }
   }
-  return rows.slice(0, limit);
+
+  return limit ? rows.slice(0, limit) : rows;
 }
 function currentSignalItems(){
   return WORKFLOW_SIGNAL_DEFS.map(def => {
@@ -2978,6 +3014,21 @@ els.floatingSidebarBtn?.addEventListener('click', ()=>{
   deviceToggle.addEventListener('click', toggleDevice);
   deviceToggle.addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleDevice(); }
+  });
+})();
+
+(function(){
+  const sessToggle = document.getElementById('sessionToggle');
+  const sessBody = document.getElementById('sessionBody');
+  if (!sessToggle || !sessBody) return;
+  function toggleSession(){
+    const expanded = sessToggle.getAttribute('aria-expanded') === 'true';
+    sessToggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+    sessBody.style.display = expanded ? 'none' : '';
+  }
+  sessToggle.addEventListener('click', toggleSession);
+  sessToggle.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleSession(); }
   });
 })();
 
@@ -3918,7 +3969,7 @@ async function readCurrentSettings(entries, jobId){
 }
 
 function renderCurrentSettings(obj){
-  const rows = collectSettingRows(obj, 14);
+  const rows = collectSettingRows(obj);
   if (!rows.length){
     els.settingsArea.innerHTML = `<div class="row"><span>No TherapyProfiles settings found</span><span class="badge">json</span></div>`;
   } else {
@@ -4652,12 +4703,18 @@ async function readSelectedSignalsFromEDF(file, mappingKeys, maxPoints=90000){
         const pathMatches = !mappedPath || mappedPath === file.path;
         if (pathMatches){
           sig = header.signals.find(s => s.index === idx) || null;
+        } else {
+          // Different file — match by signal index + label similarity for same file type
+          const mappedBase = (mappedPath.match(/_([A-Z]{2,3})\.edf$/i) || [])[1] || '';
+          const fileBase = (file.path.match(/_([A-Z]{2,3})\.edf$/i) || [])[1] || '';
+          if (mappedBase && mappedBase.toLowerCase() === fileBase.toLowerCase()){
+            sig = header.signals.find(s => s.index === idx) || null;
+          }
         }
       }
     }
 
     if (!sig && !mappedStr.includes('::')){
-      // Backward compatibility with older saved mapping values based on normalized labels.
       sig = header.signals.find(s => normalizeLabelLoose(s.label) === mappedStr || normalizeLabel(s.label) === mappedStr) || null;
     }
     if (sig) wanted[k] = sig;

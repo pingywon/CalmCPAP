@@ -1,5 +1,6 @@
 {
   "git.openRepositoryInParentFolders": "never",
   "window.title": "${dirty}${activeEditorShort}${separator}${rootName}${separator}${rootPath}",
-  "claudeCodeChat.permissions.yoloMode": true
+  "claudeCodeChat.permissions.yoloMode": true,
+  "livePreview.defaultPreviewPath": "/index.html"
 }
