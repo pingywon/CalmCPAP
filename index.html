@@ -192,6 +192,18 @@
       gap:8px;
       justify-content:flex-start;
     }
+    .sidebarUploadBar{
+      display:flex;
+      gap:8px;
+      padding:10px 14px;
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .sidebarUploadBar .btn{
+      flex:1;
+      justify-content:center;
+      font-size:11.5px;
+      padding:8px 10px;
+    }
     .workflowMetaBadges{
       display:flex;
       gap:8px;
@@ -400,12 +412,7 @@
       color: rgba(231,246,246,.92);
       text-transform: uppercase;
     }
-    #toggleLeftBtn.iconCollapse{
-      background:none; border:none; padding:4px 10px; cursor:pointer; color:var(--muted); border-radius:8px; transition: background .12s ease, color .12s ease;
-      font-size:11px; text-transform:uppercase; letter-spacing:.4px; font-weight:700; font-family:inherit;
-    }
-    #toggleLeftBtn.iconCollapse:hover{ background:rgba(255,255,255,.06); color:var(--text); }
-    .card .bd{
+.card .bd{
       padding:10px 0;
       overflow-y:auto;
       overflow-x:hidden;
@@ -539,8 +546,10 @@
     }
     .infoCardLabel svg{ width:13px; height:13px; flex-shrink:0; }
     .infoCard .kv{ margin-top:0; }
-    .infoCard .kv .row{ padding:6px 8px; font-size:12px; }
+    .infoCard .kv .row{ display:grid; grid-template-columns:auto 1fr; gap:6px; padding:4px 6px; font-size:12px; }
+    .infoCard .kv .row b{ text-align:left; }
     .infoCard .signalChipGrid{ margin-top:6px; }
+    .draggableComponent .infoCard{ padding-right:34px; }
 
     #deviceToggle{ cursor:pointer; user-select:none; }
     #deviceToggle:hover{ color:var(--accent); }
@@ -581,6 +590,8 @@
     }
     .advancedTabPanel{ display:none; }
     .advancedTabPanel.active{ display:block; }
+
+    #overviewSummary{ font-size:14px; padding:16px; line-height:1.6; }
 
     .callout{
       padding:12px 12px;
@@ -695,23 +706,23 @@
       display:grid;
       gap:6px;
       margin-top:10px;
-      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));
     }
     .eventsLegendRow{
       display:grid;
       grid-template-columns:auto 1fr;
-      gap:8px;
+      gap:6px;
       align-items:start;
-      padding:8px 10px;
+      padding:4px 6px;
       border-radius:11px;
       background: rgba(11,42,49,.52);
       border:1px solid rgba(255,255,255,.07);
     }
     .eventsLegendChip{
-      width:12px;
-      height:12px;
+      width:9px;
+      height:9px;
       border-radius:999px;
-      margin-top:4px;
+      margin-top:3px;
       box-shadow: inset 0 0 0 1px rgba(0,0,0,.28);
     }
     .eventsLegendMain{
@@ -728,13 +739,13 @@
     }
     .eventsLegendTitle{
       color:rgba(231,246,246,.97);
-      font-size:12.5px;
+      font-size:11.5px;
       font-weight:900;
       min-width:0;
     }
     .eventsLegendSub{
       color:var(--muted2);
-      font-size:11.5px;
+      font-size:10.5px;
       line-height:1.3;
     }
     .eventsMetaBadge{
@@ -742,12 +753,12 @@
       align-items:center;
       justify-content:center;
       white-space:nowrap;
-      padding:3px 8px;
+      padding:2px 5px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.05);
       color:rgba(231,246,246,.95);
-      font-size:10.5px;
+      font-size:9.5px;
       font-weight:800;
       letter-spacing:.16px;
     }
@@ -1068,8 +1079,7 @@
     .panel{ display:none; padding:14px; }
     .panel.active{ display:block; }
 
-    #floatingSidebarBtn{ box-shadow: var(--shadow); border:1px solid rgba(255,255,255,.2); background:rgba(11,42,49,.92); }
-    body.left-collapsed #floatingSidebarBtn{ display:inline-flex !important; }
+    #floatingSidebarBtn{ box-shadow: var(--shadow); border:1px solid rgba(255,255,255,.2); background:rgba(11,42,49,.92); display:inline-flex; }
 
     .explain{
       display:grid;
@@ -1757,35 +1767,20 @@
   <main>
     <!-- LEFT -->
     <section class="card" id="leftPanelCard">
-      <div class="hd">
-        <button class="iconCollapse" id="toggleLeftBtn" aria-pressed="false" aria-label="Toggle sidebar"><span class="toggleLabel">Close Sidebar</span></button>
-      </div>
-
       <div class="bd sidebarBody" id="leftSidebarBody">
-        <details class="drawer workflowDrawer" id="statsDrawer">
-          <summary><svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>Load Data<svg class="drawerChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></summary>
-          <div class="drawerBody">
-            <div class="top-actions sidebarUploadActions">
-              <label class="btn" id="chooseZipBtn" for="zipInput">Choose ZIP</label>
-              <input id="zipInput" type="file" accept=".zip,application/zip" />
-              <button class="btn ghost" id="demoBtn" type="button">Load demo</button>
-            </div>
-            <div class="workflowMetaBadges">
-              <span class="badge" id="statusBadge"><span id="statusText">Waiting</span></span>
-              <span class="badge" id="fileBadge">No file</span>
-              <span class="badge" id="zipStats">—</span>
-            </div>
-            <span hidden id="loadStageSummary"></span>
-            <div class="progressWrap">
-              <div class="progressTop">
-                <div class="tiny"><b id="progressStep">Idle</b></div>
-                <div class="badge" id="progressPct">0%</div>
-              </div>
-              <div class="bar"><div id="progressBar"></div></div>
-              <div class="tiny" style="margin-top:8px;" id="progressDetail">Upload a ZIP to begin.</div>
-            </div>
-          </div>
-        </details>
+        <div class="sidebarUploadBar">
+          <label class="btn ghost" id="chooseZipBtn" for="zipInput">Choose ZIP</label>
+          <input id="zipInput" type="file" accept=".zip,application/zip" />
+          <button class="btn ghost" id="demoBtn" type="button">Load demo</button>
+        </div>
+        <span hidden id="statusBadge"><span id="statusText">Waiting</span></span>
+        <span hidden id="fileBadge">No file</span>
+        <span hidden id="zipStats">—</span>
+        <span hidden id="loadStageSummary"></span>
+        <span hidden id="progressStep">Idle</span>
+        <span hidden id="progressPct">0%</span>
+        <span hidden id="progressBar"></span>
+        <span hidden id="progressDetail">Upload a ZIP to begin.</span>
 
         <details class="drawer workflowDrawer" id="calendarDrawer">
           <summary><svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Nights<span class="drawerSummaryBadge" id="nightsCountBadge"></span><svg class="drawerChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></summary>
@@ -1879,7 +1874,7 @@
       <div class="report" id="reportArea">
         <div class="panel active" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview">
           <div class="explain">
-            <div class="callout" id="overviewExplain">
+            <div class="callout" id="overviewExplain" style="display:none">
               <b>How this report works</b><br/>
               Upload an AirSense 11 SD ZIP (raw SD structure), pick a day, and we’ll plot + explain leak/pressure/flow (if present).
               Mapping controls handle label differences.
@@ -1982,7 +1977,7 @@
           <div class="draggableComponent" data-component-id="device" draggable="true">
             <div class="dragHandle" title="Drag to reorder">&#x2261;</div>
             <div class="infoCard" id="infoCardDevice">
-              <div class="infoCardLabel" id="deviceToggle" role="button" tabindex="0" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Device<svg class="deviceChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+              <div class="infoCardLabel" id="deviceToggle" role="button" tabindex="0" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Device Info<svg class="deviceChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
               <span hidden id="settingsSummaryNote"></span>
               <div class="deviceBody" id="deviceBody" style="display:none">
                 <div class="kv stageMetricRows" id="settingsSummaryArea">
@@ -2005,7 +2000,8 @@
 </div>
 
 <div class="toast" id="toast"></div>
-<button id="floatingSidebarBtn" class="btn ghost" style="display:none; position:fixed; left:14px; bottom:18px; z-index:30;">Open Sidebar</button>
+<button id="floatingSidebarBtn" class="btn ghost" style="position:fixed; left:14px; top:60px; z-index:30;">Close Sidebar</button>
+<!-- ONBOARDING MODAL — disabled for redesign
 <div id="onboardingModal" class="modalShell" aria-hidden="true">
   <div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle" aria-describedby="onboardingLead">
     <div class="modalEyebrow">Read this first</div>
@@ -2037,6 +2033,7 @@
     </div>
   </div>
 </div>
+-->
 
 <div id="globalLoadOverlay" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:min(720px, 84vw); z-index:45; background:rgba(11,42,49,.95); border:1px solid rgba(255,255,255,.22); border-radius:14px; padding:10px 12px; box-shadow:0 20px 36px rgba(0,0,0,.35);">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
@@ -2068,7 +2065,6 @@ const els = {
   settingsSummaryNote: document.getElementById('settingsSummaryNote'),
   advancedSummary: document.getElementById('advancedSummary'),
 
-  toggleLeftBtn: document.getElementById('toggleLeftBtn'),
   sidebarLayoutOrganized: document.getElementById('sidebarLayoutOrganized'),
   sidebarLayoutClassic: document.getElementById('sidebarLayoutClassic'),
   floatingSidebarBtn: document.getElementById('floatingSidebarBtn'),
@@ -2901,7 +2897,7 @@ function closeOnboarding(){
   els.onboardingModal.setAttribute('aria-hidden','true');
 }
 els.onboardingCloseBtn?.addEventListener('click', closeOnboarding);
-setTimeout(maybeShowOnboarding, 120);
+// setTimeout(maybeShowOnboarding, 120); // ONBOARDING disabled for redesign
 
 els.zipInput.addEventListener('change', ()=>{
   const f = els.zipInput.files?.[0];
@@ -2917,12 +2913,8 @@ function resizeAllPlots(){
 function setSidebarLayoutMode(){ setTimeout(resizeAllPlots, 40); }
 
 function updateSidebarToggleUI(collapsed){
-  els.toggleLeftBtn.setAttribute('aria-pressed', collapsed ? 'true' : 'false');
-  const label = els.toggleLeftBtn.querySelector('.toggleLabel');
-  if (label) label.textContent = collapsed ? 'Open Sidebar' : 'Close Sidebar';
   if (els.floatingSidebarBtn){
-    els.floatingSidebarBtn.style.display = collapsed ? 'inline-flex' : 'none';
-    els.floatingSidebarBtn.textContent = 'Open Sidebar';
+    els.floatingSidebarBtn.textContent = collapsed ? 'Open Sidebar' : 'Close Sidebar';
   }
   setTimeout(resizeAllPlots, 40);
 }
@@ -2938,15 +2930,11 @@ function updateKPIStatus(){
   if (els.kpiCardAHI) els.kpiCardAHI.dataset.status = isNaN(ahi) ? '' : ahi < 5 ? 'good' : ahi < 15 ? 'warn' : 'bad';
 }
 
-els.toggleLeftBtn.addEventListener('click', ()=>{
-  const collapsed = document.body.classList.toggle('left-collapsed');
-  updateSidebarToggleUI(collapsed);
-});
 els.sidebarLayoutOrganized?.addEventListener('click', ()=> setSidebarLayoutMode('organized'));
 els.sidebarLayoutClassic?.addEventListener('click', ()=> setSidebarLayoutMode('classic'));
 els.floatingSidebarBtn?.addEventListener('click', ()=>{
-  document.body.classList.remove('left-collapsed');
-  updateSidebarToggleUI(false);
+  const collapsed = document.body.classList.toggle('left-collapsed');
+  updateSidebarToggleUI(collapsed);
 });
 
 (function(){
@@ -5452,7 +5440,7 @@ const COMPARE_SERIES_DEFS = [
   { key:'snore', label:'Snore', color:'#f59e0b' },
   { key:'respRate', label:'Respiratory Rate', color:'#84cc16' },
   { key:'tidalVolume', label:'Tidal Volume', color:'#8b5cf6' },
-  { key:'epr', label:'Exhalation Pressure', color:'#06b6d4' },
+  { key:'epr', label:'Exhalation Pressure', color:'#f59e0b' },
   { key:'pulse', label:'Pulse', color:'#f97316' },
   { key:'spo2', label:'SpO₂', color:'#ec4899' }
 ];
@@ -5704,7 +5692,7 @@ function renderPlotsAndText(){
       type:'scatter',
       mode:'lines',
       name:'Exhalation Pressure',
-      line:{ color:'rgba(141,211,255,.95)', width:2.1 },
+      line:{ color:'#f59e0b', width:2.1 },
       hovertemplate:'%{x|%Y-%m-%d %H:%M:%S}<br><b>Exhalation Pressure: %{y:.2f}</b><extra></extra>'
     });
     Plotly.newPlot(els.plotEpr, eprTraces, {
