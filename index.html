@@ -345,7 +345,7 @@
         grid-template-columns:1fr;
         grid-template-areas:
           "meta"
-          "brand"
+          "brand";
         justify-items:stretch;
         padding:16px;
       }
@@ -562,6 +562,18 @@
       transform:rotate(90deg);
     }
     .deviceBody{ overflow:hidden; }
+
+    #currentSettingsToggle{ cursor:pointer; user-select:none; }
+    #currentSettingsToggle:hover{ color:var(--accent); }
+    .csChevron{
+      width:12px; height:12px; flex-shrink:0; margin-left:auto;
+      transition:transform .2s ease;
+      transform:rotate(0deg);
+    }
+    #currentSettingsToggle[aria-expanded="true"] .csChevron{
+      transform:rotate(90deg);
+    }
+    .currentSettingsBody{ overflow:hidden; }
 
     /* --- Advanced Tabs (sidebar) --- */
     .advancedTabs{
@@ -1986,7 +1998,15 @@
                 <div class="kv" id="idArea" style="margin-top:6px; display:none;">
                   <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
                 </div>
-                <div class="kv" id="settingsArea" style="margin-top:6px; display:none;">
+              </div>
+            </div>
+          </div>
+          <div class="draggableComponent" data-component-id="currentSettings" draggable="true">
+            <div class="dragHandle" title="Drag to reorder">&#x2261;</div>
+            <div class="infoCard" id="infoCardCurrentSettings">
+              <div class="infoCardLabel" id="currentSettingsToggle" role="button" tabindex="0" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>Current Settings<svg class="csChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
+              <div class="currentSettingsBody" id="currentSettingsBody" style="display:none">
+                <div class="kv" id="settingsArea">
                   <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
                 </div>
               </div>
@@ -2091,6 +2111,8 @@ const els = {
 
   idArea: document.getElementById('idArea'),
   settingsArea: document.getElementById('settingsArea'),
+  currentSettingsCard: document.getElementById('infoCardCurrentSettings'),
+  currentSettingsBody: document.getElementById('currentSettingsBody'),
   sourceArea: document.getElementById('sourceArea'),
   rangeControls: document.getElementById('rangeControls'),
   rangeModeSeg: document.getElementById('rangeModeSeg'),
@@ -2406,11 +2428,18 @@ function collectSettingRows(obj, limit = 14){
     }
   }
   const featureNames = Array.isArray(sp?.ActiveProfiles?.FeatureProfiles) ? sp.ActiveProfiles.FeatureProfiles : [];
+  const genericWords = new Set(['features','settings','profile','profiles','configuration','feature']);
   for (const name of featureNames.slice(0, 10)){
     const cfg = featureProfiles[name];
     if (!cfg || typeof cfg !== 'object') continue;
-    const vals = Object.entries(cfg).slice(0, 2).map(([key, value]) => `${formatSettingsLabel(key)}: ${shortValue(value)}`).join(' • ');
-    rows.push({ label: formatSettingsLabel(name), value: vals || 'Configured' });
+    const featureLabel = formatSettingsLabel(name);
+    const sigWords = featureLabel.split(/\s+/).filter(w => !genericWords.has(w.toLowerCase()));
+    const vals = Object.entries(cfg).slice(0, 2).map(([key, value]) => {
+      let kl = formatSettingsLabel(key);
+      for (const w of sigWords) kl = kl.replace(new RegExp('\\b' + w + '\\b', 'gi'), '').replace(/\s+/g, ' ').trim();
+      return kl ? `${kl}: ${shortValue(value)}` : shortValue(value);
+    }).join(' \u2022 ');
+    rows.push({ label: featureLabel, value: vals || 'Configured' });
     if (rows.length >= limit) break;
   }
   return rows.slice(0, limit);
@@ -2789,7 +2818,7 @@ function resetAll(){
   els.idArea.innerHTML = `<div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>`;
   els.idArea.style.display = 'none';
   els.settingsArea.innerHTML = `<div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>`;
-  els.settingsArea.style.display = 'none';
+  if (els.currentSettingsCard) els.currentSettingsCard.parentElement.style.display = 'none';
   els.sourceArea.innerHTML = '';
 
   els.loadRangeBtn.disabled = true;
@@ -2949,6 +2978,21 @@ els.floatingSidebarBtn?.addEventListener('click', ()=>{
   deviceToggle.addEventListener('click', toggleDevice);
   deviceToggle.addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleDevice(); }
+  });
+})();
+
+(function(){
+  const csToggle = document.getElementById('currentSettingsToggle');
+  const csBody = document.getElementById('currentSettingsBody');
+  if (!csToggle || !csBody) return;
+  function toggleCS(){
+    const expanded = csToggle.getAttribute('aria-expanded') === 'true';
+    csToggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+    csBody.style.display = expanded ? 'none' : '';
+  }
+  csToggle.addEventListener('click', toggleCS);
+  csToggle.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleCS(); }
   });
 })();
 window.addEventListener('resize', resizeAllPlots);
@@ -3851,7 +3895,7 @@ async function readCurrentSettings(entries, jobId){
     log('CurrentSettings.json not found.');
     state.currentSettings = null;
     els.settingsArea.innerHTML = `<div class="row"><span>No CurrentSettings.json found</span><span class="badge">info</span></div>`;
-    els.settingsArea.style.display = '';
+    if (els.currentSettingsCard) els.currentSettingsCard.parentElement.style.display = '';
     renderSidebarWorkflow();
     return;
   }
@@ -3863,12 +3907,12 @@ async function readCurrentSettings(entries, jobId){
     state.currentSettings = json;
     log(`CurrentSettings.json loaded: ${csEntry.path}`);
     renderCurrentSettings(json);
-    els.settingsArea.style.display = '';
+    if (els.currentSettingsCard) els.currentSettingsCard.parentElement.style.display = '';
   }catch(_e){
     log('CurrentSettings.json present but failed to parse.');
     state.currentSettings = null;
     els.settingsArea.innerHTML = `<div class="row"><span>CurrentSettings.json parse failed</span><span class="badge">warn</span></div>`;
-    els.settingsArea.style.display = '';
+    if (els.currentSettingsCard) els.currentSettingsCard.parentElement.style.display = '';
   }
   renderSidebarWorkflow();
 }
@@ -3877,9 +3921,10 @@ function renderCurrentSettings(obj){
   const rows = collectSettingRows(obj, 14);
   if (!rows.length){
     els.settingsArea.innerHTML = `<div class="row"><span>No TherapyProfiles settings found</span><span class="badge">json</span></div>`;
-    return;
+  } else {
+    els.settingsArea.innerHTML = rows.map(row => `<div class="row"><span>${escapeHtml(row.label)}</span><span><b>${escapeHtml(row.value)}</b></span></div>`).join('');
   }
-  els.settingsArea.innerHTML = rows.map(row => `<div class="row"><span>${escapeHtml(row.label)}</span><span><b>${escapeHtml(row.value)}</b></span></div>`).join('');
+  if (els.currentSettingsCard) els.currentSettingsCard.parentElement.style.display = '';
 }
 
 const SOURCE_FAMILY_DEFS = {
