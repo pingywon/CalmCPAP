@@ -35,7 +35,7 @@
         radial-gradient(1100px 520px at 20% 10%, rgba(97,212,195,.18), transparent 60%),
         radial-gradient(1000px 620px at 82% 12%, rgba(122,167,255,.14), transparent 60%),
         linear-gradient(180deg, var(--bg0), var(--bg1));
-      overflow:auto;
+      overflow:hidden;
     }
 
     :focus{ outline:none; }
@@ -48,37 +48,33 @@
       *{ scroll-behavior:auto !important; transition:none !important; animation:none !important; }
     }
 
-    .app{ min-height:100vh; display:grid; grid-template-rows:auto 1fr; }
+    .app{ height:100%; display:grid; grid-template-rows:auto 1fr; }
 
     header{
-      padding:18px;
-      display:grid;
-      grid-template-columns:minmax(280px, 1fr) auto minmax(280px, 1fr);
-      grid-template-areas:"meta brand actions";
+      padding:18px 18px 12px;
+      display:flex;
       align-items:center;
-      gap:16px 24px;
+      justify-content:space-between;
+      gap:14px;
+      border-bottom:1px solid rgba(255,255,255,.08);
       background: rgba(11,42,49,.35);
       backdrop-filter: blur(10px);
     }
-    .headerMetaZone{
-      grid-area:meta;
-      justify-self:start;
-      min-width:0;
-      display:flex;
-      justify-content:flex-start;
+    .brand{ display:flex; gap:12px; align-items:center; min-width:260px; }
+    .logo{
+      width:46px;height:46px;border-radius:16px;
+      background:
+        radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.35), transparent 70%),
+        linear-gradient(135deg, rgba(97,212,195,.95), rgba(122,167,255,.85));
+      box-shadow: var(--shadow);
     }
-    .headerUtilityStack{
-      display:grid;
-      gap:10px;
-      justify-items:start;
-      align-content:start;
-      min-width:0;
-      max-width:100%;
-    }
+    h1{ margin:0; font-size:22px; letter-spacing:.2px; }
+    .brandStack{ display:grid; gap:5px; }
+    .headerMeta{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
     .versionTag{
       display:inline-flex;
       align-items:center;
-      gap:10px;
+      gap:8px;
       padding:6px 12px;
       border-radius:999px;
       border:1px solid rgba(97,212,195,.42);
@@ -88,140 +84,30 @@
       font-weight:900;
       letter-spacing:.18px;
       box-shadow: inset 0 0 0 1px rgba(122,167,255,.08);
-      text-decoration:none;
-      white-space:nowrap;
-      user-select:none;
-      cursor:pointer;
-      transform:translateY(0);
-      transition: transform .16s ease, border-color .16s ease, box-shadow .16s ease, background .16s ease;
     }
-    .versionTag:hover,
-    .versionTag:focus-visible{
-      border-color: rgba(231,246,246,.58);
-      background: linear-gradient(135deg, rgba(97,212,195,.28), rgba(122,167,255,.32));
-      box-shadow:
-        inset 0 0 0 1px rgba(255,255,255,.12),
-        0 12px 24px rgba(0,0,0,.22),
-        0 0 0 6px rgba(97,212,195,.08);
-      transform:translateY(-1px);
-    }
-    .versionTagIcon,
-    .versionTagArrow{
+    .subtitle{ margin:0; color:var(--muted); font-size:12.5px; line-height:1.35; max-width:640px; }
+
+    .top-actions{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
+    .headerLink{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      flex:0 0 auto;
-      transition: opacity .16s ease, transform .16s ease, filter .16s ease;
-    }
-    .versionTagIcon{
-      width:15px;
-      height:15px;
-      opacity:.88;
-      color: rgba(231,246,246,.95);
-    }
-    .versionTagArrow{
-      width:12px;
-      height:12px;
-      opacity:.42;
-      color: var(--accent);
-      transform: translateX(-3px) scale(.92);
-    }
-    .versionTag:hover .versionTagIcon,
-    .versionTag:focus-visible .versionTagIcon{
-      filter: drop-shadow(0 0 10px rgba(97,212,195,.34));
-    }
-    .versionTag:hover .versionTagArrow,
-    .versionTag:focus-visible .versionTagArrow{
-      opacity:1;
-      transform: translateX(0) scale(1);
-    }
-    .brandLockup{
-      grid-area:brand;
-      display:grid;
-      justify-items:center;
-      gap:6px;
-      min-width:0;
-      text-align:center;
-    }
-    .brandMain{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:14px;
-      min-width:0;
-    }
-    .brandMark{
-      width:62px;
-      height:62px;
-      flex:0 0 auto;
-      filter: drop-shadow(0 14px 20px rgba(0,0,0,.28));
-    }
-    .brandWordmark{
-      margin:0;
-      display:inline-flex;
-      align-items:baseline;
-      gap:.12em;
-      font-size:31px;
-      font-weight:950;
-      letter-spacing:.08em;
-      line-height:1;
-      text-transform:uppercase;
-      white-space:nowrap;
-    }
-    .brandWordmark span:first-child{ color:rgba(231,246,246,.98); }
-    .brandWordmark span:last-child{
-      color:var(--accent);
-      text-shadow:0 0 18px rgba(97,212,195,.18);
-    }
-    .brandNote{
-      margin:0;
-      max-width:560px;
-      color:var(--muted2);
-      font-size:12.5px;
-      line-height:1.4;
-    }
-    .top-actions{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-      justify-content:flex-start;
-      min-width:0;
-    }
-    .sidebarUploadActions{
       gap:8px;
-      justify-content:flex-start;
-    }
-    .sidebarUploadBar{
-      display:flex;
-      gap:8px;
+      min-height:42px;
       padding:10px 14px;
-      border-bottom:1px solid rgba(255,255,255,.06);
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      text-decoration:none;
+      font-weight:850;
+      box-shadow:none;
+      transition: transform .12s ease, filter .12s ease, border-color .12s ease;
     }
-    .sidebarUploadBar .btn{
-      flex:1;
-      justify-content:center;
-      font-size:11.5px;
-      padding:8px 10px;
-    }
-    .workflowMetaBadges{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      min-width:0;
-    }
-    .workflowMetaBadges .badge{
-      max-width:100%;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    #statusBadge{
-      border-color:rgba(97,212,195,.28);
-      color:rgba(231,246,246,.96);
-    }
-    .headerSpacer{
-      grid-area:actions;
-      min-width:0;
+    .headerLink:hover{
+      transform: translateY(-1px);
+      filter:brightness(1.04);
+      border-color: rgba(122,167,255,.45);
     }
     .badge{
       font-size:11px;
@@ -257,132 +143,28 @@
     input[type="file"]{ display:none; }
 
     main{
-      min-height:0; height:100%;
+      height:100%;
       display:grid;
-      grid-template-columns: var(--sidebar-width, clamp(420px, 30vw, 520px)) 10px minmax(0, 1fr);
-      gap:0;
+      grid-template-columns: clamp(480px, 35vw, 620px) minmax(0, 1fr);
+      gap:14px;
       padding:14px;
-      overflow:visible;
+      overflow:hidden;
     }
 
     body.left-collapsed main{ grid-template-columns: 1fr; }
     body.left-collapsed #leftPanelCard{ display:none; }
 
-    .resize-handle{
-      width:10px; cursor:col-resize; background:transparent;
-      position:relative; z-index:5; transition:background .15s ease;
-    }
-    .resize-handle:hover, .resize-handle.dragging{
-      background:rgba(97,212,195,.25);
-    }
-    .resize-handle::after{
-      content:''; position:absolute; top:50%; left:50%;
-      transform:translate(-50%,-50%);
-      width:4px; height:48px; border-radius:2px;
-      background:rgba(255,255,255,.20);
-      transition:background .15s ease, height .15s ease;
-    }
-    .resize-handle::before{
-      content:''; position:absolute; top:50%; left:50%;
-      transform:translate(-50%,-50%);
-      width:6px; height:32px;
-      background:radial-gradient(circle, rgba(255,255,255,.25) 1px, transparent 1px);
-      background-size:6px 6px;
-      opacity:1; transition:opacity .15s ease;
-    }
-    .resize-handle:hover::after, .resize-handle.dragging::after{
-      background:rgba(97,212,195,.5); height:64px;
-    }
-    .resize-handle:hover::before, .resize-handle.dragging::before{
-      background:radial-gradient(circle, rgba(97,212,195,.7) 1px, transparent 1px);
-      background-size:6px 6px;
-    }
-    @keyframes handlePulse{
-      0%,100%{ opacity:1; }
-      50%{ opacity:.4; }
-    }
-    .resize-handle::before{
-      animation: handlePulse .8s ease-in-out 2;
-    }
-    @media (prefers-reduced-motion: reduce){
-      .resize-handle::before{ animation:none; }
-    }
-    body.left-collapsed .resize-handle{ display:none; }
-    body.resizing{ cursor:col-resize !important; user-select:none !important; }
-
-    #leftPanelCard{
-      position:relative;
-      top:auto;
-      align-self:stretch;
-      height:100%;
-      max-height:none;
-      min-height:0;
-    }
+    #leftPanelCard{ position:sticky; top:0; align-self:start; max-height:calc(100vh - 28px); }
 
     @media (max-width: 1320px){
-      main{ grid-template-columns: var(--sidebar-width, clamp(300px, 28vw, 400px)) 10px minmax(0, 1fr); }
-      .plot{ height:min(520px, 58vh); }
-    }
-
-    @media (max-width: 1240px){
-      header{
-        grid-template-columns:minmax(0, 1fr);
-        grid-template-areas:
-          "meta"
-          "brand";
-      }
-      .headerSpacer{ display:none; }
-      .brandLockup{ justify-self:center; }
+      main{ grid-template-columns: clamp(400px, 40vw, 540px) minmax(0, 1fr); }
     }
 
     @media (max-width: 1050px){
       body{ overflow:auto; }
       main{ grid-template-columns:1fr; height:auto; overflow:visible; }
-      .resize-handle{ display:none; }
-      #leftPanelCard{ position:static; height:auto; }
+      #leftPanelCard{ position:static; }
       .app{ height:auto; }
-      header{
-        grid-template-columns:1fr;
-        grid-template-areas:
-          "meta"
-          "brand";
-        justify-items:stretch;
-        padding:16px;
-      }
-      .headerMetaZone{ justify-self:start; }
-      .headerUtilityStack{
-        width:100%;
-        justify-items:start;
-      }
-      .brandLockup{ justify-self:center; }
-      .top-actions{
-        width:100%;
-        justify-content:flex-start;
-      }
-    }
-
-    @media (max-width: 760px){
-      .brandMain{ gap:10px; }
-      .brandMark{ width:54px; height:54px; }
-      .brandWordmark{ font-size:24px; }
-      .brandNote{ font-size:12px; }
-      .top-actions{ gap:8px; }
-    }
-
-    @media (min-width: 1320px){
-      header{
-        align-items:start;
-      }
-      main{
-        grid-template-columns: var(--sidebar-width, clamp(420px, 30vw, 520px)) 10px minmax(0, 1fr);
-        gap:0;
-      }
-    }
-    @media (min-width: 2200px){
-      main{
-        grid-template-columns: var(--sidebar-width, clamp(480px, 22vw, 640px)) 10px minmax(0, 1fr);
-      }
-      .plot{ height:min(820px, 74vh); }
     }
 
     .card{
@@ -397,13 +179,12 @@
       min-height:0;
     }
     .card .hd{
-      padding:8px 14px;
-      border-bottom:1px solid rgba(255,255,255,.06);
+      padding:12px 14px;
+      border-bottom:1px solid rgba(255,255,255,.08);
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      min-height:40px;
     }
     .card .hd h2{
       margin:0;
@@ -412,29 +193,13 @@
       color: rgba(231,246,246,.92);
       text-transform: uppercase;
     }
-.card .bd{
-      padding:10px 0;
+    .card .bd{
+      padding:14px;
       overflow-y:auto;
       overflow-x:hidden;
       min-height:0;
     }
-    #rightPanelCard .bd{ padding:14px; }
-    .drawerSummaryBadge{
-      margin-left:auto;
-      font-size:10px;
-      font-weight:800;
-      padding:2px 7px;
-      border-radius:999px;
-      background:rgba(97,212,195,.12);
-      color:var(--accent);
-      letter-spacing:.15px;
-    }
-    .sidebarBody{
-      display:grid;
-      gap:0;
-      align-content:start;
-      min-height:0;
-    }
+    #rightPanelCard{ min-width:0; }
 
     .drop{
       border:1px dashed rgba(255,255,255,.25);
@@ -460,162 +225,21 @@
     .hr{ height:1px; background: rgba(255,255,255,.08); margin:12px 0; }
     .tiny{ font-size:12px; color:var(--muted2); }
 
-    /* --- KPI Strip (in right-panel info strip) --- */
-    .kpiStrip{
+    .kpiGrid{
       display:grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap:6px;
-    }
-    .kpiCard{
-      text-align:center;
-      padding:8px 4px 6px;
-      border-radius:10px;
-      background:rgba(11,42,49,.35);
-      border:1px solid rgba(255,255,255,.06);
-      transition: background .15s ease, border-color .15s ease;
-      cursor:default;
-    }
-    .kpiCard:hover{ background:rgba(11,42,49,.55); border-color:rgba(255,255,255,.12); }
-    .kpiCard .kpiValue{ font-size:20px; font-weight:900; line-height:1.15; color:var(--text); }
-    .kpiCard .kpiLabel{ font-size:10px; color:var(--muted2); text-transform:uppercase; letter-spacing:.2px; margin-top:2px; }
-    .kpiCard .kpiUnit{ font-size:10.5px; color:var(--muted); }
-    .kpiCard .kpiNote{ display:none; }
-    .kpiCard[data-status="good"]{ border-color:rgba(97,212,195,.4); }
-    .kpiCard[data-status="good"] .kpiValue{ color:rgba(97,212,195,1); }
-    .kpiCard[data-status="warn"]{ border-color:rgba(255,204,102,.45); }
-    .kpiCard[data-status="warn"] .kpiValue{ color:rgba(255,204,102,1); }
-    .kpiCard[data-status="bad"]{ border-color:rgba(255,107,122,.45); }
-    .kpiCard[data-status="bad"] .kpiValue{ color:rgba(255,107,122,1); }
-
-    /* --- Info Strip (right panel, below charts) --- */
-    .infoStrip{
-      display:grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr 1fr;
       gap:10px;
-      padding:14px;
-      border-top:1px solid rgba(255,255,255,.08);
-      background:rgba(11,42,49,.18);
-      margin-top:16px;
-      border-radius:0 0 var(--radius2) var(--radius2);
+      margin-top:12px;
     }
-    .draggableComponent{
-      position:relative;
-      border-radius:var(--radius2);
-      transition:opacity .15s ease, box-shadow .15s ease;
-    }
-    .draggableComponent.dragging{
-      opacity:0.5;
-      box-shadow:0 8px 32px rgba(0,0,0,.5);
-      z-index:100;
-    }
-    .dragHandle{
-      position:absolute; top:6px; right:8px;
-      width:20px; height:20px;
-      display:flex; align-items:center; justify-content:center;
-      font-size:16px; line-height:1;
-      color:rgba(255,255,255,.25);
-      cursor:grab; z-index:2;
-      border-radius:4px;
-      transition:color .12s ease, background .12s ease;
-      user-select:none;
-    }
-    .dragHandle:hover{
-      color:var(--accent);
-      background:rgba(255,255,255,.06);
-    }
-    .draggableComponent.dragging .dragHandle{ cursor:grabbing; }
-    @media (max-width: 900px){
-      .kpiStrip{ grid-template-columns: repeat(2, 1fr); }
-    }
-    .infoCard{
-      padding:10px 12px;
-      border-radius:12px;
-      background:rgba(11,42,49,.55);
+    .kpi{
+      padding:12px;
+      border-radius: var(--radius2);
+      background: rgba(11,42,49,.55);
       border:1px solid rgba(255,255,255,.08);
     }
-    .infoCardLabel{
-      font-size:11px;
-      font-weight:800;
-      text-transform:uppercase;
-      letter-spacing:.3px;
-      color:rgba(151,235,223,.86);
-      margin-bottom:6px;
-      display:flex;
-      align-items:center;
-      gap:6px;
-    }
-    .infoCardLabel svg{ width:13px; height:13px; flex-shrink:0; }
-    .infoCard .kv{ margin-top:0; }
-    .infoCard .kv .row{ display:grid; grid-template-columns:auto 1fr; gap:6px; padding:4px 6px; font-size:12px; }
-    .infoCard .kv .row b{ text-align:left; }
-    .infoCard .signalChipGrid{ margin-top:6px; }
-    .draggableComponent .infoCard{ padding-right:34px; }
-
-    #deviceToggle{ cursor:pointer; user-select:none; }
-    #deviceToggle:hover{ color:var(--accent); }
-    .deviceChevron{
-      width:12px; height:12px; flex-shrink:0; margin-left:auto;
-      transition:transform .2s ease;
-      transform:rotate(0deg);
-    }
-    #deviceToggle[aria-expanded="true"] .deviceChevron{
-      transform:rotate(90deg);
-    }
-    .deviceBody{ overflow:hidden; }
-
-    #sessionToggle{ cursor:pointer; user-select:none; }
-    #sessionToggle:hover{ color:var(--accent); }
-    .sessionChevron{
-      width:12px; height:12px; flex-shrink:0; margin-left:auto;
-      transition:transform .2s ease;
-      transform:rotate(0deg);
-    }
-    #sessionToggle[aria-expanded="true"] .sessionChevron{
-      transform:rotate(90deg);
-    }
-    .sessionBody{ overflow:hidden; }
-
-    #currentSettingsToggle{ cursor:pointer; user-select:none; }
-    #currentSettingsToggle:hover{ color:var(--accent); }
-    .csChevron{
-      width:12px; height:12px; flex-shrink:0; margin-left:auto;
-      transition:transform .2s ease;
-      transform:rotate(0deg);
-    }
-    #currentSettingsToggle[aria-expanded="true"] .csChevron{
-      transform:rotate(90deg);
-    }
-    .currentSettingsBody{ overflow:hidden; }
-
-    /* --- Advanced Tabs (sidebar) --- */
-    .advancedTabs{
-      display:flex;
-      gap:5px;
-      flex-wrap:wrap;
-      padding:0 0 8px;
-    }
-    .advancedTab{
-      cursor:pointer;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(255,255,255,.04);
-      color:rgba(231,246,246,.75);
-      padding:6px 10px;
-      border-radius:999px;
-      font-size:11.5px;
-      font-weight:700;
-      user-select:none;
-      transition: filter .12s ease, transform .12s ease, background .12s ease;
-    }
-    .advancedTab:hover{ filter:brightness(1.1); transform:translateY(-1px); }
-    .advancedTab.active{
-      border-color:rgba(97,212,195,.5);
-      background:linear-gradient(135deg, rgba(97,212,195,.16), rgba(122,167,255,.12));
-      color:rgba(231,246,246,.96);
-    }
-    .advancedTabPanel{ display:none; }
-    .advancedTabPanel.active{ display:block; }
-
-    #overviewSummary{ font-size:14px; padding:16px; line-height:1.6; }
+    .kpi .label{ font-size: 11px; color: var(--muted2); text-transform: uppercase; letter-spacing:.25px; }
+    .kpi .value{ margin-top:6px; font-size: 18px; font-weight: 900; }
+    .kpi .note{ margin-top:6px; font-size: 12px; color: var(--muted); line-height:1.35; }
 
     .callout{
       padding:12px 12px;
@@ -730,23 +354,23 @@
       display:grid;
       gap:6px;
       margin-top:10px;
-      grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));
+      grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
     }
     .eventsLegendRow{
       display:grid;
       grid-template-columns:auto 1fr;
-      gap:6px;
+      gap:8px;
       align-items:start;
-      padding:4px 6px;
+      padding:8px 10px;
       border-radius:11px;
       background: rgba(11,42,49,.52);
       border:1px solid rgba(255,255,255,.07);
     }
     .eventsLegendChip{
-      width:9px;
-      height:9px;
+      width:12px;
+      height:12px;
       border-radius:999px;
-      margin-top:3px;
+      margin-top:4px;
       box-shadow: inset 0 0 0 1px rgba(0,0,0,.28);
     }
     .eventsLegendMain{
@@ -763,13 +387,13 @@
     }
     .eventsLegendTitle{
       color:rgba(231,246,246,.97);
-      font-size:11.5px;
+      font-size:12.5px;
       font-weight:900;
       min-width:0;
     }
     .eventsLegendSub{
       color:var(--muted2);
-      font-size:10.5px;
+      font-size:11.5px;
       line-height:1.3;
     }
     .eventsMetaBadge{
@@ -777,12 +401,12 @@
       align-items:center;
       justify-content:center;
       white-space:nowrap;
-      padding:2px 5px;
+      padding:3px 8px;
       border-radius:999px;
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.05);
       color:rgba(231,246,246,.95);
-      font-size:9.5px;
+      font-size:10.5px;
       font-weight:800;
       letter-spacing:.16px;
     }
@@ -885,117 +509,29 @@
     }
     .kv .row b{ color: rgba(231,246,246,.93); font-weight:850; }
 
-    .drawer{ margin-top:0; border:none; border-radius:0; background:transparent; overflow:hidden; box-shadow:none; border-bottom:1px solid rgba(255,255,255,.06); }
-    .drawer:last-child{ border-bottom:none; }
-    .drawer > summary{ cursor:pointer; list-style:none; padding:10px 14px; font-size:13px; color:rgba(151,235,223,.86); font-weight:800; display:flex; align-items:center; gap:7px; letter-spacing:.2px; background:transparent; border-bottom:none; transition: background .12s ease; }
-    .drawer > summary:hover{ background:rgba(255,255,255,.03); }
+    .drawer{ margin-top:12px; border:1px solid rgba(122,167,255,.35); border-radius:16px; background:rgba(11,42,49,.52); overflow:hidden; box-shadow:0 12px 24px rgba(0,0,0,.18); }
+    .drawer > summary{ cursor:pointer; list-style:none; padding:15px 16px; font-size:15px; color:rgba(231,246,246,.98); font-weight:900; display:flex; align-items:center; justify-content:space-between; letter-spacing:.2px; background:rgba(18,58,68,.68); border-bottom:1px solid rgba(255,255,255,.12); }
     .drawer > summary::-webkit-details-marker{ display:none; }
-    .drawer > summary .drawerIcon{ width:14px; height:14px; flex-shrink:0; color:var(--accent); }
-    .drawer > summary .drawerChevron{ margin-left:auto; width:12px; height:12px; flex-shrink:0; color:rgba(231,246,246,.5); transition: transform .2s ease; }
-    .drawer[open] > summary .drawerChevron{ transform:rotate(90deg); }
-    .drawer > summary::after{ content:none; }
-    .drawerBody{ padding:4px 14px 14px; font-size:13px; display:grid; gap:10px; }
-    .drawerScroll{ overflow:visible; scrollbar-gutter:auto; }
-    .calendarDrawerBody,
-    .sourceDrawerBody,
-    .mappingDrawerBody,
-    .rawDebugDrawerBody{
-      max-height:none;
-      overflow:visible;
-    }
-    .mappingDrawerBody{ display:flex; flex-direction:column; gap:12px; }
+    .drawer > summary::after{ content:'▾'; color:rgba(231,246,246,.92); font-size:14px; }
+    .drawer:not([open]) > summary::after{ content:'▸'; }
+    .drawerBody{ padding:10px 13px 14px; font-size:14px; }
+    .drawerScroll{ overflow:auto; scrollbar-gutter:stable both-edges; }
+    .calendarDrawerBody{ max-height:min(46vh, 430px); }
+    .sourceDrawerBody{ max-height:min(36vh, 320px); }
+    .mappingDrawerBody{ max-height:min(42vh, 410px); display:flex; flex-direction:column; gap:12px; }
     .mappingActions{
-      position:static;
-      bottom:auto;
-      padding-top:0;
+      position:sticky;
+      bottom:-14px;
+      padding-top:12px;
       margin-top:auto;
-      background:none;
+      background: linear-gradient(180deg, rgba(11,42,49,0), rgba(11,42,49,.96) 46%);
     }
     .rawDebugDrawerBody{
+      max-height:min(40vh, 360px);
       display:grid;
       gap:10px;
     }
-    .rawDebugDrawerBody #rawDump{ max-height:none; }
-    .workflowDrawer{ margin-top:0; }
-    .workflowDrawer > summary{
-      font-size:13px;
-      letter-spacing:.24px;
-    }
-    .workflowStageNote{
-      display:none;
-    }
-    .workflowStageNote b{
-      display:block;
-      margin-bottom:4px;
-    }
-    .workflowSectionLabel{
-      display:none;
-    }
-    .signalChipGrid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(100px, 1fr));
-      gap:5px;
-    }
-    .signalChip{
-      display:grid;
-      gap:2px;
-      padding:6px 8px;
-      border-radius:10px;
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(11,42,49,.52);
-    }
-    .signalChip strong{
-      color:rgba(231,246,246,.97);
-      font-size:11px;
-      font-weight:900;
-      line-height:1.2;
-    }
-    .signalChip small{
-      color:var(--muted2);
-      font-size:10px;
-      line-height:1.3;
-    }
-    .signalChip.active{
-      border-color:rgba(97,212,195,.35);
-      background:linear-gradient(135deg, rgba(97,212,195,.14), rgba(122,167,255,.12));
-    }
-    .signalChip.missing{
-      opacity:.72;
-      filter:saturate(.7);
-    }
-    .subDrawer{
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:14px;
-      background:rgba(8,36,43,.46);
-      overflow:hidden;
-    }
-    .subDrawer > summary{
-      cursor:pointer;
-      list-style:none;
-      padding:12px 14px;
-      font-size:12.5px;
-      color:rgba(231,246,246,.96);
-      font-weight:850;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:8px;
-      background:rgba(14,48,56,.62);
-      border-bottom:1px solid rgba(255,255,255,.10);
-    }
-    .subDrawer > summary::-webkit-details-marker{ display:none; }
-    .subDrawer > summary::after{ content:'▾'; color:rgba(231,246,246,.88); font-size:12px; }
-    .subDrawer:not([open]) > summary::after{ content:'▸'; }
-    .subDrawer .drawerBody{
-      padding:12px 13px 14px;
-      display:grid;
-      gap:10px;
-    }
-    .stageMetricRows:empty,
-    #availableSourceArea:empty,
-    #currentSignalArea:empty{
-      display:none;
-    }
+    .rawDebugDrawerBody #rawDump{ max-height:260px; }
 
     .picker{
       display:flex; gap:10px; align-items:center; flex-wrap:wrap;
@@ -1011,7 +547,6 @@
     .rangeControls.disabled{ opacity:.3; filter:saturate(.05) grayscale(.65) brightness(.65); pointer-events:none; }
     .rangeControls.ready .seg, .rangeControls.ready .calendarWrap{ background: rgba(18,58,68,.72); border-color: rgba(122,167,255,.35); box-shadow: inset 0 0 0 1px rgba(122,167,255,.15); }
     .rangeControls.ready .rangeHint{ color: var(--muted); }
-    #rangeModeSeg{ display:none; }
     .seg{
       display:flex; gap:6px; flex-wrap:wrap;
       background: rgba(11,42,49,.45);
@@ -1022,7 +557,7 @@
     #loadRangeBtn{ background: linear-gradient(135deg, var(--accent), var(--accent2)); color:#062026; border:none; box-shadow:0 10px 18px rgba(97,212,195,.22); font-weight:900; }
     #loadRangeBtn:disabled{ opacity:.55; filter:saturate(.7); }
     .seg button.active{ background:linear-gradient(135deg, rgba(97,212,195,.24), rgba(122,167,255,.25)); border-color:rgba(97,212,195,.65); }
-    .calendarWrap{ border:1px solid rgba(255,255,255,.06); background:rgba(11,42,49,.30); border-radius:12px; padding:10px; }
+    .calendarWrap{ border:1px solid rgba(255,255,255,.10); background:rgba(11,42,49,.45); border-radius:14px; padding:10px; }
     .calHead{ display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
     .calHead .month{ font-size:12px; color:var(--muted); font-weight:700; }
     .calMonthSelect{ background:rgba(255,255,255,.08); color:var(--text); border:1px solid rgba(255,255,255,.16); border-radius:10px; padding:6px 8px; font-size:12px; min-width:180px; }
@@ -1032,10 +567,8 @@
     .dow div{ text-align:center; font-size:10.5px; color:var(--muted2); text-transform:uppercase; }
     .day{ min-height:32px; border-radius:10px; border:1px solid rgba(255,255,255,.08); font-size:12px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.03); color:var(--muted); }
     .day.muted{ opacity:.45; }
-    .day.hasData{ color:var(--text); border-color:rgba(97,212,195,.45); cursor:pointer; transition: transform .12s ease, background .12s ease; }
-    .day.hasData:hover{ transform:scale(1.05); background:rgba(97,212,195,.12); }
-    .day.selected{ background:linear-gradient(135deg, var(--accent), var(--accent2)); color:#062026; border-color:rgba(97,212,195,.95); box-shadow: 0 0 10px rgba(97,212,195,.3); font-weight:900; }
-    .day.selected:hover{ transform:scale(1.05); }
+    .day.hasData{ color:var(--text); border-color:rgba(97,212,195,.45); }
+    .day.selected{ background:linear-gradient(135deg, rgba(255,204,102,.42), rgba(255,107,122,.34)); color:#ffffff; border-color:rgba(255,204,102,.95); box-shadow: inset 0 0 0 1px rgba(255,255,255,.24); font-weight:900; }
     .day.boundary{ background:linear-gradient(135deg, rgba(255,107,122,.62), rgba(122,167,255,.62)); border-color:#ffffff; color:#ffffff; box-shadow:0 0 0 2px rgba(255,255,255,.24); }
     .rangeHint{ font-size:11.5px; color:var(--muted2); }
     .picker input[type="date"], .picker select{
@@ -1099,11 +632,12 @@
       background: linear-gradient(135deg, rgba(97,212,195,.18), rgba(122,167,255,.14));
       box-shadow: 0 10px 18px rgba(0,0,0,.18);
     }
-    .report{ min-height:0; overflow:auto; flex:1 1 0; }
+    .report{ min-height:0; overflow:auto; }
     .panel{ display:none; padding:14px; }
     .panel.active{ display:block; }
 
-    #floatingSidebarBtn{ box-shadow: var(--shadow); border:1px solid rgba(255,255,255,.2); background:rgba(11,42,49,.92); display:inline-flex; }
+    #floatingSidebarBtn{ box-shadow: var(--shadow); border:1px solid rgba(255,255,255,.2); background:rgba(11,42,49,.92); }
+    body.left-collapsed #floatingSidebarBtn{ display:inline-flex !important; }
 
     .explain{
       display:grid;
@@ -1112,11 +646,11 @@
       margin-bottom: 12px;
     }
     @media (max-width: 1050px){ .explain{ grid-template-columns:1fr; } }
-    @media (max-width: 760px){ .plot{ height:min(540px, 64vh); } .tab{ padding:8px 10px; font-size:12px; } }
+    @media (max-width: 760px){ .plot{ height:min(520px, 62vh); } .tab{ padding:8px 10px; font-size:12px; } }
 
     .plot{
       width:100%;
-      height:min(750px, 74vh);
+      height:min(700px, 70vh);
       border-radius: var(--radius2);
       overflow:hidden;
       border:1px solid rgba(255,255,255,.10);
@@ -1124,8 +658,8 @@
     }
     pre.log{
       white-space:pre-wrap;
-      max-height:none;
-      overflow:visible;
+      max-height: 320px;
+      overflow:auto;
       margin:0;
       font-size:12px;
       line-height:1.45;
@@ -1483,14 +1017,14 @@
       place-items:center;
     }
     .modalCard{
-      width:min(640px, 100%);
-      max-height:min(76vh, 720px);
+      width:min(860px, 100%);
+      max-height:min(82vh, 880px);
       overflow:auto;
-      border-radius:20px;
+      border-radius:22px;
       border:1px solid rgba(255,255,255,.18);
       background: rgba(11,42,49,.98);
       box-shadow: 0 28px 60px rgba(0,0,0,.45);
-      padding:20px 20px 18px;
+      padding:22px 22px 20px;
     }
     .modalEyebrow{
       display:inline-flex;
@@ -1509,26 +1043,25 @@
     }
     .modalCard h2{
       margin:0 0 10px;
-      font-size:30px;
-      line-height:1.08;
+      font-size:26px;
+      line-height:1.12;
       color: rgba(231,246,246,.98);
     }
     .modalLead{
       margin:0;
       color: var(--muted);
-      line-height:1.6;
+      line-height:1.55;
       font-size:14px;
     }
     .modalGrid{
       display:grid;
-      grid-template-columns:1fr;
-      gap:12px;
+      gap:14px;
       margin-top:18px;
     }
     .modalPanel{
       border:1px solid rgba(255,255,255,.10);
-      border-radius:16px;
-      padding:14px;
+      border-radius:18px;
+      padding:16px;
       background: rgba(7,26,31,.34);
     }
     .modalPanel h3{
@@ -1538,14 +1071,11 @@
       letter-spacing:.24px;
       color: rgba(231,246,246,.96);
     }
-    .modalPanel ul{
+    .modalPanel ol{
       margin:0;
-      padding-left:18px;
+      padding-left:20px;
       color: var(--text);
       line-height:1.6;
-    }
-    .modalPanel li + li{
-      margin-top:6px;
     }
     .dangerNote{
       border-left:4px solid rgba(255,107,122,.88);
@@ -1556,31 +1086,44 @@
       line-height:1.55;
       font-size:13.5px;
     }
+    .agreeRow{
+      display:grid;
+      gap:12px;
+      margin-top:16px;
+    }
+    .agreeBox{
+      display:grid;
+      grid-template-columns:auto 1fr;
+      gap:12px;
+      align-items:start;
+      padding:14px 16px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+      color: rgba(231,246,246,.96);
+      line-height:1.55;
+    }
+    .checkWrap{
+      display:grid;
+      place-items:center;
+      width:28px;
+      height:28px;
+      margin-top:2px;
+      border-radius:10px;
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    #onboardingAgree{
+      width:18px;
+      height:18px;
+      accent-color: #61d4c3;
+      cursor:pointer;
+    }
     .modalActions{
       display:flex;
       justify-content:flex-end;
       gap:10px;
       margin-top:16px;
-    }
-    @media (min-width: 620px){
-      .modalGrid{
-        grid-template-columns:repeat(2, minmax(0, 1fr));
-      }
-      .dangerNote{
-        grid-column:1 / -1;
-      }
-    }
-    @media (max-width: 700px){
-      .modalShell{
-        padding:16px;
-      }
-      .modalCard{
-        width:100%;
-        max-height:min(82vh, 100%);
-      }
-      .modalCard h2{
-        font-size:24px;
-      }
     }
 
     /* ============================
@@ -1758,127 +1301,174 @@
 <body>
 <div class="app" id="appShell">
   <header>
-    <div class="headerMetaZone">
-      <div class="headerUtilityStack">
-        <a class="versionTag" id="headerVersion" href="https://github.com/pingywon/CalmCPAP" target="_blank" rel="noreferrer noopener" aria-label="Open CalmCPAP GitHub repository">
-          <span class="versionTagIcon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 .5a12 12 0 0 0-3.793 23.38c.6.111.82-.26.82-.577l-.016-2.234c-3.338.726-4.042-1.416-4.042-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.73.083-.73 1.204.085 1.838 1.236 1.838 1.236 1.07 1.834 2.809 1.304 3.495.997.108-.775.418-1.304.76-1.603-2.665-.304-5.467-1.333-5.467-5.932 0-1.311.469-2.382 1.236-3.221-.124-.304-.536-1.526.117-3.18 0 0 1.008-.322 3.3 1.23A11.5 11.5 0 0 1 12 6.845c1.02.005 2.047.138 3.007.404 2.29-1.553 3.296-1.23 3.296-1.23.655 1.654.243 2.876.12 3.18.77.839 1.235 1.91 1.235 3.221 0 4.61-2.807 5.625-5.48 5.921.43.37.814 1.102.814 2.222l-.015 3.293c0 .32.216.694.825.576A12.001 12.001 0 0 0 12 .5Z"/>
-            </svg>
-          </span>
-          <span>Version 1.0</span>
-          <span class="versionTagArrow" aria-hidden="true">
-            <svg viewBox="0 0 16 16" fill="none">
-              <path d="M5 3h8v8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M13 3 3 13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-            </svg>
-          </span>
-        </a>
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div class="brandStack">
+        <h1>CalmCPAP</h1>
+        <div class="headerMeta">
+          <span class="versionTag" id="headerVersion">Version 1.0</span>
+          <span class="badge">Single-file app</span>
+        </div>
+        <div class="subtitle">Drop in a CPAP ZIP, review one anchored night at a time, and get plain-language charts, events, and source summaries without sending anything to a server.</div>
       </div>
     </div>
 
-    <div class="brandLockup">
-      <div class="brandMain">
-        <img class="brandMark" src="assets/calmcpap-favicon.svg" alt="" />
-        <h1 class="brandWordmark"><span>Calm</span><span>CPAP</span></h1>
-      </div>
-      <p class="brandNote">Tested on ResMed AirSense 11 only. Your mileage may vary with other machines.</p>
+    <div class="top-actions">
+      <a class="headerLink" href="https://github.com/pingywon/CalmCPAP" target="_blank" rel="noreferrer">GitHub</a>
     </div>
-
-    <div class="headerSpacer" aria-hidden="true"></div>
   </header>
 
   <main>
     <!-- LEFT -->
     <section class="card" id="leftPanelCard">
-      <div class="bd sidebarBody" id="leftSidebarBody">
-        <div class="sidebarUploadBar">
-          <label class="btn ghost" id="chooseZipBtn" for="zipInput">Choose ZIP</label>
-          <input id="zipInput" type="file" accept=".zip,application/zip" />
-          <button class="btn ghost" id="demoBtn" type="button">Load demo</button>
+      <div class="hd">
+        <h2>Upload & Session</h2>
+        <div style="display:flex; gap:8px; align-items:center;">
+          <button class="btn ghost" id="toggleLeftBtn" aria-pressed="false">Hide Sidebar</button>
+          <span class="badge">Local only ✔️</span>
         </div>
-        <span hidden id="statusBadge"><span id="statusText">Waiting</span></span>
-        <span hidden id="fileBadge">No file</span>
-        <span hidden id="zipStats">—</span>
-        <span hidden id="loadStageSummary"></span>
-        <span hidden id="progressStep">Idle</span>
-        <span hidden id="progressPct">0%</span>
-        <span hidden id="progressBar"></span>
-        <span hidden id="progressDetail">Upload a ZIP to begin.</span>
+      </div>
 
-        <details class="drawer workflowDrawer" id="calendarDrawer">
-          <summary><svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Nights<span class="drawerSummaryBadge" id="nightsCountBadge"></span><svg class="drawerChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></summary>
-          <div class="drawerBody calendarDrawerBody">
-            <span hidden id="availableSummary"></span>
-            <div class="kv stageMetricRows" id="availableMetaArea">
-              <div class="row"><span>Nights found</span><span><b>—</b></span></div>
+      <div class="bd">
+        <div class="drop" id="dropZone" role="button" tabindex="0" aria-label="Upload zip">
+          <div class="row">
+            <div class="left">
+              <strong>Drop your CPAP ZIP here</strong>
+              <span class="badge" id="zipStats">—</span>
             </div>
-            <div class="signalChipGrid" id="availableSourceArea" hidden></div>
-            <div class="rangeControls disabled" id="rangeControls">
-              <div class="calendarWrap">
-                <div class="calHead">
-                  <div class="calNav">
-                    <button type="button" id="calPrev" aria-label="Previous month">◀</button>
-                    <button type="button" id="calToday" aria-label="Jump to selected month">Today</button>
-                  </div>
-                  <select id="calMonthSelect" class="calMonthSelect" aria-label="Choose month"></select>
-                  <div class="calNav">
-                    <button type="button" id="calNext" aria-label="Next month">▶</button>
-                  </div>
-                </div>
-                <div class="dow"><div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div></div>
-                <div class="calGrid" id="calGrid"></div>
+            <div class="left">
+              <label class="btn" id="chooseZipBtn" for="zipInput">Choose ZIP</label>
+              <input id="zipInput" type="file" accept=".zip,application/zip" />
+              <button class="btn ghost" id="demoBtn" type="button">Load demo</button>
+            </div>
+          </div>
+          <p>
+            Runs completely in your browser. Progress updates show an upward file counter so it never feels frozen.
+          </p>
+        </div>
+
+        <div class="progressWrap" style="margin-top:10px;">
+          <div class="progressTop" style="margin-bottom:0;">
+            <div class="tiny"><b id="statusText">Waiting</b></div>
+            <span class="badge" id="fileBadge">No file</span>
+          </div>
+        </div>
+
+        <details class="drawer" id="calendarDrawer"><summary>Calendar</summary><div class="drawerBody drawerScroll calendarDrawerBody"><div class="rangeControls disabled" id="rangeControls">
+          <div class="calendarWrap">
+            <div class="calHead">
+              <div class="calNav">
+                <button type="button" id="calPrev" aria-label="Previous month">◀</button>
+                <button type="button" id="calToday" aria-label="Jump to selected month">Today</button>
               </div>
-              <div class="seg" id="rangeModeSeg" aria-label="Range mode">
-                <button type="button" id="modeNight" class="active">Night</button>
-                <button type="button" id="modeCustom" style="display:none">Custom</button>
-                <button type="button" id="loadRangeBtn" style="display:none">Load Range</button>
+              <select id="calMonthSelect" class="calMonthSelect" aria-label="Choose month"></select>
+              <div class="calNav">
+                <button type="button" id="calNext" aria-label="Next month">▶</button>
               </div>
-              <div class="rangeHint" id="rangeHint">Upload ZIP to enable.</div>
+            </div>
+            <div class="dow"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+            <div class="calGrid" id="calGrid"></div>
+          </div>
+          <div class="seg" id="rangeModeSeg" aria-label="Range mode">
+            <button type="button" id="modeNight" class="active">Night</button>
+            <button type="button" id="modeCustom" style="display:none">Custom</button>
+            <button type="button" id="loadRangeBtn" style="display:none">Load Range</button>
+          </div>
+          <div class="rangeHint" id="rangeHint">Upload ZIP to enable.</div>
+        </div></div></details>
+
+        <div class="hr"></div>
+
+        <details class="drawer" id="statsDrawer"><summary>Session Stats</summary><div class="drawerBody"><div class="progressWrap">
+          <div class="progressTop">
+            <div class="tiny"><b id="progressStep">Idle</b></div>
+            <div class="badge" id="progressPct">0%</div>
+          </div>
+          <div class="bar"><div id="progressBar"></div></div>
+          <div class="tiny" style="margin-top:8px;" id="progressDetail">Upload a ZIP to begin.</div>
+        </div>
+
+        <div class="kpiGrid">
+          <div class="kpi">
+            <div class="label">Usage (hours)</div>
+            <div class="value" id="kpiUsage">—</div>
+            <div class="note" id="kpiUsageNote">Select a day.</div>
+          </div>
+          <div class="kpi">
+            <div class="label">Leak (95th %)</div>
+            <div class="value" id="kpiLeak95">—</div>
+            <div class="note" id="kpiLeak95Note">Needs leak signal.</div>
+          </div>
+          <div class="kpi">
+            <div class="label">Pressure (median)</div>
+            <div class="value" id="kpiP50">—</div>
+            <div class="note" id="kpiP50Note">Needs pressure signal.</div>
+          </div>
+          <div class="kpi">
+            <div class="label">AHI (estimate)</div>
+            <div class="value" id="kpiAHI">—</div>
+            <div class="note" id="kpiAHINote">From annotations if found.</div>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        </div></details>
+
+        <details class="drawer" id="deviceDrawer">
+          <summary>Device & Profile (Identification.json)</summary>
+          <div class="drawerBody">
+            <div class="kv" id="idArea" style="margin-top:0;">
+              <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
             </div>
           </div>
         </details>
 
-        <details class="drawer workflowDrawer" id="advancedDrawer">
-          <summary><svg class="drawerIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Advanced<svg class="drawerChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></summary>
+        <details class="drawer" id="settingsDrawer">
+          <summary>Current Settings (CurrentSettings.json)</summary>
           <div class="drawerBody">
-            <span hidden id="advancedSummary"></span>
-            <div class="advancedTabs" id="advancedTabStrip">
-              <button class="advancedTab active" data-adv-tab="sources" type="button">Data Sources</button>
-              <button class="advancedTab" data-adv-tab="mapping" type="button">Signal Mapping</button>
-              <button class="advancedTab" data-adv-tab="raw" type="button">Raw / Debug</button>
-              <button class="advancedTab" data-adv-tab="debuglog" type="button">Debug Log</button>
+            <div class="kv" id="settingsArea" style="margin-top:0;">
+              <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
             </div>
-            <div class="advancedTabPanel active" id="advPanel-sources">
-              <div class="sourceDrawerBody">
-                <div class="sourceHint">File families found for the current selection, what they contribute, and whether the report is using them.</div>
-                <div class="sourceGrid" id="sourceArea"></div>
+          </div>
+        </details>
+
+        <details class="drawer" id="sourcesDrawer">
+          <summary>Data Sources</summary>
+          <div class="drawerBody drawerScroll sourceDrawerBody">
+            <div class="sourceHint">File families found for the current selection, what they contribute, and whether the report is using them.</div>
+            <div class="sourceGrid" id="sourceArea"></div>
+          </div>
+        </details>
+
+
+
+        <div id="mappingSection" hidden>
+          <div class="hr"></div>
+
+          <details class="drawer" id="mappingDrawer">
+            <summary>Manual Signal Mapping</summary>
+            <div class="drawerBody drawerScroll mappingDrawerBody">
+              <div class="mapHint">If auto-mapping misses labels, pick one entry per signal type here from the deduplicated signal list.</div>
+              <div class="mapGrid" id="mapGrid"></div>
+              <div class="mappingActions">
+                <button class="btn ghost" id="applyMappingBtn" disabled>Apply mapping</button>
               </div>
             </div>
-            <div class="advancedTabPanel" id="advPanel-mapping">
-              <div class="mappingDrawerBody">
-                <div class="mapHint">If auto-mapping misses labels, pick one entry per signal type here from the deduplicated signal list.</div>
-                <div class="mapGrid" id="mapGrid"></div>
-                <div class="mappingActions">
-                  <button class="btn ghost" id="applyMappingBtn" disabled>Apply mapping</button>
-                </div>
-              </div>
-            </div>
-            <div class="advancedTabPanel" id="advPanel-raw">
-              <div class="rawDebugDrawerBody">
-                <div class="callout" id="rawSummary"></div>
-                <pre class="callout log" id="rawDump"></pre>
-              </div>
-            </div>
-            <div class="advancedTabPanel" id="advPanel-debuglog">
-              <pre class="callout log" id="log"></pre>
-            </div>
+          </details>
+        </div>
+
+        <div class="hr"></div>
+        <details class="drawer" id="debugLogDrawer"><summary>Debug log</summary><div class="drawerBody"><pre class="callout log" id="log"></pre></div></details>
+        <details class="drawer" id="rawDebugDrawer">
+          <summary>Raw / Debug Snapshot</summary>
+          <div class="drawerBody drawerScroll rawDebugDrawerBody">
+            <div class="callout" id="rawSummary"></div>
+            <pre class="callout log" id="rawDump"></pre>
           </div>
         </details>
       </div>
     </section>
-
-    <div class="resize-handle" id="resizeHandle" title="Drag to resize sidebar"></div>
 
     <!-- RIGHT -->
     <section class="card" id="rightPanelCard">
@@ -1898,7 +1488,7 @@
       <div class="report" id="reportArea">
         <div class="panel active" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview">
           <div class="explain">
-            <div class="callout" id="overviewExplain" style="display:none">
+            <div class="callout" id="overviewExplain">
               <b>How this report works</b><br/>
               Upload an AirSense 11 SD ZIP (raw SD structure), pick a day, and we’ll plot + explain leak/pressure/flow (if present).
               Mapping controls handle label differences.
@@ -1958,116 +1548,68 @@
           <div class="callout" style="margin-top:12px" id="eventsNarrative"></div>
         </div>
 
-        <div class="infoStrip" id="infoStrip" style="display:none">
-          <div class="draggableComponent" data-component-id="kpi" draggable="true">
-            <div class="dragHandle" title="Drag to reorder">&#x2261;</div>
-            <div class="kpiStrip" id="kpiStrip">
-              <div class="kpiCard" id="kpiCardUsage">
-                <div class="kpiValue" id="kpiUsage">—</div>
-                <div class="kpiUnit">hrs</div>
-                <div class="kpiLabel">Usage</div>
-                <div class="kpiNote" id="kpiUsageNote">Select a day.</div>
-              </div>
-              <div class="kpiCard" id="kpiCardLeak">
-                <div class="kpiValue" id="kpiLeak95">—</div>
-                <div class="kpiUnit">L/min</div>
-                <div class="kpiLabel">Leak 95th</div>
-                <div class="kpiNote" id="kpiLeak95Note">Needs leak signal.</div>
-              </div>
-              <div class="kpiCard" id="kpiCardPressure">
-                <div class="kpiValue" id="kpiP50">—</div>
-                <div class="kpiUnit">cmH₂O</div>
-                <div class="kpiLabel">Pressure</div>
-                <div class="kpiNote" id="kpiP50Note">Needs pressure signal.</div>
-              </div>
-              <div class="kpiCard" id="kpiCardAHI">
-                <div class="kpiValue" id="kpiAHI">—</div>
-                <div class="kpiUnit">/hr</div>
-                <div class="kpiLabel">AHI</div>
-                <div class="kpiNote" id="kpiAHINote">From annotations if found.</div>
-              </div>
-            </div>
-          </div>
-          <div class="draggableComponent" data-component-id="session" draggable="true">
-            <div class="dragHandle" title="Drag to reorder">&#x2261;</div>
-            <div class="infoCard" id="infoCardSession">
-              <div class="infoCardLabel" id="sessionToggle" role="button" tabindex="0" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>Session <span id="sessionDateBadge"></span><svg class="sessionChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-              <div class="sessionBody" id="sessionBody" style="display:none">
-                <span hidden id="currentNightStatus"></span>
-                <div class="kv stageMetricRows" id="currentNightArea">
-                  <div class="row"><span>Loaded night</span><span><b>—</b></span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="draggableComponent" data-component-id="device" draggable="true">
-            <div class="dragHandle" title="Drag to reorder">&#x2261;</div>
-            <div class="infoCard" id="infoCardDevice">
-              <div class="infoCardLabel" id="deviceToggle" role="button" tabindex="0" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Device Info<svg class="deviceChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-              <span hidden id="settingsSummaryNote"></span>
-              <div class="deviceBody" id="deviceBody" style="display:none">
-                <div class="kv stageMetricRows" id="settingsSummaryArea">
-                  <div class="row"><span>Device</span><span><b>Waiting for upload…</b></span></div>
-                </div>
-                <div class="kv" id="idArea" style="margin-top:6px; display:none;">
-                  <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="draggableComponent" data-component-id="currentSettings" draggable="true">
-            <div class="dragHandle" title="Drag to reorder">&#x2261;</div>
-            <div class="infoCard" id="infoCardCurrentSettings">
-              <div class="infoCardLabel" id="currentSettingsToggle" role="button" tabindex="0" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>Current Settings<svg class="csChevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></div>
-              <div class="currentSettingsBody" id="currentSettingsBody" style="display:none">
-                <div class="kv" id="settingsArea">
-                  <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </div>
     </section>
   </main>
 </div>
 
 <div class="toast" id="toast"></div>
-<button id="floatingSidebarBtn" class="btn ghost" style="position:fixed; left:14px; top:60px; z-index:30;">Close Sidebar</button>
-<!-- ONBOARDING MODAL — disabled for redesign
-<div id="onboardingModal" class="modalShell" aria-hidden="true">
-  <div class="modalCard" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle" aria-describedby="onboardingLead">
-    <div class="modalEyebrow">Read this first</div>
-    <h2 id="onboardingTitle">Sleep and CPAP therapy are serious. CalmCPAP is not.</h2>
-    <p class="modalLead" id="onboardingLead">CalmCPAP is a local browser viewer for curiosity, education, and entertainment. It can help you look around your export data, but it can also be incomplete, wrong, oversimplified, or misleading.</p>
-    <div class="modalGrid">
-      <div class="modalPanel">
-        <h3>What this viewer is</h3>
-        <ul>
-          <li>A local browser app for opening CPAP SD-card ZIP exports.</li>
-          <li>A way to inspect nights, charts, and machine-reported trends for personal interest.</li>
-          <li>Something to treat as a rough viewer, not as a clinical report.</li>
-        </ul>
-      </div>
-      <div class="modalPanel">
-        <h3>What this viewer is not</h3>
-        <ul>
-          <li>Not medical advice, diagnosis, titration guidance, or pressure-setting advice.</li>
-          <li>Not a substitute for your sleep clinician, respiratory therapist, or equipment provider.</li>
-          <li>Not a tool for deciding whether to change or stop CPAP therapy.</li>
-        </ul>
-      </div>
-      <div class="dangerNote">
-        Do not change CPAP settings, stop therapy, dismiss symptoms, or judge treatment success based on this app alone. If you have breathing trouble, oxygen concerns, severe daytime sleepiness, chest pain, or other urgent symptoms, contact a qualified clinician or seek emergency care instead of relying on this viewer.
-      </div>
-    </div>
-    <div class="modalActions">
-      <button class="btn" id="onboardingCloseBtn" type="button">I understand</button>
+<button id="floatingSidebarBtn" class="btn ghost" style="display:none; position:fixed; left:14px; bottom:18px; z-index:30;">Open Sidebar</button>
+<div id="onboardingModal" class="onboardingOverlay" aria-hidden="true" hidden>
+  <div class="onboardingDialog" id="onboardingDialog" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle" aria-describedby="onboardingTagline onboardingAgreementText" tabindex="-1">
+    <div class="onboardingInner">
+      <section class="onboardingHero">
+        <div class="onboardingHeroTop">
+          <div class="onboardingKicker">First-time setup</div>
+          <p class="onboardingTagline" id="onboardingTagline">Sleep is serious. This app is not.</p>
+          <h2 class="onboardingTitle" id="onboardingTitle">Prepare your SD card ZIP</h2>
+          <p class="onboardingLead">CalmCPAP reads one ZIP made from your CPAP SD card. Keep the full folder structure intact so the app can find the files it needs.</p>
+        </div>
+        <div class="onboardingFlow" aria-hidden="true">
+          <div class="flowStep">
+            <div class="flowGlyph"><span class="glyph-sd"></span></div>
+            <strong>Remove SD card</strong>
+          </div>
+          <div class="flowStep">
+            <div class="flowGlyph"><span class="glyph-folder"></span></div>
+            <strong>Copy contents</strong>
+          </div>
+          <div class="flowStep">
+            <div class="flowGlyph"><span class="glyph-zip"></span></div>
+            <strong>Zip the folder</strong>
+          </div>
+          <div class="flowStep">
+            <div class="flowGlyph"><span class="glyph-upload"></span></div>
+            <strong>Upload here</strong>
+          </div>
+        </div>
+      </section>
+
+      <section aria-labelledby="onboardingStepsTitle">
+        <h3 class="onboardingSectionTitle" id="onboardingStepsTitle">How to make the ZIP</h3>
+        <ol class="onboardingList">
+          <li>Power off your CPAP and remove the SD card.</li>
+          <li>Copy the full contents of the SD card into a folder on your computer.</li>
+          <li>Optional: remove older day folders from <code>DATALOG/</code> inside that copied folder to make a smaller ZIP.</li>
+          <li>Create one <code>.zip</code> from that copied folder.</li>
+          <li>Upload the ZIP in CalmCPAP.</li>
+        </ol>
+      </section>
+
+      <section class="onboardingAgreement" aria-labelledby="onboardingAgreementTitle">
+        <h3 class="onboardingSectionTitle" id="onboardingAgreementTitle">Agreement</h3>
+        <p class="onboardingAgreementText" id="onboardingAgreementText">This app is not medical advice and may be wrong or incomplete. Do not use it to diagnose problems, change treatment, or handle emergencies. For medical decisions, talk to your doctor or sleep specialist.</p>
+        <label class="onboardingCheck" for="onboardingAgree">
+          <input type="checkbox" id="onboardingAgree" />
+          <span>I understand CalmCPAP is not medical advice, and I should use a doctor or sleep specialist for diagnosis or treatment decisions.</span>
+        </label>
+        <div class="onboardingActions">
+          <button class="btn" id="onboardingCloseBtn" type="button" disabled>Agree and Continue</button>
+        </div>
+      </section>
     </div>
   </div>
 </div>
--->
 
 <div id="globalLoadOverlay" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:min(720px, 84vw); z-index:45; background:rgba(11,42,49,.95); border:1px solid rgba(255,255,255,.22); border-radius:14px; padding:10px 12px; box-shadow:0 20px 36px rgba(0,0,0,.35);">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
@@ -2081,36 +1623,23 @@
 <script>
 /* ============================
    CalmCPAP 1.0 (AirSense 11 SD)
-   Local CPAP viewer with embedded demo datasets
+   Single-file CPAP viewer with embedded demo datasets
    ============================ */
 
 const els = {
+  appShell: document.getElementById('appShell'),
   zipInput: document.getElementById('zipInput'),
+  dropZone: document.getElementById('dropZone'),
+  chooseZipBtn: document.getElementById('chooseZipBtn'),
   fileBadge: document.getElementById('fileBadge'),
   zipStats: document.getElementById('zipStats'),
-  loadStageSummary: document.getElementById('loadStageSummary'),
-  availableSummary: document.getElementById('availableSummary'),
-  availableMetaArea: document.getElementById('availableMetaArea'),
-  availableSourceArea: document.getElementById('availableSourceArea'),
-  currentNightStatus: document.getElementById('currentNightStatus'),
-  currentNightArea: document.getElementById('currentNightArea'),
-  currentSignalArea: document.getElementById('currentSignalArea'),
-  settingsSummaryArea: document.getElementById('settingsSummaryArea'),
-  settingsSummaryNote: document.getElementById('settingsSummaryNote'),
-  advancedSummary: document.getElementById('advancedSummary'),
 
-  sidebarLayoutOrganized: document.getElementById('sidebarLayoutOrganized'),
-  sidebarLayoutClassic: document.getElementById('sidebarLayoutClassic'),
+  toggleLeftBtn: document.getElementById('toggleLeftBtn'),
   floatingSidebarBtn: document.getElementById('floatingSidebarBtn'),
-  kpiStrip: document.getElementById('kpiStrip'),
-  nightsCountBadge: document.getElementById('nightsCountBadge'),
-  sessionDateBadge: document.getElementById('sessionDateBadge'),
-  kpiCardUsage: document.getElementById('kpiCardUsage'),
-  kpiCardLeak: document.getElementById('kpiCardLeak'),
-  kpiCardPressure: document.getElementById('kpiCardPressure'),
-  kpiCardAHI: document.getElementById('kpiCardAHI'),
   onboardingModal: document.getElementById('onboardingModal'),
+  onboardingDialog: document.getElementById('onboardingDialog'),
   onboardingCloseBtn: document.getElementById('onboardingCloseBtn'),
+  onboardingAgree: document.getElementById('onboardingAgree'),
   globalLoadOverlay: document.getElementById('globalLoadOverlay'),
   globalLoadStep: document.getElementById('globalLoadStep'),
   globalLoadPct: document.getElementById('globalLoadPct'),
@@ -2125,8 +1654,6 @@ const els = {
 
   idArea: document.getElementById('idArea'),
   settingsArea: document.getElementById('settingsArea'),
-  currentSettingsCard: document.getElementById('infoCardCurrentSettings'),
-  currentSettingsBody: document.getElementById('currentSettingsBody'),
   sourceArea: document.getElementById('sourceArea'),
   rangeControls: document.getElementById('rangeControls'),
   rangeModeSeg: document.getElementById('rangeModeSeg'),
@@ -2142,11 +1669,10 @@ const els = {
 
   mapGrid: document.getElementById('mapGrid'),
   applyMappingBtn: document.getElementById('applyMappingBtn'),
-  calendarDrawer: document.getElementById('calendarDrawer'),
   statsDrawer: document.getElementById('statsDrawer'),
-  advancedDrawer: document.getElementById('advancedDrawer'),
-  infoStrip: document.getElementById('infoStrip'),
-  advancedTabStrip: document.getElementById('advancedTabStrip'),
+  sourcesDrawer: document.getElementById('sourcesDrawer'),
+  mappingSection: document.getElementById('mappingSection'),
+  mappingDrawer: document.getElementById('mappingDrawer'),
 
   kpiUsage: document.getElementById('kpiUsage'),
   kpiUsageNote: document.getElementById('kpiUsageNote'),
@@ -2195,11 +1721,9 @@ const els = {
 const state = {
   jobId: 0,
   skipOnboarding: false,
-  sidebarPhase: 'empty',
 
   zip: null,
   entries: [],
-  zipSourceSummary: [],
   meta: { prefix:'', rootMarkers:{} },
   identification: null,
   currentSettings: null,
@@ -2217,8 +1741,7 @@ const state = {
     events: null,
     stats: {},
     raw: {},
-    sourceSummary: [],
-    loadContext: { mode:'none', note:'', inProgress:false }
+    sourceSummary: []
   },
   notes: [],
   demoSetId: null
@@ -2279,363 +1802,12 @@ function setStatus(text, tone='neutral'){
   };
   st.parentElement.style.background = map[tone] || map.neutral;
 }
-function setTextIfPresent(node, text){
-  if (node) node.textContent = text;
-}
-const WORKFLOW_SIGNAL_DEFS = [
-  { key:'leak', label:'Leak' },
-  { key:'pressure', label:'Pressure' },
-  { key:'flow', label:'Flow' },
-  { key:'snore', label:'Snore' },
-  { key:'respRate', label:'Respiratory Rate' },
-  { key:'tidalVolume', label:'Tidal Volume' },
-  { key:'epr', label:'Exhalation Pressure' },
-  { key:'pulse', label:'Pulse' },
-  { key:'spo2', label:'SpO2' },
-  { key:'annotations', label:'Events' }
-];
-function workflowDrawerSelector(){
-  return '#leftSidebarBody > details.workflowDrawer';
-}
-function secondaryWorkflowDrawerIds(){
-  return ['advancedDrawer'];
-}
-function collectOpenSecondaryDrawers(){
-  return secondaryWorkflowDrawerIds().filter(id => document.getElementById(id)?.hasAttribute('open'));
-}
-function setSidebarPhase(phase){
-  state.sidebarPhase = phase;
-  renderSidebarWorkflow();
-}
-function knownSessionDates(){
-  return Array.from(state.sessionsByDate.keys()).filter(d => d !== 'unknown').sort();
-}
-function renderRowList(target, rows = [], fallbackLabel = 'No data yet'){
-  if (!target) return;
-  const safeRows = Array.isArray(rows) ? rows.filter(Boolean) : [];
-  if (!safeRows.length){
-    target.innerHTML = `<div class="row"><span>${escapeHtml(fallbackLabel)}</span><span class="badge">—</span></div>`;
-    return;
-  }
-  target.innerHTML = safeRows.map(row => `
-    <div class="row">
-      <span>${escapeHtml(row.label || '')}</span>
-      <span><b>${escapeHtml(row.value ?? '—')}</b></span>
-    </div>
-  `).join('');
-}
-function renderChipGrid(target, items = []){
-  if (!target) return;
-  const safeItems = Array.isArray(items) ? items.filter(Boolean) : [];
-  if (!safeItems.length){
-    target.innerHTML = '';
-    return;
-  }
-  target.innerHTML = safeItems.map(item => `
-    <div class="signalChip ${item.active ? 'active' : 'missing'}">
-      <strong>${escapeHtml(item.label || '')}</strong>
-      <small>${escapeHtml(item.detail || (item.active ? 'Ready' : 'Missing'))}</small>
-    </div>
-  `).join('');
-}
-function buildZipSourceSummary(entries = state.entries){
-  const counts = new Map();
-  for (const entry of entries || []){
-    const family = classifySourceFamily(entry?.path || '');
-    if (!family || family === 'Other') continue;
-    const current = counts.get(family) || { family, count:0, samplePath:entry.path };
-    current.count += 1;
-    if (!current.samplePath && entry?.path) current.samplePath = entry.path;
-    counts.set(family, current);
-  }
-  const order = ['Identification.json','CurrentSettings.json','PLD','BRP','EVE','CSL','SA2','STR.edf','Identification.crc','CurrentSettings.crc'];
-  return order
-    .map(family => counts.get(family))
-    .filter(Boolean)
-    .map(item => {
-      const meta = SOURCE_FAMILY_DEFS[item.family] || { title:item.family, role:'Retained for reference.', pill:'retained' };
-      return { ...item, ...meta };
-    });
-}
-function extractIdentificationMeta(obj = state.identification){
-  if (!obj || typeof obj !== 'object'){
-    return {
-      manufacturer:'',
-      model:'',
-      mode:'',
-      serial:'',
-      productName:'',
-      productGeographicIdentifier:'',
-      headline:''
-    };
-  }
-  const flat = flattenObject(obj, 5);
-  const items = Object.entries(flat).map(([k, v]) => ({ key: shortenIdKey(k), value: v }));
-  const get = (...needles) => {
-    for (const needle of needles){
-      const n = String(needle || '').toLowerCase();
-      const hit = items.find(it => String(it.key).toLowerCase() === n) ||
-                  items.find(it => String(it.key).toLowerCase().includes(n));
-      if (hit && hit.value != null && String(hit.value).trim() !== '') return String(hit.value);
-    }
-    return '';
-  };
-  const manufacturer = get('manufacturer', 'brand', 'fg p1.manufacturer');
-  const model = get('model', 'machinemodel', 'fg p1.model');
-  const mode = get('mode', 'papmode', 'fg p1.mode');
-  const serial = get('serialnumber', 'deviceserial', 'fg p1.serialnumber', 'fg p1.deviceserial');
-  const productName = get('productname', 'product product name');
-  const productGeographicIdentifier = get('productgeographicidentifier', 'product geographic identifier', 'geographicidentifier');
-  const headline = [manufacturer, model].filter(Boolean).join(' ').trim() || productName || 'Unknown device';
-  return { manufacturer, model, mode, serial, productName, productGeographicIdentifier, headline };
-}
-function collectIdentificationRows(obj, limit = 14){
-  if (!obj || typeof obj !== 'object') return [];
-  const flat = flattenObject(obj, 5);
-  const items = Object.entries(flat)
-    .map(([k, v]) => ({ key:k, short: shortenIdKey(k), value:v }))
-    .filter(item => item.value != null && String(item.value).trim() !== '');
-  const priorityShort = [
-    'Manufacturer','Brand','Model','MachineModel','Mode','PAPMode',
-    'SerialNumber','DeviceSerial','DeviceSerialNumber','Patient','Profile','Name','User',
-    'FG P1.Manufacturer','FG P1.Model','FG P1.SerialNumber','FG P1.DeviceSerial',
-    'FG P1.Mode','FG P1.PAPMode'
-  ].map(s => s.toLowerCase());
-  items.sort((a, b) => {
-    const ai = priorityShort.indexOf(a.short.toLowerCase());
-    const bi = priorityShort.indexOf(b.short.toLowerCase());
-    if (ai !== -1 || bi !== -1){
-      if (ai === -1) return 1;
-      if (bi === -1) return -1;
-      return ai - bi;
-    }
-    return a.short.localeCompare(b.short);
-  });
-  const rows = [];
-  const used = new Set();
-  for (const item of items){
-    if (rows.length >= limit) break;
-    if (used.has(item.short)) continue;
-    if (typeof item.value === 'object') continue;
-    const label = humanizeWords(item.short)
-      .replace(/^Product\s+/i, '')
-      .replace(/^Detected\s+Device$/i, '')
-      .trim();
-    if (!label || /^Product\s*Code$/i.test(label) || /^Detected\s+Device$/i.test(label)) continue;
-    rows.push({ label, value: shortValue(item.value) });
-    used.add(item.short);
-  }
-  return rows;
-}
-function formatSettingsValue(key, value){
-  const v = shortValue(value);
-  if (/temperature/i.test(key) && typeof value === 'number'){
-    const f = (value * 9/5 + 32).toFixed(1);
-    return `${value}°C (${f}°F)`;
-  }
-  return v;
-}
-function collectSettingRows(obj, limit){
-  const sp = obj?.FlowGenerator?.SettingProfiles;
-  const activeName = sp?.ActiveProfiles?.TherapyProfile || '';
-  const therapyProfiles = sp?.TherapyProfiles || {};
-  const featureProfiles = sp?.FeatureProfiles || {};
-  const activeTherapy = activeName && therapyProfiles[activeName] ? therapyProfiles[activeName] : null;
-  const rows = [];
-  const genericWords = new Set(['features','settings','profile','profiles','configuration','feature']);
-
-  // Active therapy profile and its settings
-  if (activeName) rows.push({ label:'Active Therapy Profile', value: activeName });
-  if (activeTherapy){
-    for (const [key, value] of Object.entries(activeTherapy)){
-      rows.push({ label: formatSettingsLabel(key), value: formatSettingsValue(key, value) });
-    }
-  }
-
-  // All feature profiles — iterate ALL, show ALL settings per feature
-  const featureNames = Array.isArray(sp?.ActiveProfiles?.FeatureProfiles) ? sp.ActiveProfiles.FeatureProfiles : Object.keys(featureProfiles);
-  for (const name of featureNames){
-    const cfg = featureProfiles[name];
-    if (!cfg || typeof cfg !== 'object') continue;
-    const featureLabel = formatSettingsLabel(name);
-    const sigWords = featureLabel.split(/\s+/).filter(w => !genericWords.has(w.toLowerCase()));
-
-    for (const [key, value] of Object.entries(cfg)){
-      if (value !== null && typeof value === 'object'){
-        // Nested objects (e.g., ReminderFeature.ReminderMask)
-        const flat = flattenObject(value, 3);
-        let nestedLabel = formatSettingsLabel(key);
-        for (const w of sigWords) nestedLabel = nestedLabel.replace(new RegExp('\\b' + w + '\\b', 'gi'), '').replace(/\s+/g, ' ').trim();
-        const parts = Object.entries(flat)
-          .filter(([,v]) => typeof v !== 'object')
-          .map(([k, v]) => `${formatSettingsLabel(k)}: ${formatSettingsValue(k, v)}`);
-        rows.push({ label: `${featureLabel} — ${nestedLabel || key}`, value: parts.join(' • ') || 'Configured' });
-      } else {
-        let kl = formatSettingsLabel(key);
-        for (const w of sigWords) kl = kl.replace(new RegExp('\\b' + w + '\\b', 'gi'), '').replace(/\s+/g, ' ').trim();
-        rows.push({ label: kl ? `${featureLabel} — ${kl}` : featureLabel, value: formatSettingsValue(key, value) });
-      }
-    }
-  }
-
-  return limit ? rows.slice(0, limit) : rows;
-}
-function currentSignalItems(){
-  return WORKFLOW_SIGNAL_DEFS.map(def => {
-    if (def.key === 'annotations'){
-      const count = state.current.events?.t?.length || 0;
-      return {
-        label: def.label,
-        detail: count ? `${count} event${count === 1 ? '' : 's'}` : 'Missing',
-        active: count > 0
-      };
-    }
-    const series = state.current.signals?.[def.key];
-    const count = series?.t?.length || 0;
-    return {
-      label: def.label,
-      detail: count ? (series?.unit ? `Ready • ${series.unit}` : 'Ready') : 'Missing',
-      active: count > 0
-    };
-  });
-}
-function renderLoadStage(){
-  const st = document.getElementById('statusText');
-  if (state.demoSetId){
-    if (st) st.textContent = `Demo ${state.demoSetId}`;
-  } else if (state.sidebarPhase === 'zip-loaded'){
-    if (st) st.textContent = 'Scanned';
-  } else if (state.sidebarPhase === 'nights-indexed'){
-    if (st) st.textContent = 'Indexed';
-  } else if (state.sidebarPhase === 'night-loaded'){
-    if (st) st.textContent = 'Ready';
-  } else if (state.sidebarPhase === 'error'){
-    if (st) st.textContent = 'Error';
-  }
-  if (els.loadStageSummary) els.loadStageSummary.innerHTML = '';
-}
-function renderAvailableStage(){
-  if (!els.availableSummary) return;
-  const dates = knownSessionDates();
-  let summary = '<b>Availability</b>Upload a ZIP to see anchored nights, date range, and source families before switching nights.';
-  let rows = [];
-  if (state.demoSetId && dates.length){
-    summary = `<b>Demo availability</b>This embedded demo exposes ${dates.length} anchored night${dates.length === 1 ? '' : 's'}. Click the highlighted date to reload it like a normal ZIP night.`;
-  } else if (state.sidebarPhase === 'zip-loaded'){
-    summary = `<b>Indexing nights</b>${state.entries.length} scanned file${state.entries.length === 1 ? '' : 's'} found so far. CalmCPAP is still reading metadata and finding anchored nights.`;
-    rows = [
-      { label:'Files scanned', value: String(state.entries.length) },
-      { label:'Source families', value: String(state.zipSourceSummary?.length || 0) }
-    ];
-  } else if (state.entries.length && !dates.length){
-    summary = '<b>No anchored nights found</b>The ZIP scanned successfully, but CalmCPAP could not find usable DATALOG/YYYYMMDD EDF folders.';
-    rows = [
-      { label:'Files scanned', value: String(state.entries.length) },
-      { label:'Expected layout', value:'DATALOG/YYYYMMDD/*.edf' }
-    ];
-  } else if (dates.length){
-    const latest = dates[dates.length - 1];
-    const current = getSessionAnchorDate(state.current.session) || state.selectedDateISO || latest;
-    summary = state.current.loadContext?.mode === 'auto'
-      ? `<b>${dates.length} anchored night${dates.length === 1 ? '' : 's'} found</b>The latest night was loaded automatically. Click any highlighted date to switch immediately.`
-      : `<b>${dates.length} anchored night${dates.length === 1 ? '' : 's'} found</b>Pick any highlighted date to load that night immediately.`;
-    rows = [
-      { label:'Nights found', value: String(dates.length) },
-      { label:'Earliest anchor', value: dates[0] },
-      { label:'Latest anchor', value: latest },
-      { label:'Calendar selection', value: current }
-    ];
-  }
-  els.availableSummary.innerHTML = summary;
-  renderRowList(els.availableMetaArea, rows, 'Nights found');
-  if (els.nightsCountBadge) els.nightsCountBadge.textContent = dates.length ? String(dates.length) : '';
-}
-function renderCurrentNightStage(){
-  if (!els.currentNightStatus) return;
-  const sess = state.current.session;
-  let summary = '<b>Status</b>No night loaded yet. Upload a ZIP to auto-load the latest anchored night.';
-  let rows = [];
-  let chips = [];
-  if (state.sidebarPhase === 'error'){
-    summary = '<b>Load error</b>CalmCPAP hit a problem while reading this session. Check the progress detail or debug log, then try another date or ZIP.';
-  } else if (state.demoSetId && sess){
-    summary = `<b>Demo night loaded</b>${state.current.loadContext?.note || 'Embedded demo data is ready.'}`;
-  } else if (sess && state.current.loadContext?.inProgress){
-    summary = '<b>Loading current night</b>CalmCPAP is extracting signals and computing summaries for the selected night.';
-  } else if (sess){
-    summary = `<b>${escapeHtml((state.current.loadContext?.mode === 'auto') ? 'Latest night loaded automatically' : 'Current night loaded')}</b>${escapeHtml(state.current.loadContext?.note || 'Use Available Nights to switch to another date any time.')}`;
-  } else if (state.sidebarPhase === 'zip-loaded'){
-    summary = '<b>Waiting for nights</b>The ZIP was scanned. CalmCPAP is indexing anchored nights before it can load the latest one.';
-  } else if (state.sidebarPhase === 'nights-indexed'){
-    summary = '<b>Preparing latest night</b>CalmCPAP found nights and is loading the latest one now.';
-  } else if (state.entries.length && !knownSessionDates().length){
-    summary = '<b>No current night</b>This ZIP did not produce a usable anchored night to load.';
-  }
-  if (sess){
-    rows = [
-      { label:'Loaded night', value: getSessionAnchorDate(sess) || state.selectedDateISO || 'Unknown' },
-      { label:'Session window', value: formatSessionRange(sess) },
-      { label:'Files loaded', value: `${sess.files?.length || 0} source file${(sess.files?.length || 0) === 1 ? '' : 's'}` }
-    ];
-  }
-  els.currentNightStatus.innerHTML = summary;
-  renderRowList(els.currentNightArea, rows, 'Loaded night');
-  if (els.sessionDateBadge){
-    const dateLabel = sess ? (getSessionAnchorDate(sess) || state.selectedDateISO || '') : '';
-    els.sessionDateBadge.textContent = dateLabel;
-  }
-}
-function renderSettingsSummary(){
-  if (!els.settingsSummaryArea || !els.settingsSummaryNote) return;
-  const idMeta = extractIdentificationMeta(state.identification);
-  const settingRows = collectSettingRows(state.currentSettings, 4);
-  const rows = [];
-  let note = '<b>Settings</b>Upload a ZIP to read device metadata and current therapy settings.';
-  if (state.demoSetId){
-    note = '<b>Demo device + settings</b>These are shifted demo values that follow the same layout as a real ZIP.';
-  } else if (state.entries.length){
-    if (!state.identification && !state.currentSettings){
-      note = '<b>Metadata scan complete</b>No readable Identification.json or CurrentSettings.json was found in this ZIP.';
-    } else if (!state.identification){
-      note = '<b>Settings found, device details missing</b>CurrentSettings.json loaded, but Identification.json was not available.';
-    } else if (!state.currentSettings){
-      note = '<b>Device found, settings missing</b>Identification.json loaded, but CurrentSettings.json was not available.';
-    } else {
-      note = '<b>Device + settings ready</b>The summary below shows the main machine/profile context.';
-    }
-  }
-  if (idMeta.headline) rows.push({ label:'Device', value: idMeta.headline });
-  if (idMeta.mode) rows.push({ label:'Mode', value: idMeta.mode });
-  if (idMeta.serial) rows.push({ label:'Serial', value: idMeta.serial });
-  rows.push(...settingRows.slice(0, Math.max(0, 5 - rows.length)));
-  els.settingsSummaryNote.innerHTML = note;
-  renderRowList(els.settingsSummaryArea, rows, 'Device');
-}
-function renderAdvancedSummary(){
-  if (!els.advancedSummary) return;
-  if (!state.entries.length && !state.demoSetId){
-    els.advancedSummary.innerHTML = '<b>Advanced tools</b>Use these only if auto-detection missed something or you want the raw source/debug view.';
-    return;
-  }
-  const signalCount = state.current.signalCatalog?.length || 0;
-  const sourceCount = state.current.sourceSummary?.length || state.zipSourceSummary?.length || 0;
-  els.advancedSummary.innerHTML = `<b>Advanced tools</b>${signalCount} signal label${signalCount === 1 ? '' : 's'} detected across ${sourceCount} source famil${sourceCount === 1 ? 'y' : 'ies'}. Open these tools only if something looks missing or you want raw provenance/debug output.`;
-}
-function renderSidebarWorkflow(){
-  renderLoadStage();
-  renderAvailableStage();
-  renderCurrentNightStage();
-  renderSettingsSummary();
-  const hasData = state.current.session || state.identification || state.currentSettings || state.entries.length;
-  showInfoStrip(!!hasData);
-  renderAdvancedSummary();
-}
 function log(line){
   const stamp = new Date().toLocaleTimeString([], { hour12:false });
   const msg = typeof line === 'string' ? line : JSON.stringify(line, null, 2);
   state.notes.push(`[${stamp}] ${msg}`);
   els.log.textContent = state.notes.join('\n');
-  if (els.debugDrawer?.classList?.contains('active')){
+  if (els.debugDrawer?.open){
     els.log.scrollTop = els.log.scrollHeight;
   }
 }
@@ -2665,39 +1837,15 @@ function setDrawerOpen(drawer, open=true){
   if (open) el.setAttribute('open', '');
   else el.removeAttribute('open');
 }
-function collapseSidebarDrawers(exceptIds=[]){
-  const keepOpen = new Set(Array.isArray(exceptIds) ? exceptIds : [exceptIds]);
-  document.querySelectorAll(workflowDrawerSelector()).forEach(drawer => {
-    if (keepOpen.has(drawer.id)) drawer.setAttribute('open', '');
-    else drawer.removeAttribute('open');
-  });
+function collapseSidebarDrawers(){
+  document.querySelectorAll('#leftPanelCard details.drawer').forEach(drawer => drawer.removeAttribute('open'));
 }
 function autoOpenLoadStart(){
-  const keep = collectOpenSecondaryDrawers();
-  collapseSidebarDrawers([...keep, 'statsDrawer']);
+  setDrawerOpen(els.statsDrawer, true);
 }
 function autoOpenLoadComplete(){
-  const keep = collectOpenSecondaryDrawers();
-  collapseSidebarDrawers([...keep, 'calendarDrawer']);
-  showInfoStrip(true);
-}
-
-function showInfoStrip(show){
-  if (els.infoStrip) els.infoStrip.style.display = show ? '' : 'none';
-}
-
-/* --- Advanced tab switching --- */
-if (els.advancedTabStrip){
-  els.advancedTabStrip.addEventListener('click', e => {
-    const tab = e.target.closest('.advancedTab');
-    if (!tab) return;
-    const key = tab.dataset.advTab;
-    els.advancedTabStrip.querySelectorAll('.advancedTab').forEach(t => t.classList.remove('active'));
-    tab.classList.add('active');
-    document.querySelectorAll('.advancedTabPanel').forEach(p => p.classList.remove('active'));
-    const panel = document.getElementById('advPanel-' + key);
-    if (panel) panel.classList.add('active');
-  });
+  setDrawerOpen(els.statsDrawer, true);
+  setDrawerOpen(els.sourcesDrawer, true);
 }
 
 const progressState = { step:'Idle', pct:0, detail:'', raf:0 };
@@ -2827,10 +1975,8 @@ function placeholderPlots(){
 function resetAll(){
   newJob();
 
-  state.sidebarPhase = 'empty';
   state.zip = null;
   state.entries = [];
-  state.zipSourceSummary = [];
   state.meta = { prefix:'', rootMarkers:{} };
   state.identification = null;
   state.currentSettings = null;
@@ -2841,20 +1987,17 @@ function resetAll(){
   state.current = {
     session:null, edfFiles:[], signalCatalog:[],
     mapping:{ leak:null, pressure:null, flow:null, snore:null, respRate:null, tidalVolume:null, epr:null, pulse:null, spo2:null, annotations:null },
-    signals:{}, events:null, stats:{}, raw:{}, sourceSummary:[],
-    loadContext:{ mode:'none', note:'', inProgress:false }
+    signals:{}, events:null, stats:{}, raw:{}, sourceSummary:[]
   };
   state.notes = [];
   state.demoSetId = null;
 
   els.zipInput.value = '';
-  setTextIfPresent(els.fileBadge, 'No file');
-  setTextIfPresent(els.zipStats, '—');
+  els.fileBadge.textContent = 'No file';
+  els.zipStats.textContent = '—';
 
   els.idArea.innerHTML = `<div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>`;
-  els.idArea.style.display = 'none';
   els.settingsArea.innerHTML = `<div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>`;
-  if (els.currentSettingsCard) els.currentSettingsCard.parentElement.style.display = 'none';
   els.sourceArea.innerHTML = '';
 
   els.loadRangeBtn.disabled = true;
@@ -2869,7 +2012,6 @@ function resetAll(){
   els.kpiLeak95.textContent = '—'; els.kpiLeak95Note.textContent = 'Needs leak signal.';
   els.kpiP50.textContent = '—'; els.kpiP50Note.textContent = 'Needs pressure signal.';
   els.kpiAHI.textContent = '—'; els.kpiAHINote.textContent = 'From annotations if found.';
-  updateKPIStatus();
 
   els.overviewSummary.innerHTML = `<b>Status</b><br/>Upload a ZIP to begin.`;
   els.overviewNarrative.innerHTML = '';
@@ -2888,11 +2030,9 @@ function resetAll(){
 
   els.rawSummary.innerHTML = '';
   els.rawDump.textContent = '';
-  showInfoStrip(false);
-  collapseSidebarDrawers([]);
+  collapseSidebarDrawers();
   applyRangeMode('night');
   renderCalendar();
-  renderSidebarWorkflow();
 
   progress('Idle', 0, 'Upload a ZIP to begin.');
   setStatus('Waiting','neutral');
@@ -2947,139 +2087,142 @@ els.tablist.addEventListener('keydown', (e)=>{
 });
 
 /* ---------- Upload handling ---------- */
+function isOnboardingOpen(){
+  return !!els.onboardingModal && !els.onboardingModal.hidden;
+}
+function setInertState(el, inert){
+  if (!el) return;
+  if (inert){
+    el.setAttribute('inert', '');
+    el.setAttribute('aria-hidden', 'true');
+  } else {
+    el.removeAttribute('inert');
+    el.removeAttribute('aria-hidden');
+  }
+}
+function setOnboardingBlocking(blocking){
+  document.body.classList.toggle('onboarding-open', blocking);
+  setInertState(els.appShell, blocking);
+  setInertState(els.floatingSidebarBtn, blocking);
+}
+function getOnboardingFocusable(){
+  if (!els.onboardingModal) return [];
+  return Array.from(els.onboardingModal.querySelectorAll('button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])'))
+    .filter((el)=> !el.hasAttribute('hidden') && (el.offsetWidth > 0 || el.offsetHeight > 0 || el === document.activeElement));
+}
+function focusOnboardingStart(){
+  const focusTarget = els.onboardingAgree || getOnboardingFocusable()[0] || els.onboardingDialog;
+  focusTarget?.focus({ preventScroll:true });
+}
+function handleOnboardingKeydown(e){
+  if (!isOnboardingOpen()) return;
+  if (e.key === 'Escape'){
+    e.preventDefault();
+    e.stopPropagation();
+    return;
+  }
+  if (e.key !== 'Tab') return;
+  const focusable = getOnboardingFocusable();
+  if (!focusable.length){
+    e.preventDefault();
+    els.onboardingDialog?.focus({ preventScroll:true });
+    return;
+  }
+  const active = document.activeElement;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (!els.onboardingModal?.contains(active)){
+    e.preventDefault();
+    (e.shiftKey ? last : first).focus({ preventScroll:true });
+    return;
+  }
+  if (!e.shiftKey && active === last){
+    e.preventDefault();
+    first.focus({ preventScroll:true });
+  } else if (e.shiftKey && active === first){
+    e.preventDefault();
+    last.focus({ preventScroll:true });
+  }
+}
 function maybeShowOnboarding(){
   if (!els.onboardingModal) return;
   if (state.skipOnboarding) return;
-  document.body.classList.add('onboarding-open');
-  els.onboardingModal.style.display = 'grid';
+  els.onboardingModal.hidden = false;
   els.onboardingModal.setAttribute('aria-hidden','false');
-  requestAnimationFrame(()=> els.onboardingCloseBtn?.focus());
+  setOnboardingBlocking(true);
+  if (els.onboardingDialog) els.onboardingDialog.scrollTop = 0;
+  if (els.onboardingAgree) els.onboardingAgree.checked = false;
+  if (els.onboardingCloseBtn) els.onboardingCloseBtn.disabled = true;
+  requestAnimationFrame(focusOnboardingStart);
 }
-function closeOnboarding(){
+function closeOnboarding({ restoreFocus=true } = {}){
   if (!els.onboardingModal) return;
-  document.body.classList.remove('onboarding-open');
-  els.onboardingModal.style.display = 'none';
+  els.onboardingModal.hidden = true;
   els.onboardingModal.setAttribute('aria-hidden','true');
+  setOnboardingBlocking(false);
+  if (restoreFocus) els.dropZone?.focus({ preventScroll:true });
 }
-els.onboardingCloseBtn?.addEventListener('click', closeOnboarding);
-// setTimeout(maybeShowOnboarding, 120); // ONBOARDING disabled for redesign
+els.onboardingAgree?.addEventListener('change', ()=>{
+  if (els.onboardingCloseBtn) els.onboardingCloseBtn.disabled = !els.onboardingAgree.checked;
+});
+els.onboardingCloseBtn?.addEventListener('click', ()=> closeOnboarding({ restoreFocus:true }));
+document.addEventListener('keydown', handleOnboardingKeydown, true);
+setTimeout(maybeShowOnboarding, 120);
+
+els.dropZone.addEventListener('dragover', (e)=>{ e.preventDefault(); });
+els.dropZone.addEventListener('drop', (e)=>{
+  e.preventDefault();
+  const f = e.dataTransfer.files?.[0];
+  if (f) handleZip(f);
+});
+els.dropZone.addEventListener('click', (e)=>{
+  const clickedControl = e.target.closest('label,button,input,select,a');
+  if (clickedControl) return;
+  els.zipInput.click();
+});
+els.dropZone.addEventListener('keydown', (e)=>{
+  if (e.key === 'Enter' || e.key === ' ') {
+    const focusedControl = document.activeElement?.closest?.('label,button,input,select,a');
+    if (focusedControl) return;
+    e.preventDefault();
+    els.zipInput.click();
+  }
+});
+els.chooseZipBtn.addEventListener('click', (e)=> e.stopPropagation());
+els.demoBtn.addEventListener('click', (e)=> e.stopPropagation());
 
 els.zipInput.addEventListener('change', ()=>{
   const f = els.zipInput.files?.[0];
   if (f) handleZip(f);
 });
 
-function resizeAllPlots(){
-  [els.plotOverview, els.plotCompare, els.plotLeak, els.plotPressure, els.plotFlow, els.plotSnore, els.plotRespRate, els.plotTidalVolume, els.plotEpr, els.plotEvents].forEach(p=>{
-    if (p && p.data) Plotly.Plots.resize(p);
-  });
-}
-
-function setSidebarLayoutMode(){ setTimeout(resizeAllPlots, 40); }
-
 function updateSidebarToggleUI(collapsed){
+  els.toggleLeftBtn.textContent = collapsed ? 'Open Sidebar' : 'Hide Sidebar';
+  els.toggleLeftBtn.setAttribute('aria-pressed', collapsed ? 'true' : 'false');
   if (els.floatingSidebarBtn){
-    els.floatingSidebarBtn.textContent = collapsed ? 'Open Sidebar' : 'Close Sidebar';
+    els.floatingSidebarBtn.style.display = collapsed ? 'inline-flex' : 'none';
+    els.floatingSidebarBtn.textContent = 'Open Sidebar';
   }
-  setTimeout(resizeAllPlots, 40);
+  setTimeout(()=>{
+    [els.plotOverview, els.plotCompare, els.plotLeak, els.plotPressure, els.plotFlow, els.plotSnore, els.plotRespRate, els.plotTidalVolume, els.plotEpr, els.plotEvents].forEach(p=>{
+      if (p) Plotly.Plots.resize(p);
+    });
+  }, 40);
 }
 
-function updateKPIStatus(){
-  const usage = parseFloat(els.kpiUsage?.textContent);
-  const leak = parseFloat(els.kpiLeak95?.textContent);
-  const pressure = parseFloat(els.kpiP50?.textContent);
-  const ahi = parseFloat(els.kpiAHI?.textContent);
-  if (els.kpiCardUsage) els.kpiCardUsage.dataset.status = isNaN(usage) ? '' : usage >= 4 ? 'good' : usage >= 2 ? 'warn' : 'bad';
-  if (els.kpiCardLeak) els.kpiCardLeak.dataset.status = isNaN(leak) ? '' : leak <= 24 ? 'good' : leak <= 40 ? 'warn' : 'bad';
-  if (els.kpiCardPressure) els.kpiCardPressure.dataset.status = isNaN(pressure) ? '' : '';
-  if (els.kpiCardAHI) els.kpiCardAHI.dataset.status = isNaN(ahi) ? '' : ahi < 5 ? 'good' : ahi < 15 ? 'warn' : 'bad';
-}
-
-els.sidebarLayoutOrganized?.addEventListener('click', ()=> setSidebarLayoutMode('organized'));
-els.sidebarLayoutClassic?.addEventListener('click', ()=> setSidebarLayoutMode('classic'));
-els.floatingSidebarBtn?.addEventListener('click', ()=>{
+els.toggleLeftBtn.addEventListener('click', ()=>{
   const collapsed = document.body.classList.toggle('left-collapsed');
   updateSidebarToggleUI(collapsed);
 });
-
-(function(){
-  const deviceToggle = document.getElementById('deviceToggle');
-  const deviceBody = document.getElementById('deviceBody');
-  if (!deviceToggle || !deviceBody) return;
-  function toggleDevice(){
-    const expanded = deviceToggle.getAttribute('aria-expanded') === 'true';
-    deviceToggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-    deviceBody.style.display = expanded ? 'none' : '';
-  }
-  deviceToggle.addEventListener('click', toggleDevice);
-  deviceToggle.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleDevice(); }
+els.floatingSidebarBtn?.addEventListener('click', ()=>{
+  document.body.classList.remove('left-collapsed');
+  updateSidebarToggleUI(false);
+});
+window.addEventListener('resize', ()=>{
+  [els.plotOverview, els.plotCompare, els.plotLeak, els.plotPressure, els.plotFlow, els.plotSnore, els.plotRespRate, els.plotTidalVolume, els.plotEpr, els.plotEvents].forEach(p=>{
+    if (p) Plotly.Plots.resize(p);
   });
-})();
-
-(function(){
-  const sessToggle = document.getElementById('sessionToggle');
-  const sessBody = document.getElementById('sessionBody');
-  if (!sessToggle || !sessBody) return;
-  function toggleSession(){
-    const expanded = sessToggle.getAttribute('aria-expanded') === 'true';
-    sessToggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-    sessBody.style.display = expanded ? 'none' : '';
-  }
-  sessToggle.addEventListener('click', toggleSession);
-  sessToggle.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleSession(); }
-  });
-})();
-
-(function(){
-  const csToggle = document.getElementById('currentSettingsToggle');
-  const csBody = document.getElementById('currentSettingsBody');
-  if (!csToggle || !csBody) return;
-  function toggleCS(){
-    const expanded = csToggle.getAttribute('aria-expanded') === 'true';
-    csToggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-    csBody.style.display = expanded ? 'none' : '';
-  }
-  csToggle.addEventListener('click', toggleCS);
-  csToggle.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleCS(); }
-  });
-})();
-window.addEventListener('resize', resizeAllPlots);
-
-(function initResizeHandle(){
-  const handle = document.getElementById('resizeHandle');
-  const mainEl = document.querySelector('main');
-  if (!handle || !mainEl) return;
-  handle.addEventListener('pointerdown', function(e){
-    e.preventDefault();
-    handle.setPointerCapture(e.pointerId);
-    const leftPanel = document.getElementById('leftPanelCard');
-    if (!leftPanel) return;
-    const startX = e.clientX;
-    const startWidth = leftPanel.getBoundingClientRect().width;
-    handle.classList.add('dragging');
-    document.body.classList.add('resizing');
-    function onMove(ev){
-      const newW = Math.max(280, Math.min(startWidth + ev.clientX - startX, window.innerWidth * 0.5));
-      mainEl.style.setProperty('--sidebar-width', newW + 'px');
-    }
-    function onUp(){
-      handle.classList.remove('dragging');
-      document.body.classList.remove('resizing');
-      handle.removeEventListener('pointermove', onMove);
-      handle.removeEventListener('pointerup', onUp);
-      handle.removeEventListener('lostpointercapture', onUp);
-      setTimeout(resizeAllPlots, 30);
-    }
-    handle.addEventListener('pointermove', onMove);
-    handle.addEventListener('pointerup', onUp);
-    handle.addEventListener('lostpointercapture', onUp);
-  });
-})();
-
-setSidebarLayoutMode(state.sidebarLayoutMode);
+});
 
 /* ---------- Picker ---------- */
 els.modeNight.addEventListener('click', ()=> applyRangeMode('night'));
@@ -3100,7 +2243,6 @@ els.calMonthSelect.addEventListener('change', ()=>{
     state.selectedDateISO = mDates[mDates.length-1];
     applyRangeMode(state.selectedRange.mode || 'night');
   }
-  renderSidebarWorkflow();
   renderCalendar();
 });
 els.applyMappingBtn.addEventListener('click', async ()=>{
@@ -3458,7 +2600,6 @@ function loadDemoData({ tabId='', skipToast=false, datasetId=null } = {}){
   autoOpenLoadStart();
   const seed = pickDemoDataset(datasetId);
   const demo = materializeDemoDataset(seed);
-  state.sidebarPhase = 'night-loaded';
   state.demoSetId = seed.id;
   state.identification = demo.identification;
   state.currentSettings = demo.currentSettings;
@@ -3467,8 +2608,6 @@ function loadDemoData({ tabId='', skipToast=false, datasetId=null } = {}){
   state.current.signals = demo.signals;
   state.current.events = demo.events;
   state.current.signalCatalog = demo.signalCatalog;
-  state.current.loadContext = { mode:'demo', note:'Embedded demo night loaded. Pick the highlighted date to reload it like a normal session.', inProgress:false };
-  state.zipSourceSummary = demo.sourceSummary;
   state.current.mapping = {
     leak:'demo::0', pressure:'demo::1', flow:'demo::2', snore:'demo::3',
     respRate:'demo::4', tidalVolume:'demo::5', epr:'demo::6', pulse:'demo::7', spo2:'demo::8', annotations:'embedded-demo-events'
@@ -3491,8 +2630,8 @@ function loadDemoData({ tabId='', skipToast=false, datasetId=null } = {}){
   ];
 
   setStatus('Demo','good');
-  setTextIfPresent(els.fileBadge, 'demo-data.zip');
-  setTextIfPresent(els.zipStats, 'demo mode');
+  els.fileBadge.textContent = 'demo-data.zip';
+  els.zipStats.textContent = 'demo mode';
   progress('Demo', 100, 'Loaded transformed demo data with shifted sample-session timing.');
 
   renderIdentification(state.identification);
@@ -3506,7 +2645,6 @@ function loadDemoData({ tabId='', skipToast=false, datasetId=null } = {}){
   renderMappingUI();
   renderRawDump();
   analyzeAndRender();
-  renderSidebarWorkflow();
   autoOpenLoadComplete();
   if (tabId) setActiveTab(tabId);
   if (!skipToast) toast('Demo data ready ✔️');
@@ -3527,7 +2665,7 @@ async function handleZip(file){
   state.jobId = jobId;
   updateHashParams({ demo:null, demoSet:null });
 
-  setTextIfPresent(els.fileBadge, file.name);
+  els.fileBadge.textContent = file.name;
   setStatus('Reading ZIP…','neutral');
   progress('Reading ZIP', 2, `${file.name} — ${(file.size/1024/1024).toFixed(2)} MB`);
   log(`ZIP selected: ${file.name} (${(file.size/1024/1024).toFixed(2)} MB)`);
@@ -3554,15 +2692,13 @@ async function handleZip(file){
 
     const { entries, prefix, markers } = enumerateZipEntries(state.zip);
     state.entries = entries;
-    state.zipSourceSummary = buildZipSourceSummary(entries);
     state.meta.prefix = prefix;
     state.meta.rootMarkers = markers;
-    setSidebarPhase('zip-loaded');
 
     const edfCount = entries.filter(e => e.path.toLowerCase().endsWith('.edf')).length;
     const idCount = entries.filter(e => e.path.toLowerCase().endsWith('identification.json')).length;
 
-    setTextIfPresent(els.zipStats, `${entries.length} files • ${edfCount} edf • id:${idCount? 'yes':'no'}`);
+    els.zipStats.textContent = `${entries.length} files • ${edfCount} edf • id:${idCount? 'yes':'no'}`;
     log({
       phase: 'zip-scan',
       fileCount: entries.length,
@@ -3571,7 +2707,6 @@ async function handleZip(file){
       prefix: prefix || '(none)',
       markers
     });
-    renderSidebarWorkflow();
     progress('Scanning ZIP', 35, `Found ${entries.length} files. EDF: ${edfCount}. Identification.json: ${idCount? 'yes':'no'}.`);
     await tick();
     assertActive(jobId);
@@ -3586,7 +2721,6 @@ async function handleZip(file){
 
     const index = await indexSessionsFromSDStructure(entries, jobId);
     state.sessionsByDate = index.sessionsByDate;
-    setSidebarPhase('nights-indexed');
 
     if (!state.sessionsByDate.size){
       setStatus('No sessions','warn');
@@ -3594,8 +2728,6 @@ async function handleZip(file){
       els.overviewSummary.innerHTML = `<b>Status</b><br/>Couldn’t find sessions. Expected: <b>DATALOG/YYYYMMDD/*.edf</b>.`;
       els.rawSummary.innerHTML = `<b>Raw / debug snapshot:</b><br/>Couldn’t index sessions.`;
       els.rawDump.textContent = entries.slice(0,400).map(e=>e.path).join('\n');
-      collapseSidebarDrawers(['statsDrawer', 'calendarDrawer']);
-      renderSidebarWorkflow();
       return;
     }
 
@@ -3610,14 +2742,12 @@ async function handleZip(file){
     const pack = state.sessionsByDate.get(maxDate);
     const firstKey = pack?.sessions?.[0]?.key;
     if (maxDate && firstKey){
-      await loadSession(maxDate, firstKey, jobId, { mode:'auto', note:`${maxDate} was loaded automatically because it is the latest anchored night in this ZIP.` });
+      await loadSession(maxDate, firstKey, jobId);
     } else {
       setStatus('Ready','good');
       progress('Ready', 100, 'Choose a date + session, then click Load.');
-      renderSidebarWorkflow();
     }
 
-    setSidebarPhase('night-loaded');
     autoOpenLoadComplete();
     toast('ZIP ready ✔️');
   }catch(err){
@@ -3629,7 +2759,6 @@ async function handleZip(file){
     setStatus('Error','bad');
     progress('Error', 100, err?.message || String(err));
     log('❌ ' + (err?.message || String(err)));
-    setSidebarPhase('error');
   }
 }
 
@@ -3738,9 +2867,12 @@ async function indexSessionsFromSDStructure(entries, jobId){
         const buf = await files[fi].entry.async('arraybuffer');
         assertActive(jobId);
         const header = parseEDFHeader(buf);
-        const parsedStart = header?.start instanceof Date && Number.isFinite(header.start.getTime()) && header.start.getFullYear() >= 2000
-          ? header.start
-          : new Date(`${dateISO}T12:00:00`);
+        log({
+          phase: 'index-header',
+          file: files[fi].path,
+          summary: summarizeHeader(header)
+        });
+        const parsedStart = bestFileStartDate(files[fi].path, header?.start, dateISO);
         if (parsedStart && Number.isFinite(parsedStart.getTime())){
           const durSec = estimateDurationSeconds(buf, header);
           const end = new Date(parsedStart.getTime() + durSec*1000);
@@ -3838,9 +2970,7 @@ async function readIdentification(entries, jobId){
     log('Identification.json not found.');
     state.identification = null;
     els.idArea.innerHTML = `<div class="row"><span>No Identification.json found</span><span class="badge">info</span></div>`;
-    els.idArea.style.display = '';
     progress('Reading Identification', 38, 'No Identification.json found.');
-    renderSidebarWorkflow();
     return;
   }
   try{
@@ -3853,43 +2983,93 @@ async function readIdentification(entries, jobId){
     state.identification = json;
     log(`Identification.json loaded: ${idEntry.path}`);
     renderIdentification(json);
-    els.idArea.style.display = '';
     progress('Reading Identification', 39, 'Identification.json loaded.');
   }catch(e){
     log('Identification.json present but failed to parse.');
     els.idArea.innerHTML = `<div class="row"><span>Identification.json parse failed</span><span class="badge">warn</span></div>`;
-    els.idArea.style.display = '';
     progress('Reading Identification', 39, 'Identification.json parse failed.');
-    state.identification = null;
   }
-  renderSidebarWorkflow();
 }
 
 function renderIdentification(obj){
-  const meta = extractIdentificationMeta(obj);
-  const detailRows = collectIdentificationRows(obj, 14);
+  const flat = flattenObject(obj, 5);
+  const items = Object.entries(flat)
+    .map(([k,v])=>({ key:k, short: shortenIdKey(k), val:v }))
+    .filter(it => it.val != null && String(it.val).trim() !== '');
+
+  const priorityShort = [
+    'Manufacturer','Brand','Model','MachineModel','Mode','PAPMode',
+    'SerialNumber','DeviceSerial','DeviceSerialNumber','Patient','Profile','Name','User',
+    'FG P1.Manufacturer','FG P1.Model','FG P1.SerialNumber','FG P1.DeviceSerial',
+    'FG P1.Mode','FG P1.PAPMode'
+  ].map(s => s.toLowerCase());
+
+  items.sort((a,b)=>{
+    const ai = priorityShort.indexOf(a.short.toLowerCase());
+    const bi = priorityShort.indexOf(b.short.toLowerCase());
+    if (ai !== -1 || bi !== -1){
+      if (ai === -1) return 1;
+      if (bi === -1) return -1;
+      return ai - bi;
+    }
+    return a.short.localeCompare(b.short);
+  });
+
+  const getLike = (needle) => {
+    const n = needle.toLowerCase();
+    const hit = items.find(it => it.short.toLowerCase() === n) ||
+                items.find(it => it.short.toLowerCase().includes(n));
+    return hit ? String(hit.val ?? '') : '';
+  };
+
+  const make = getLike('Manufacturer') || getLike('Brand') || getLike('FG P1.Manufacturer') || '';
+  const model = getLike('Model') || getLike('MachineModel') || getLike('FG P1.Model') || '';
+  const mode  = getLike('Mode') || getLike('PAPMode') || getLike('FG P1.Mode') || '';
+  const serial = getLike('SerialNumber') || getLike('DeviceSerial') || getLike('FG P1.SerialNumber') || getLike('FG P1.DeviceSerial') || '';
+  const productCode = getLike('ProductCode') || getLike('Product Code') || '';
+  const productGeographicIdentifier = getLike('ProductGeographicIdentifier') || getLike('Product Geographic Identifier') || getLike('GeographicIdentifier') || '';
+  const productName = getLike('ProductName') || getLike('Product Name') || getLike('Product Product Name') || '';
+
+  const headline = (make + ' ' + model).trim() || 'Unknown';
 
   const headerRow = `
-    ${meta.productName ? `
+    ${productName ? `
       <div class="row">
         <span style="opacity:.85">Product Name</span>
-        <span><b>${escapeHtml(meta.productName)}</b></span>
+        <span><b>${escapeHtml(productName)}</b></span>
       </div>
     ` : ''}
-    ${meta.productGeographicIdentifier ? `
+    ${productGeographicIdentifier ? `
       <div class="row">
         <span style="opacity:.85">Product Geographic Identifier</span>
-        <span><b>${escapeHtml(meta.productGeographicIdentifier)}</b></span>
+        <span><b>${escapeHtml(productGeographicIdentifier)}</b></span>
       </div>
     ` : ''}
   `;
 
-  els.idArea.innerHTML = headerRow + (detailRows.map(row => `
+  const rows = [];
+  const used = new Set();
+  for (const it of items){
+    if (rows.length >= 14) break;
+    const sk = it.short;
+    if (used.has(sk)) continue;
+    if (typeof it.val === 'object') continue;
+    const label = humanizeWords(sk)
+      .replace(/^Product\s+/i, '')
+      .replace(/^Detected\s+Device$/i, '')
+      .trim();
+    if (!label) continue;
+    if (/^Product\s*Code$/i.test(label) || /^Detected\s+Device$/i.test(label)) continue;
+    rows.push(`
       <div class="row">
-        <span>${escapeHtml(row.label)}</span>
-        <span><b>${escapeHtml(row.value)}</b></span>
+        <span>${escapeHtml(label)}</span>
+        <span><b>${escapeHtml(shortValue(it.val))}</b></span>
       </div>
-    `).join('') || `<div class="row"><span>No readable fields</span><span class="badge">json</span></div>`);
+    `);
+    used.add(sk);
+  }
+
+  els.idArea.innerHTML = headerRow + (rows.join('') || `<div class="row"><span>No readable fields</span><span class="badge">json</span></div>`);
 }
 
 function shortenIdKey(path){
@@ -3946,8 +3126,6 @@ async function readCurrentSettings(entries, jobId){
     log('CurrentSettings.json not found.');
     state.currentSettings = null;
     els.settingsArea.innerHTML = `<div class="row"><span>No CurrentSettings.json found</span><span class="badge">info</span></div>`;
-    if (els.currentSettingsCard) els.currentSettingsCard.parentElement.style.display = '';
-    renderSidebarWorkflow();
     return;
   }
   try{
@@ -3958,24 +3136,41 @@ async function readCurrentSettings(entries, jobId){
     state.currentSettings = json;
     log(`CurrentSettings.json loaded: ${csEntry.path}`);
     renderCurrentSettings(json);
-    if (els.currentSettingsCard) els.currentSettingsCard.parentElement.style.display = '';
   }catch(_e){
     log('CurrentSettings.json present but failed to parse.');
     state.currentSettings = null;
     els.settingsArea.innerHTML = `<div class="row"><span>CurrentSettings.json parse failed</span><span class="badge">warn</span></div>`;
-    if (els.currentSettingsCard) els.currentSettingsCard.parentElement.style.display = '';
   }
-  renderSidebarWorkflow();
 }
 
 function renderCurrentSettings(obj){
-  const rows = collectSettingRows(obj);
+  const sp = obj?.FlowGenerator?.SettingProfiles;
+  const activeName = sp?.ActiveProfiles?.TherapyProfile || '';
+  const therapyProfiles = sp?.TherapyProfiles || {};
+  const featureProfiles = sp?.FeatureProfiles || {};
+  const activeTherapy = activeName && therapyProfiles[activeName] ? therapyProfiles[activeName] : null;
+
+  const rows = [];
+  if (activeName) rows.push(`<div class="row"><span>Active Therapy Profile</span><span><b>${escapeHtml(activeName)}</b></span></div>`);
+  if (activeTherapy){
+    for (const [k,v] of Object.entries(activeTherapy)){
+      rows.push(`<div class="row"><span>${escapeHtml(formatSettingsLabel(k))}</span><span><b>${escapeHtml(shortValue(v))}</b></span></div>`);
+    }
+  }
+
+  const featureNames = Array.isArray(sp?.ActiveProfiles?.FeatureProfiles) ? sp.ActiveProfiles.FeatureProfiles : [];
+  for (const name of featureNames.slice(0,10)){
+    const cfg = featureProfiles[name];
+    if (!cfg || typeof cfg !== 'object') continue;
+    const vals = Object.entries(cfg).slice(0,2).map(([k,v])=>`${formatSettingsLabel(k)}: ${shortValue(v)}`).join(' • ');
+    rows.push(`<div class="row" title="${escapeHtml(vals)}"><span>${escapeHtml(formatSettingsLabel(name))}</span><span><b>${escapeHtml(vals || 'Configured')}</b></span></div>`);
+  }
+
   if (!rows.length){
     els.settingsArea.innerHTML = `<div class="row"><span>No TherapyProfiles settings found</span><span class="badge">json</span></div>`;
-  } else {
-    els.settingsArea.innerHTML = rows.map(row => `<div class="row"><span>${escapeHtml(row.label)}</span><span><b>${escapeHtml(row.value)}</b></span></div>`).join('');
+    return;
   }
-  if (els.currentSettingsCard) els.currentSettingsCard.parentElement.style.display = '';
+  els.settingsArea.innerHTML = rows.slice(0,14).join('');
 }
 
 const SOURCE_FAMILY_DEFS = {
@@ -4703,18 +3898,12 @@ async function readSelectedSignalsFromEDF(file, mappingKeys, maxPoints=90000){
         const pathMatches = !mappedPath || mappedPath === file.path;
         if (pathMatches){
           sig = header.signals.find(s => s.index === idx) || null;
-        } else {
-          // Different file — match by signal index + label similarity for same file type
-          const mappedBase = (mappedPath.match(/_([A-Z]{2,3})\.edf$/i) || [])[1] || '';
-          const fileBase = (file.path.match(/_([A-Z]{2,3})\.edf$/i) || [])[1] || '';
-          if (mappedBase && mappedBase.toLowerCase() === fileBase.toLowerCase()){
-            sig = header.signals.find(s => s.index === idx) || null;
-          }
         }
       }
     }
 
     if (!sig && !mappedStr.includes('::')){
+      // Backward compatibility with older saved mapping values based on normalized labels.
       sig = header.signals.find(s => normalizeLabelLoose(s.label) === mappedStr || normalizeLabel(s.label) === mappedStr) || null;
     }
     if (sig) wanted[k] = sig;
@@ -4833,7 +4022,6 @@ function enablePicker(autoSelectMostRecent){
     earliestDate: min,
     latestDate: max
   });
-  renderSidebarWorkflow();
 }
 
 function formatHours(sec){ return `${(sec/3600).toFixed(2)}h`; }
@@ -4872,7 +4060,6 @@ function applyRangeMode(mode){
 
   updateRangeHint();
   renderCalendar();
-  renderSidebarWorkflow();
 }
 
 function updateRangeHint(){
@@ -4920,8 +4107,7 @@ function renderCalendar(){
       renderCalendar();
       const day = state.sessionsByDate.get(iso);
       const firstKey = day?.sessions?.[0]?.key;
-      renderSidebarWorkflow();
-      if (firstKey) await loadSession(iso, firstKey, state.jobId, { mode:'manual', note:`${iso} was loaded from the Available Nights calendar.` });
+      if (firstKey) await loadSession(iso, firstKey);
     });
     els.calGrid.appendChild(b);
   }
@@ -4946,15 +4132,15 @@ async function loadRange(){
    Load session
    ============================ */
 
-async function loadSession(dateISO, sessionKey, jobId = state.jobId, loadContext = null){
+async function loadSession(dateISO, sessionKey, jobId = state.jobId){
   assertActive(jobId);
   const pack = state.sessionsByDate.get(dateISO);
   const sess = pack?.sessions?.find(s => s.key === sessionKey);
   if (!sess) return;
-  await loadSessionsAggregate([sess], sess.label || dateISO, jobId, loadContext);
+  await loadSessionsAggregate([sess], sess.label || dateISO, jobId);
 }
 
-async function loadSessionsAggregate(sessions, label, jobId = state.jobId, loadContext = null){
+async function loadSessionsAggregate(sessions, label, jobId = state.jobId){
   assertActive(jobId);
   const safeSessions = (sessions || []).filter(Boolean);
   if (!safeSessions.length) return;
@@ -4974,10 +4160,8 @@ async function loadSessionsAggregate(sessions, label, jobId = state.jobId, loadC
   state.current.stats = {};
   state.current.raw = {};
   state.current.sourceSummary = buildSourceSummary({ files: state.current.session.files });
-  state.current.loadContext = { ...(loadContext || state.current.loadContext || { mode:'manual', note:'' }), inProgress:true };
 
   renderSourceSummary(state.current.sourceSummary);
-  renderSidebarWorkflow();
 
   setStatus('Loading selection…','neutral');
   progress('Loading selection', 62, `Loading ${state.current.session.files.length} EDF file(s)… This can take a bit for large ranges.`);
@@ -5068,14 +4252,12 @@ async function loadSessionsAggregate(sessions, label, jobId = state.jobId, loadC
   autoMapSignals();
   renderMappingUI();
   renderRawDump();
-  renderSidebarWorkflow();
 
   progress('Extracting signals', 88, 'Reading samples for mapped signals…');
   await tick();
   assertActive(jobId);
 
   await extractSignalsAndRender();
-  renderSidebarWorkflow();
   setStatus('Ready','good');
   toast('Selection ready ✔️');
 }
@@ -5308,13 +4490,11 @@ function applyMappingFromUI(){
     spo2: spo2||null,
     annotations: annotations||null
   };
-  log(`Applied manual mapping: ${JSON.stringify(state.current.mapping)}`);
-  els.rawDump.textContent = JSON.stringify({
-    identification: state.identification,
-    session: { label: state.current.session?.label, files: state.current.edfFiles.map(f=>f.path) },
-    mapping: state.current.mapping,
-    edfHeaders: state.current.raw
-  }, null, 2);
+  log({
+    phase: 'manual-map',
+    mapping: state.current.mapping
+  });
+  renderRawDump();
 }
 
 /* ============================
@@ -5410,8 +4590,6 @@ async function extractSignalsAndRender(){
     setStatus('Error','bad');
     progress('Error', 100, `Analysis failed: ${err?.message || err}`);
     log('❌ Analysis failed: ' + (err?.message || err));
-    state.current.loadContext = { ...(state.current.loadContext || { mode:'manual', note:'' }), inProgress:false };
-    setSidebarPhase('error');
   }
 }
 
@@ -5434,11 +4612,23 @@ function timeSpanHours(series){
   return (series.t[series.t.length-1] - series.t[0]) / 1000 / 3600;
 }
 function deviceHeadline(){
-  const meta = extractIdentificationMeta(state.identification);
-  return [
-    meta.headline || 'Unknown device',
-    [meta.mode ? `Mode: ${meta.mode}` : '', meta.serial ? `SN: ${meta.serial}` : ''].filter(Boolean).join(' • ')
-  ].filter(Boolean).join(' — ');
+  const id = state.identification;
+  if (!id) return 'Unknown device';
+  const flat = flattenObject(id, 5);
+  const items = Object.entries(flat).map(([k,v])=>({k:shortenIdKey(k), v}));
+  const get = (needle) => {
+    const n = needle.toLowerCase();
+    const hit = items.find(it => String(it.k).toLowerCase() === n) ||
+                items.find(it => String(it.k).toLowerCase().includes(n));
+    return hit ? String(hit.v ?? '') : '';
+  };
+  const make = get('Manufacturer') || get('Brand') || get('FG P1.Manufacturer');
+  const model = get('Model') || get('MachineModel') || get('FG P1.Model');
+  const mode = get('Mode') || get('PAPMode') || get('FG P1.Mode');
+  const serial = get('SerialNumber') || get('DeviceSerial') || get('FG P1.SerialNumber') || get('FG P1.DeviceSerial');
+  return [ [make,model].filter(Boolean).join(' ').trim() || 'Unknown',
+           [mode?`Mode: ${mode}`:'', serial?`SN: ${serial}`:''].filter(Boolean).join(' • ')
+         ].filter(Boolean).join(' — ');
 }
 
 function analyzeAndRender(){
@@ -5500,8 +4690,6 @@ function analyzeAndRender(){
     stats.ahiEst = stats.ahiLikeCount / stats.usageHrs;
   }
   state.current.stats = stats;
-  state.current.loadContext = { ...(state.current.loadContext || { mode:'manual', note:'' }), inProgress:false };
-  state.sidebarPhase = 'night-loaded';
   log({
     phase: 'analysis',
     stats,
@@ -5517,12 +4705,10 @@ function analyzeAndRender(){
   els.kpiP50Note.textContent = stats.p50 != null ? 'Median therapy pressure.' : 'Pressure not mapped.';
   els.kpiAHI.textContent = stats.ahiEst != null ? stats.ahiEst.toFixed(2) : '—';
   els.kpiAHINote.textContent = stats.ahiEst != null ? 'Estimated from apnea/hypopnea-like annotations.' : 'No qualifying annotations mapped/found.';
-  updateKPIStatus();
 
   renderPlotsAndText();
   renderComparePlot();
   renderRawDump();
-  renderSidebarWorkflow();
 }
 
 
@@ -5542,7 +4728,7 @@ const COMPARE_SERIES_DEFS = [
   { key:'snore', label:'Snore', color:'#f59e0b' },
   { key:'respRate', label:'Respiratory Rate', color:'#84cc16' },
   { key:'tidalVolume', label:'Tidal Volume', color:'#8b5cf6' },
-  { key:'epr', label:'Exhalation Pressure', color:'#f59e0b' },
+  { key:'epr', label:'Exhalation Pressure', color:'#06b6d4' },
   { key:'pulse', label:'Pulse', color:'#f97316' },
   { key:'spo2', label:'SpO₂', color:'#ec4899' }
 ];
@@ -5768,7 +4954,7 @@ function renderPlotsAndText(){
       x:s.tidalVolume.t, y:s.tidalVolume.y, type:'scatter', mode:'lines',
       name:'Tidal Volume', line:{ color:'rgba(186,148,255,.95)', width:2.1 }
     }], layTv, plotConfig);
-    els.tidalNarrative.innerHTML = `<b>Tidal Volume:</b> the amount of air you breathe in one normal resting breath.<br/>Scale meaning: this is “air per breath.” For context, about <b>${asLiters ? '0.5 L' : '500 mL'}</b> is roughly half a liter (about half of a 1-liter bottle).<br/>Scientific detail: typical resting baseline is about <b>${asLiters ? '0.5 L' : '500 mL'} for men</b> and <b>${asLiters ? '0.4 L' : '400 mL'} for women</b> (shown as reference lines).`;
+    els.tidalNarrative.innerHTML = `<b>Tidal Volume:</b> this is the air moved with each normal breath.<br/>Think of it as “air per breath” rather than “air per minute.” The dotted reference lines are rough resting-ballpark guides. 500mL for men and 400mL for women not pass/fail targets, and your own comfortable baseline matters most.`;
   } else {
     Plotly.newPlot(els.plotTidalVolume, [{x:[0,1],y:[0,0],type:'scatter',mode:'lines',hoverinfo:'skip'}],
       {...CALM_LAYOUT('Tidal Volume (not mapped)')}, plotConfig);
@@ -5794,7 +4980,7 @@ function renderPlotsAndText(){
       type:'scatter',
       mode:'lines',
       name:'Exhalation Pressure',
-      line:{ color:'#f59e0b', width:2.1 },
+      line:{ color:'rgba(141,211,255,.95)', width:2.1 },
       hovertemplate:'%{x|%Y-%m-%d %H:%M:%S}<br><b>Exhalation Pressure: %{y:.2f}</b><extra></extra>'
     });
     Plotly.newPlot(els.plotEpr, eprTraces, {
@@ -5907,63 +5093,12 @@ function renderPlotsAndText(){
   }
 }
 
-function initDraggableComponents(){
-  const strip = document.getElementById('infoStrip');
-  if (!strip) return;
-  const STORAGE_KEY = 'calmcpap-component-order';
-  let draggedEl = null;
-
-  // Restore saved order
-  try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (Array.isArray(saved)){
-      const components = [...strip.querySelectorAll('.draggableComponent')];
-      const map = Object.fromEntries(components.map(c => [c.dataset.componentId, c]));
-      saved.forEach(id => { if (map[id]) strip.appendChild(map[id]); });
-    }
-  } catch(e){}
-
-  strip.addEventListener('dragstart', e => {
-    const comp = e.target.closest('.draggableComponent');
-    if (!comp) return;
-    draggedEl = comp;
-    comp.classList.add('dragging');
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/plain', comp.dataset.componentId);
-  });
-
-  strip.addEventListener('dragend', e => {
-    if (draggedEl) draggedEl.classList.remove('dragging');
-    draggedEl = null;
-    // Save order
-    const order = [...strip.querySelectorAll('.draggableComponent')].map(c => c.dataset.componentId);
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(order)); } catch(e){}
-  });
-
-  strip.addEventListener('dragover', e => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-    if (!draggedEl) return;
-    const components = [...strip.querySelectorAll('.draggableComponent:not(.dragging)')];
-    const afterEl = components.reduce((closest, child) => {
-      const box = child.getBoundingClientRect();
-      const offset = e.clientY - box.top - box.height / 2;
-      if (offset < 0 && offset > closest.offset) return { offset, el: child };
-      return closest;
-    }, { offset: -Infinity }).el;
-    if (afterEl) strip.insertBefore(draggedEl, afterEl);
-    else strip.appendChild(draggedEl);
-  });
-}
-initDraggableComponents();
-
 const startupOptions = getStartupOptions();
 state.skipOnboarding = startupOptions.skipOnboarding;
 if (startupOptions.demo){
-  closeOnboarding();
+  closeOnboarding({ restoreFocus:false });
   loadDemoData({ tabId: resolveTabId(startupOptions.tab), skipToast:true, datasetId: startupOptions.demoSet });
 } else {
-  resetAll();
   const startupTabId = resolveTabId(startupOptions.tab);
   if (startupTabId) setActiveTab(startupTabId);
 }
