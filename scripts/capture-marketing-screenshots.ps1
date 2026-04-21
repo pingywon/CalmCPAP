@@ -130,16 +130,16 @@ New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
 $indexUri = ([System.Uri](Get-Item $indexPath).FullName).AbsoluteUri
 
 $shots = @(
-  @{ Name = "calmcpap-overview.png"; Tab = "overview" },
-  @{ Name = "calmcpap-pressure.png"; Tab = "pressure" },
-  @{ Name = "calmcpap-compare.png"; Tab = "compare" },
-  @{ Name = "calmcpap-events.png"; Tab = "events" }
+  @{ Name = "cpap-overview.png"; Tab = "overview" },
+  @{ Name = "cpap-pressure.png"; Tab = "pressure" },
+  @{ Name = "cpap-compare.png"; Tab = "compare" },
+  @{ Name = "cpap-events.png"; Tab = "events" }
 )
 
 foreach ($shot in $shots) {
   $url = "$indexUri#demo=1&demoSet=1&skipOnboarding=1&tab=$($shot.Tab)"
   $outputPath = Join-Path $OutputDir $shot.Name
-  $profileDir = Join-Path $env:TEMP ("calmcpap-headless-" + [guid]::NewGuid().ToString())
+  $profileDir = Join-Path $env:TEMP ("cpap-headless-" + [guid]::NewGuid().ToString())
 
   New-Item -ItemType Directory -Force -Path $profileDir | Out-Null
 

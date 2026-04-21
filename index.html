@@ -3,28 +3,33 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>CalmCPAP — 1.0</title>
-  <link rel="icon" type="image/svg+xml" href="assets/calmcpap-mask-badge.svg" />
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/calmcpap-mask-badge-16.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/calmcpap-mask-badge-32.png" />
-  <link rel="shortcut icon" type="image/x-icon" href="assets/calmcpap-mask-badge.ico" />
+  <title>Connected Patient Analytics Platform — 2.0</title>
+  <link rel="icon" type="image/svg+xml" href="assets/cpap-mask-badge.svg" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/cpap-mask-badge-16.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/cpap-mask-badge-32.png" />
+  <link rel="shortcut icon" type="image/x-icon" href="assets/cpap-mask-badge.ico" />
 
   <!-- Unzip -->
   <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <!-- Charts -->
   <script src="https://cdn.plot.ly/plotly-2.30.0.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+  <!-- Wordmark font (one-time fetch; cached by the browser after first load) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&display=swap" />
+
   <style>
     :root{
-      --bg0:#071a1f; --bg1:#0b252c;
-      --card:#0f323a; --card2:#0b2a31;
-      --text:#e7f6f6; --muted:#b7d7d7; --muted2:#89b8b8;
-      --accent:#61d4c3; --accent2:#7aa7ff;
-      --warn:#ffcc66; --bad:#ff6b7a; --good:#6ee7a6;
-      --line: rgba(255,255,255,.10);
-      --shadow: 0 18px 40px rgba(0,0,0,.40);
+      --bg0:#06161d; --bg1:#0a202a;
+      --card:#0d2b36; --card2:#0a2530;
+      --text:#e5f1f3; --muted:#b3d0d2; --muted2:#87b4b5;
+      --accent:#7fd4cf; --accent2:#8aadff;
+      --warn:#f3c97c; --bad:#f27481; --good:#7ce3a8;
+      --line: rgba(255,255,255,.09);
+      --shadow: 0 18px 40px rgba(0,0,0,.48);
       --radius: 20px; --radius2: 14px;
-      --focus: rgba(97,212,195,.9);
+      --focus: rgba(127,212,207,.9);
     }
     *{ box-sizing:border-box; }
     html,body{ height:100%; margin:0; }
@@ -51,25 +56,71 @@
     .app{ height:100%; display:grid; grid-template-rows:auto 1fr; }
 
     header{
-      padding:18px 18px 12px;
+      position:relative;
+      padding:22px 18px 16px;
       display:flex;
       align-items:center;
-      justify-content:space-between;
+      justify-content:center;
       gap:14px;
       border-bottom:1px solid rgba(255,255,255,.08);
       background: rgba(11,42,49,.35);
       backdrop-filter: blur(10px);
     }
-    .brand{ display:flex; gap:12px; align-items:center; min-width:260px; }
-    .logo{
-      width:46px;height:46px;border-radius:16px;
-      background:
-        radial-gradient(12px 12px at 30% 30%, rgba(255,255,255,.35), transparent 70%),
-        linear-gradient(135deg, rgba(97,212,195,.95), rgba(122,167,255,.85));
-      box-shadow: var(--shadow);
+    .brand{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+      text-align:center;
+      width:100%;
     }
-    h1{ margin:0; font-size:22px; letter-spacing:.2px; }
-    .brandStack{ display:grid; gap:5px; }
+    .brandStack{ display:grid; gap:8px; justify-items:center; }
+    .wordmark{
+      margin:0;
+      font-family:'Lora', Georgia, 'Times New Roman', serif;
+      font-weight:400;
+      color:var(--text);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:2px;
+      line-height:1.05;
+    }
+    .wordmark .wm-main{
+      display:inline-flex;
+      align-items:baseline;
+      gap:0.28em;
+      font-size:clamp(28px, 3.6vw, 38px);
+      letter-spacing:-0.008em;
+    }
+    .wordmark .wm-a{ font-weight:300; color:var(--text); }
+    .wordmark .wm-b em{
+      font-style:italic;
+      font-weight:500;
+      color:var(--accent);
+      background: linear-gradient(transparent 72%, rgba(127,212,207,.28) 72%, rgba(127,212,207,.28) 94%, transparent 94%);
+      padding:0 0.04em;
+    }
+    .wordmark .wm-c{
+      font-family:'Lora', Georgia, serif;
+      font-weight:400;
+      font-size:clamp(10.5px, 1.1vw, 12px);
+      letter-spacing:0.34em;
+      text-transform:uppercase;
+      color: var(--muted2);
+      margin-top:4px;
+    }
+    .wordmark::before,
+    .wordmark::after{
+      content:'';
+      display:block;
+      width:54px;
+      height:1px;
+      background: linear-gradient(90deg, transparent, rgba(127,212,207,.55), transparent);
+      margin:0 auto;
+    }
+    .wordmark::before{ margin-bottom:6px; }
+    .wordmark::after{ margin-top:4px; }
     .headerMeta{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
     .versionTag{
       display:inline-flex;
@@ -87,27 +138,42 @@
     }
     .subtitle{ margin:0; color:var(--muted); font-size:12.5px; line-height:1.35; max-width:640px; }
 
-    .top-actions{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
+    .top-actions{
+      position:absolute;
+      top:14px;
+      right:16px;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
     .headerLink{
       display:inline-flex;
       align-items:center;
       justify-content:center;
-      gap:8px;
-      min-height:42px;
-      padding:10px 14px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
+      width:32px;
+      height:32px;
+      padding:0;
+      border-radius:50%;
+      background:transparent;
+      border:1px solid rgba(255,255,255,.10);
+      color: var(--muted2);
       text-decoration:none;
-      font-weight:850;
-      box-shadow:none;
-      transition: transform .12s ease, filter .12s ease, border-color .12s ease;
+      transition: color .15s ease, border-color .15s ease, background .15s ease;
     }
     .headerLink:hover{
-      transform: translateY(-1px);
-      filter:brightness(1.04);
-      border-color: rgba(122,167,255,.45);
+      color: var(--accent);
+      border-color: rgba(127,212,207,.45);
+      background: rgba(127,212,207,.06);
+    }
+    .headerLink svg{ width:15px; height:15px; flex-shrink:0; }
+    .headerLink .hlLabel{
+      position:absolute;
+      width:1px; height:1px;
+      padding:0; margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
     }
     .badge{
       font-size:11px;
@@ -252,6 +318,53 @@
     }
     .callout b{ color: rgba(231,246,246,.94); }
     .callout strong{ color: rgba(231,246,246,.96); }
+    #overviewNarrative,
+    #leakNarrative,
+    #pressureNarrative,
+    #flowNarrative,
+    #snoreNarrative,
+    #respRateNarrative,
+    #tidalNarrative,
+    #eprNarrative,
+    #eventsNarrative,
+    #compareNarrative{
+      text-align:center;
+      max-width:720px;
+      margin-left:auto;
+      margin-right:auto;
+      padding:16px 20px;
+      line-height:1.6;
+      background: rgba(11,42,49,.42);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    #overviewNarrative .nTitle,
+    #leakNarrative .nTitle,
+    #pressureNarrative .nTitle,
+    #flowNarrative .nTitle,
+    #snoreNarrative .nTitle,
+    #respRateNarrative .nTitle,
+    #tidalNarrative .nTitle,
+    #eprNarrative .nTitle,
+    #eventsNarrative .nTitle,
+    #compareNarrative .nTitle{
+      display:block;
+      font-size:11px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color: var(--accent);
+      font-weight:700;
+      margin-bottom:8px;
+    }
+    .nStats{
+      display:inline-flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:6px 18px;
+      margin-top:10px;
+      font-size:12.5px;
+      color: var(--muted2);
+    }
+    .nStats span b{ color: rgba(231,246,246,.96); }
     .sourceGrid{
       display:grid;
       gap:8px;
@@ -342,18 +455,27 @@
     .eventsLegendHeader{
       display:flex;
       align-items:center;
-      justify-content:space-between;
+      justify-content:center;
       gap:10px;
       flex-wrap:wrap;
+      text-align:center;
     }
     .eventsLegendHint{
       color:var(--muted2);
       font-size:11.5px;
     }
+    .eventsLegendHeaderLabel{
+      font-size:11px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color: var(--muted2);
+      font-weight:700;
+    }
     .eventsLegendGrid{
       display:grid;
-      gap:6px;
-      margin-top:10px;
+      gap:8px;
+      margin:14px auto 0;
+      max-width:820px;
       grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
     }
     .eventsLegendRow{
@@ -411,16 +533,27 @@
       letter-spacing:.16px;
     }
     .eventsGlossaryDetails{
-      margin-top:10px;
+      margin:16px auto 0;
+      max-width:820px;
       border-top:1px solid rgba(255,255,255,.08);
-      padding-top:10px;
+      padding-top:12px;
+    }
+    .eventsGlossaryIntro{
+      margin:0 auto 12px;
+      max-width:640px;
+      text-align:center;
+      color: var(--muted);
+      font-size:12.5px;
+      line-height:1.55;
     }
     .eventsGlossarySummary{
       display:flex;
       align-items:center;
-      justify-content:space-between;
+      justify-content:center;
       gap:10px;
       list-style:none;
+      cursor:pointer;
+      text-align:center;
     }
     .eventsGlossarySummary::-webkit-details-marker{ display:none; }
     .eventsGlossarySummary::after{
@@ -432,7 +565,9 @@
     .eventsGlossaryGrid{
       display:grid;
       gap:6px;
-      margin-top:10px;
+      margin:12px auto 0;
+      max-width:820px;
+      grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
     }
     .eventsGlossaryRow{
       display:grid;
@@ -526,12 +661,16 @@
       margin-top:auto;
       background: linear-gradient(180deg, rgba(11,42,49,0), rgba(11,42,49,.96) 46%);
     }
-    .rawDebugDrawerBody{
-      max-height:min(40vh, 360px);
-      display:grid;
-      gap:10px;
+    .debugDrawer{ margin-top:10px; opacity:.82; border-color: rgba(122,167,255,.18); }
+    .debugDrawer:hover{ opacity:1; }
+    .debugDrawer > summary{
+      padding:10px 14px;
+      font-size:12.5px;
+      font-weight:700;
+      letter-spacing:.14px;
+      background:rgba(11,42,49,.5);
     }
-    .rawDebugDrawerBody #rawDump{ max-height:260px; }
+    .debugDrawer .drawerBody{ max-height:200px; overflow:auto; font-size:11.5px; }
 
     .picker{
       display:flex; gap:10px; align-items:center; flex-wrap:wrap;
@@ -682,14 +821,14 @@
     .onboardingOverlay[hidden]{ display:none; }
     .onboardingDialog{
       position:relative;
-      width:min(860px, 100%);
-      max-height:min(86vh, 920px);
-      overflow:auto;
+      width:min(760px, 100%);
+      max-height:min(94vh, 820px);
+      overflow:hidden;
       border:1px solid rgba(255,255,255,.16);
-      border-radius:28px;
+      border-radius:24px;
       background: linear-gradient(180deg, rgba(15,50,58,.98), rgba(8,28,33,.98));
       box-shadow: 0 30px 70px rgba(0,0,0,.48);
-      padding: clamp(22px, 4vw, 34px);
+      padding: clamp(16px, 2.4vw, 24px);
       outline:none;
     }
     .onboardingDialog::before{
@@ -706,78 +845,68 @@
       position:relative;
       z-index:1;
       display:grid;
-      gap:26px;
+      gap:14px;
+      text-align:center;
+      justify-items:center;
     }
     .onboardingHero{
       display:grid;
-      gap:18px;
+      gap:10px;
     }
     .onboardingHeroTop{
       display:grid;
-      gap:10px;
-    }
-    .onboardingKicker{
-      font-size:12px;
-      letter-spacing:.22em;
-      text-transform:uppercase;
-      color: rgba(151,235,223,.92);
-    }
-    .onboardingTagline{
-      margin:0;
-      font-size:15px;
-      font-weight:900;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-      color: rgba(255,236,188,.95);
+      gap:6px;
     }
     .onboardingTitle{
-      margin:0;
-      font-size: clamp(32px, 5vw, 44px);
-      line-height:1.02;
-      max-width: 11ch;
+      margin:0 auto;
+      font-size: clamp(22px, 3.2vw, 28px);
+      line-height:1.1;
+      max-width: 22ch;
     }
     .onboardingLead{
-      margin:0;
-      max-width:55ch;
+      margin:0 auto;
+      max-width:58ch;
       color:var(--muted);
-      font-size:15px;
-      line-height:1.55;
+      font-size:13.5px;
+      line-height:1.5;
     }
     .onboardingFlow{
       display:grid;
       grid-template-columns: repeat(4, minmax(0,1fr));
-      gap:12px;
+      gap:8px;
       align-items:start;
     }
     .flowStep{
       position:relative;
       display:grid;
       justify-items:center;
-      gap:10px;
+      gap:6px;
       text-align:center;
     }
     .flowStep::after{
       content:'→';
       position:absolute;
-      top:20px;
-      right:-12px;
-      font-size:22px;
-      color: rgba(151,235,223,.58);
+      top:14px;
+      right:-8px;
+      font-size:16px;
+      color: rgba(151,235,223,.55);
     }
     .flowStep:last-child::after{ display:none; }
     .flowStep strong{
-      font-size:14px;
-      line-height:1.3;
+      font-size:12.5px;
+      line-height:1.25;
     }
     .flowGlyph{
-      width:64px;
-      height:64px;
-      border-radius:22px;
+      width:42px;
+      height:42px;
+      border-radius:13px;
       display:grid;
       place-items:center;
       background: linear-gradient(180deg, rgba(255,255,255,.12), rgba(255,255,255,.05));
       border:1px solid rgba(255,255,255,.12);
       box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+      transform:scale(.72);
+      transform-origin:center;
     }
     .flowGlyph span,
     .flowGlyph span::before,
@@ -886,7 +1015,7 @@
     }
     .onboardingSectionTitle{
       margin:0;
-      font-size:12px;
+      font-size:10.5px;
       letter-spacing:.22em;
       text-transform:uppercase;
       color:var(--muted2);
@@ -894,53 +1023,92 @@
     .onboardingList{
       list-style:none;
       counter-reset:onboardingStep;
-      margin:12px 0 0;
+      margin:6px auto 0;
       padding:0;
       display:grid;
-      gap:10px;
+      gap:6px;
+      max-width:520px;
+      width:100%;
+      text-align:left;
     }
     .onboardingList li{
       counter-increment:onboardingStep;
       display:grid;
       grid-template-columns:auto 1fr;
-      gap:12px;
+      gap:10px;
       align-items:start;
-      line-height:1.5;
+      line-height:1.35;
+      font-size:12.5px;
       color:var(--text);
     }
     .onboardingList li::before{
       content:counter(onboardingStep);
-      width:28px;
-      height:28px;
+      width:22px;
+      height:22px;
       border-radius:50%;
       display:grid;
       place-items:center;
-      font-size:12px;
+      font-size:11px;
       font-weight:900;
       color:#062026;
       background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 10px 18px rgba(97,212,195,.18);
-      margin-top:2px;
+      box-shadow: 0 6px 12px rgba(127,212,207,.18);
+      margin-top:1px;
     }
     .onboardingAgreement{
-      padding-top:20px;
+      padding-top:12px;
       border-top:1px solid rgba(255,255,255,.12);
       display:grid;
-      gap:14px;
+      gap:10px;
+      justify-items:center;
+      text-align:center;
       background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      width:100%;
     }
     .onboardingAgreementText{
-      margin:0;
+      margin:0 auto;
+      max-width:62ch;
       color:var(--muted);
-      line-height:1.55;
+      line-height:1.45;
+      font-size:12.5px;
     }
+    .onboardingAgreementText + .onboardingAgreementText{ margin-top:2px; }
+    .onboardingAgreementText strong{ color:var(--text); }
     .onboardingCheck{
       display:flex;
       align-items:flex-start;
-      gap:12px;
+      justify-content:center;
+      gap:10px;
+      max-width:62ch;
+      text-align:left;
       color:var(--text);
-      line-height:1.45;
+      line-height:1.35;
       font-weight:700;
+      font-size:12.5px;
+    }
+    .onboardingWarning{
+      width:100%;
+      max-width:620px;
+      margin:0 auto;
+      padding:10px 16px;
+      border-radius:12px;
+      border:1px solid rgba(243,201,124,.38);
+      background: linear-gradient(180deg, rgba(243,201,124,.09), rgba(243,201,124,.02));
+      text-align:center;
+      display:grid;
+      gap:4px;
+    }
+    .onboardingWarning strong{
+      color:var(--warn);
+      font-size:11px;
+      letter-spacing:.1em;
+      text-transform:uppercase;
+    }
+    .onboardingWarning p{
+      margin:0;
+      color:var(--text);
+      font-size:12.5px;
+      line-height:1.4;
     }
     .onboardingCheck input{
       width:18px;
@@ -951,12 +1119,12 @@
     }
     .onboardingActions{
       display:flex;
-      justify-content:flex-start;
+      justify-content:center;
     }
     .onboardingActions .btn{
-      min-width:220px;
-      padding:12px 18px;
-      font-size:15px;
+      min-width:200px;
+      padding:9px 16px;
+      font-size:13.5px;
     }
     @media (max-width: 760px){
       .onboardingOverlay{
@@ -1302,19 +1470,26 @@
 <div class="app" id="appShell">
   <header>
     <div class="brand">
-      <div class="logo" aria-hidden="true"></div>
       <div class="brandStack">
-        <h1>CalmCPAP</h1>
+        <h1 class="wordmark">
+          <span class="wm-main">
+            <span class="wm-a">Connected</span>
+            <span class="wm-b"><em>Patient</em></span>
+          </span>
+          <span class="wm-c">Analytics Platform</span>
+        </h1>
         <div class="headerMeta">
-          <span class="versionTag" id="headerVersion">Version 1.0</span>
-          <span class="badge">Single-file app</span>
+          <span class="versionTag" id="headerVersion">Version 2.0</span>
         </div>
-        <div class="subtitle">Drop in a CPAP ZIP, review one anchored night at a time, and get plain-language charts, events, and source summaries without sending anything to a server.</div>
+        <div class="subtitle">Runs entirely on your PC. No data is uploaded anywhere — processing and load times depend on your computer's ability to process the files.</div>
       </div>
     </div>
 
     <div class="top-actions">
-      <a class="headerLink" href="https://github.com/pingywon/CalmCPAP" target="_blank" rel="noreferrer">GitHub</a>
+      <a class="headerLink" href="https://github.com/pingywon/Connected-Patient-Analytics-Platform" target="_blank" rel="noreferrer" aria-label="View source on GitHub" title="View source on GitHub">
+        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        <span class="hlLabel">GitHub</span>
+      </a>
     </div>
   </header>
 
@@ -1368,11 +1543,6 @@
             </div>
             <div class="dow"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
             <div class="calGrid" id="calGrid"></div>
-          </div>
-          <div class="seg" id="rangeModeSeg" aria-label="Range mode">
-            <button type="button" id="modeNight" class="active">Night</button>
-            <button type="button" id="modeCustom" style="display:none">Custom</button>
-            <button type="button" id="loadRangeBtn" style="display:none">Load Range</button>
           </div>
           <div class="rangeHint" id="rangeHint">Upload ZIP to enable.</div>
         </div></div></details>
@@ -1433,16 +1603,6 @@
           </div>
         </details>
 
-        <details class="drawer" id="sourcesDrawer">
-          <summary>Data Sources</summary>
-          <div class="drawerBody drawerScroll sourceDrawerBody">
-            <div class="sourceHint">File families found for the current selection, what they contribute, and whether the report is using them.</div>
-            <div class="sourceGrid" id="sourceArea"></div>
-          </div>
-        </details>
-
-
-
         <div id="mappingSection" hidden>
           <div class="hr"></div>
 
@@ -1459,14 +1619,7 @@
         </div>
 
         <div class="hr"></div>
-        <details class="drawer" id="debugLogDrawer"><summary>Debug log</summary><div class="drawerBody"><pre class="callout log" id="log"></pre></div></details>
-        <details class="drawer" id="rawDebugDrawer">
-          <summary>Raw / Debug Snapshot</summary>
-          <div class="drawerBody drawerScroll rawDebugDrawerBody">
-            <div class="callout" id="rawSummary"></div>
-            <pre class="callout log" id="rawDump"></pre>
-          </div>
-        </details>
+        <details class="drawer debugDrawer" id="debugLogDrawer"><summary>Debug log</summary><div class="drawerBody"><pre class="callout log" id="log"></pre></div></details>
       </div>
     </section>
 
@@ -1490,8 +1643,7 @@
           <div class="explain">
             <div class="callout" id="overviewExplain">
               <b>How this report works</b><br/>
-              Upload an AirSense 11 SD ZIP (raw SD structure), pick a day, and we’ll plot + explain leak/pressure/flow (if present).
-              Mapping controls handle label differences.
+              Upload a CPAP SD ZIP, pick a day from the calendar, and we'll plot leak, pressure, flow, and any other signals present in the export. If auto-mapping misses a channel, the mapping panel lets you match it manually.
             </div>
             <div class="callout" id="overviewSummary">
               <b>Status</b><br/>Upload a ZIP to begin.
@@ -1507,7 +1659,7 @@
         </div>
 
         <div class="panel" id="panel-compare" role="tabpanel" aria-labelledby="tab-compare">
-          <div class="callout" id="compareNarrative"><b>Compare:</b> choose graphs to overlay.</div>
+          <div class="callout" id="compareNarrative"><span class="nTitle">Compare</span>Pick signals above to overlay them on one plot.</div>
           <div class="callout" id="compareControls" style="margin-top:10px"></div>
           <div class="plot" id="plotCompare" style="margin-top:10px"></div>
         </div>
@@ -1556,14 +1708,12 @@
 <div class="toast" id="toast"></div>
 <button id="floatingSidebarBtn" class="btn ghost" style="display:none; position:fixed; left:14px; bottom:18px; z-index:30;">Open Sidebar</button>
 <div id="onboardingModal" class="onboardingOverlay" aria-hidden="true" hidden>
-  <div class="onboardingDialog" id="onboardingDialog" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle" aria-describedby="onboardingTagline onboardingAgreementText" tabindex="-1">
+  <div class="onboardingDialog" id="onboardingDialog" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle" aria-describedby="onboardingAgreementText" tabindex="-1">
     <div class="onboardingInner">
       <section class="onboardingHero">
         <div class="onboardingHeroTop">
-          <div class="onboardingKicker">First-time setup</div>
-          <p class="onboardingTagline" id="onboardingTagline">Sleep is serious. This app is not.</p>
           <h2 class="onboardingTitle" id="onboardingTitle">Prepare your SD card ZIP</h2>
-          <p class="onboardingLead">CalmCPAP reads one ZIP made from your CPAP SD card. Keep the full folder structure intact so the app can find the files it needs.</p>
+          <p class="onboardingLead">This app reads one ZIP made from your CPAP SD card. Keep the full folder structure intact so the app can find the files it needs.</p>
         </div>
         <div class="onboardingFlow" aria-hidden="true">
           <div class="flowStep">
@@ -1592,16 +1742,22 @@
           <li>Copy the full contents of the SD card into a folder on your computer.</li>
           <li>Optional: remove older day folders from <code>DATALOG/</code> inside that copied folder to make a smaller ZIP.</li>
           <li>Create one <code>.zip</code> from that copied folder.</li>
-          <li>Upload the ZIP in CalmCPAP.</li>
+          <li>Upload the ZIP here.</li>
         </ol>
+      </section>
+
+      <section class="onboardingWarning" aria-label="Device compatibility warning">
+        <strong>Tested on AirSense 11 only</strong>
+        <p>This app has only been validated against ResMed AirSense 11 SD exports. Other devices may load partially, misread, or not load at all.</p>
       </section>
 
       <section class="onboardingAgreement" aria-labelledby="onboardingAgreementTitle">
         <h3 class="onboardingSectionTitle" id="onboardingAgreementTitle">Agreement</h3>
-        <p class="onboardingAgreementText" id="onboardingAgreementText">This app is not medical advice and may be wrong or incomplete. Do not use it to diagnose problems, change treatment, or handle emergencies. For medical decisions, talk to your doctor or sleep specialist.</p>
+        <p class="onboardingAgreementText"><strong>This is for entertainment and exploration.</strong> The information shown may be incomplete or wrong. Have fun poking at your data, but don't treat it as clinical truth.</p>
+        <p class="onboardingAgreementText" id="onboardingAgreementText">This app is not medical advice. Do not use it to diagnose problems, change treatment, or handle emergencies. For medical decisions, talk to your doctor or sleep specialist.</p>
         <label class="onboardingCheck" for="onboardingAgree">
           <input type="checkbox" id="onboardingAgree" />
-          <span>I understand CalmCPAP is not medical advice, and I should use a doctor or sleep specialist for diagnosis or treatment decisions.</span>
+          <span>I understand this app is for entertainment, may be inaccurate, and is not medical advice.</span>
         </label>
         <div class="onboardingActions">
           <button class="btn" id="onboardingCloseBtn" type="button" disabled>Agree and Continue</button>
@@ -1622,8 +1778,8 @@
 
 <script>
 /* ============================
-   CalmCPAP 1.0 (AirSense 11 SD)
-   Single-file CPAP viewer with embedded demo datasets
+   Connected Patient Analytics Platform 2.0 (AirSense 11 SD)
+   Browser-based CPAP viewer with embedded demo datasets
    ============================ */
 
 const els = {
@@ -1654,7 +1810,6 @@ const els = {
 
   idArea: document.getElementById('idArea'),
   settingsArea: document.getElementById('settingsArea'),
-  sourceArea: document.getElementById('sourceArea'),
   rangeControls: document.getElementById('rangeControls'),
   rangeModeSeg: document.getElementById('rangeModeSeg'),
   modeNight: document.getElementById('modeNight'),
@@ -1670,7 +1825,7 @@ const els = {
   mapGrid: document.getElementById('mapGrid'),
   applyMappingBtn: document.getElementById('applyMappingBtn'),
   statsDrawer: document.getElementById('statsDrawer'),
-  sourcesDrawer: document.getElementById('sourcesDrawer'),
+  calendarDrawer: document.getElementById('calendarDrawer'),
   mappingSection: document.getElementById('mappingSection'),
   mappingDrawer: document.getElementById('mappingDrawer'),
 
@@ -1697,8 +1852,6 @@ const els = {
   eventsLegend: document.getElementById('eventsLegend'),
   eventsNarrative: document.getElementById('eventsNarrative'),
 
-  rawSummary: document.getElementById('rawSummary'),
-  rawDump: document.getElementById('rawDump'),
 
   plotOverview: document.getElementById('plotOverview'),
   plotCompare: document.getElementById('plotCompare'),
@@ -1845,7 +1998,7 @@ function autoOpenLoadStart(){
 }
 function autoOpenLoadComplete(){
   setDrawerOpen(els.statsDrawer, true);
-  setDrawerOpen(els.sourcesDrawer, true);
+  setDrawerOpen(els.calendarDrawer, true);
 }
 
 const progressState = { step:'Idle', pct:0, detail:'', raf:0 };
@@ -1998,9 +2151,7 @@ function resetAll(){
 
   els.idArea.innerHTML = `<div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>`;
   els.settingsArea.innerHTML = `<div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>`;
-  els.sourceArea.innerHTML = '';
-
-  els.loadRangeBtn.disabled = true;
+  if (els.loadRangeBtn) els.loadRangeBtn.disabled = true;
   els.rangeHint.textContent = 'Upload ZIP to enable night picker.';
   els.rangeControls.classList.add('disabled');
   els.rangeControls.classList.remove('ready');
@@ -2015,7 +2166,7 @@ function resetAll(){
 
   els.overviewSummary.innerHTML = `<b>Status</b><br/>Upload a ZIP to begin.`;
   els.overviewNarrative.innerHTML = '';
-  if (els.compareNarrative) els.compareNarrative.innerHTML = '<b>Compare:</b> choose graphs to overlay.';
+  if (els.compareNarrative) els.compareNarrative.innerHTML = '<span class="nTitle">Compare</span>Pick signals above to overlay them on one plot.';
   if (els.compareControls) els.compareControls.innerHTML = '';
   els.leakNarrative.innerHTML = '';
   els.pressureNarrative.innerHTML = '';
@@ -2028,8 +2179,6 @@ function resetAll(){
   els.eventsLegend.style.display = 'none';
   els.eventsNarrative.innerHTML = '';
 
-  els.rawSummary.innerHTML = '';
-  els.rawDump.textContent = '';
   collapseSidebarDrawers();
   applyRangeMode('night');
   renderCalendar();
@@ -2225,7 +2374,7 @@ window.addEventListener('resize', ()=>{
 });
 
 /* ---------- Picker ---------- */
-els.modeNight.addEventListener('click', ()=> applyRangeMode('night'));
+els.modeNight?.addEventListener('click', ()=> applyRangeMode('night'));
 els.modeCustom?.addEventListener('click', ()=> applyRangeMode('night'));
 els.loadRangeBtn?.addEventListener('click', async ()=>{ /* single-night mode: no range loading */ });
 els.calPrev.addEventListener('click', ()=>{ const d = state.calendarView || new Date(); d.setMonth(d.getMonth()-1); state.calendarView = d; renderCalendar(); });
@@ -2726,8 +2875,6 @@ async function handleZip(file){
       setStatus('No sessions','warn');
       progress('Indexing days', 100, 'No day folders found under DATALOG/YYYYMMDD, and no usable STR.edf date.');
       els.overviewSummary.innerHTML = `<b>Status</b><br/>Couldn’t find sessions. Expected: <b>DATALOG/YYYYMMDD/*.edf</b>.`;
-      els.rawSummary.innerHTML = `<b>Raw / debug snapshot:</b><br/>Couldn’t index sessions.`;
-      els.rawDump.textContent = entries.slice(0,400).map(e=>e.path).join('\n');
       return;
     }
 
@@ -3292,12 +3439,7 @@ function buildRawDumpPayload(){
   };
 }
 
-function renderRawDump(){
-  const sourceFileCount = (state.current.sourceSummary || []).reduce((sum, item) => sum + (item.count || 0), 0);
-  const modeLabel = state.demoSetId ? `Embedded demo set ${state.demoSetId}` : 'Uploaded ZIP';
-  els.rawSummary.innerHTML = `<b>Raw / debug snapshot:</b><br/>${escapeHtml(modeLabel)} • ${state.current.signalCatalog.length} detected signal labels • ${sourceFileCount} retained source files in ${state.current.sourceSummary.length} source families.`;
-  els.rawDump.textContent = JSON.stringify(buildRawDumpPayload(), null, 2);
-}
+function renderRawDump(){ /* raw debug snapshot removed in v2.0 */ }
 
 function friendlyUnit(unit, fallback='device units'){
   return unit ? escapeHtml(unit) : fallback;
@@ -3453,7 +3595,7 @@ function buildSessionBoundaryTraces(sess, yMin, yMax){
   return traces;
 }
 
-function renderEventsLegend(counts, sess){
+function renderEventsLegend(counts, canonicalByKey, sess){
   if (!els.eventsLegend) return;
   const rows = [];
   if (sess?.start instanceof Date){
@@ -3473,12 +3615,14 @@ function renderEventsLegend(counts, sess){
     }));
   }
 
-  const present = Object.entries(counts || {}).sort((a,b) => b[1] - a[1] || humanizeEventCategory(a[0]).localeCompare(humanizeEventCategory(b[0])));
-  present.forEach(([raw, count], idx) => {
-    const info = eventInfo(raw);
+  const lookup = canonicalByKey || {};
+  const present = Object.entries(counts || {}).sort((a,b) => b[1] - a[1] || humanizeEventCategory(lookup[a[0]] || a[0]).localeCompare(humanizeEventCategory(lookup[b[0]] || b[0])));
+  present.forEach(([key, count], idx) => {
+    const rep = lookup[key] || key;
+    const info = eventInfo(rep);
     const sub = info.fullLabel && info.fullLabel !== info.shortLabel ? info.fullLabel : '';
     rows.push(eventLegendRowHtml({
-      color: eventColor(raw, idx),
+      color: eventColor(rep, idx),
       title: info.shortLabel,
       meta: countLabel(count, 'event'),
       sub
@@ -3509,15 +3653,15 @@ function renderEventsLegend(counts, sess){
   const sessionItemCount = rows.length;
   els.eventsLegend.innerHTML = `
     <div class="eventsLegendHeader">
-      <div><b>On this chart</b></div>
-      <div class="eventsLegendHint">${sessionItemCount} item${sessionItemCount === 1 ? '' : 's'} in view</div>
+      <span class="eventsLegendHeaderLabel">On this chart · ${sessionItemCount} item${sessionItemCount === 1 ? '' : 's'}</span>
     </div>
     <div class="eventsLegendGrid">${rows.join('') || '<div class="tiny">No session boundaries or event categories to display.</div>'}</div>
     <details class="eventsGlossaryDetails">
       <summary class="eventsGlossarySummary">
         <b>Full event glossary</b>
-        <span class="eventsLegendHint">${glossaryRows.length} known types</span>
+        <span class="eventsLegendHint">${glossaryRows.length} known codes</span>
       </summary>
+      <p class="eventsGlossaryIntro">Each dot on the chart is one parsed annotation from the device log. The two dashed vertical lines mark session start and stop. Rows on the Y-axis are event <em>types</em>, not severity — a higher row just means a different kind.</p>
       <div class="eventsGlossaryGrid">${glossaryRows.join('')}</div>
     </details>
   `;
@@ -3994,7 +4138,7 @@ function enablePicker(autoSelectMostRecent){
   const min = dates[0] || '';
   const max = dates[dates.length-1] || '';
 
-  els.loadRangeBtn.disabled = !max;
+  if (els.loadRangeBtn) els.loadRangeBtn.disabled = !max;
 
   if (!max){
     state.selectedRange = { mode:'night', startISO:null, endISO:null, pickingStart:true };
@@ -4463,8 +4607,6 @@ function renderMappingUI(){
 
   els.applyMappingBtn.disabled = false;
 
-  els.rawSummary.innerHTML = `<b>Signal catalog:</b><br/>${cat.length} unique signal labels found across the current selection.`;
-  renderRawDump();
 }
 
 function applyMappingFromUI(){
@@ -4758,13 +4900,18 @@ function renderComparePlot(){
     });
     if (!traces.length){
       Plotly.newPlot(els.plotCompare, [{x:[0,1],y:[0,0],type:'scatter',mode:'lines',hoverinfo:'skip'}], {...CALM_LAYOUT('Compare')}, plotConfig);
-      if (els.compareNarrative) els.compareNarrative.innerHTML = '<b>Compare:</b> choose graphs to overlay.';
+      if (els.compareNarrative) els.compareNarrative.innerHTML = '<span class="nTitle">Compare</span>Pick signals above to overlay them on one plot.';
       return;
     }
     const layout = {...CALM_LAYOUT(normalize ? 'Compare Signals (normalized)' : 'Compare Signals')};
     if (normalize) layout.yaxis.title = { text:'Normalized value' };
     Plotly.newPlot(els.plotCompare, traces, layout, plotConfig);
-    if (els.compareNarrative) els.compareNarrative.innerHTML = `<b>Compare:</b> ${checked.length} signal(s) overlaid${normalize ? ' (normalized)' : ''}.`;
+    if (els.compareNarrative){
+      els.compareNarrative.innerHTML = `
+        <span class="nTitle">Compare</span>
+        ${checked.length} signal${checked.length === 1 ? '' : 's'} overlaid${normalize ? ' with normalized scales' : ''}. When normalized, every trace is rescaled to a common 0–1 band so shape and timing lead — not raw magnitude. Turn normalization off to read the actual values against their own axes.
+      `;
+    }
   };
   els.compareControls.querySelectorAll('input[data-compare], #compareNormalize').forEach(i=> i.addEventListener('change', draw));
   draw();
@@ -4828,10 +4975,14 @@ function renderPlotsAndText(){
   `;
 
   els.overviewNarrative.innerHTML = `
-    <b>Overview:</b> this is the fastest way to see whether leaks and therapy pressure moved together during the selected anchored night.<br/>
-    The calendar stays tied to the raw <b>DATALOG/YYYYMMDD</b> folder date, but the report itself uses the full detected session window: <b>${escapeHtml(actualRange)}</b>.<br/>
-    Leak is usually shown in <b>${friendlyUnit(s.leak?.unit, 'L/min')}</b>, and pressure is usually shown in <b>${friendlyUnit(s.pressure?.unit, 'cmH₂O')}</b>. In plain English, that means “how much air escaped” and “how hard the machine was pushing.”<br/>
-    Source families active for this report: <b>${escapeHtml(activeSources || 'No active sources detected')}</b>.
+    <span class="nTitle">Overview</span>
+    The fastest way to see whether leak and pressure moved together across the selected night. Leak answers <em>how much air escaped the mask</em>; pressure answers <em>how hard the machine was pushing</em>.<br/>
+    The calendar tracks raw <b>DATALOG/YYYYMMDD</b> folder dates — the report itself stretches across the full detected session window below.
+    <div class="nStats">
+      <span>Session <b>${escapeHtml(actualRange)}</b></span>
+      <span>Leak unit <b>${escapeHtml(friendlyUnit(s.leak?.unit, 'L/min'))}</b></span>
+      <span>Pressure unit <b>${escapeHtml(friendlyUnit(s.pressure?.unit, 'cmH₂O'))}</b></span>
+    </div>
   `;
 
   if (s.leak?.t?.length){
@@ -4856,12 +5007,14 @@ function renderPlotsAndText(){
       'Mostly controlled';
 
     els.leakNarrative.innerHTML = `
-      <b>Leak:</b> this line shows extra air escaping beyond the mask’s expected venting.<br/>
-      A quieter, lower line usually means the mask seal was steadier. The dotted guide uses <b>${escapeHtml(thrInfo.label)}</b> as the large-leak rule of thumb (${escapeHtml(thrInfo.plain)} in the more common ResMed phrasing).<br/>
-      <b>Your reading:</b> <b>${tone}</b><br/>
-      Median leak: <b>${st.leakP50 != null ? st.leakP50.toFixed(1) : '—'}</b><br/>
-      95th percentile leak: <b>${st.leakP95 != null ? st.leakP95.toFixed(1) : '—'}</b><br/>
-      Time at or above the reference line: <b>${pct != null ? pct.toFixed(1)+'%' : '—'}</b>
+      <span class="nTitle">Leak</span>
+      Extra air escaping past the mask's expected venting. A flatter, lower line means a steadier seal. The dotted guide at <b>${escapeHtml(thrInfo.label)}</b> is ResMed's large-leak rule of thumb — time spent above it is worth watching.<br/>
+      Your reading: <b>${tone}</b>
+      <div class="nStats">
+        <span>Median <b>${st.leakP50 != null ? st.leakP50.toFixed(1) : '—'}</b></span>
+        <span>95th pct <b>${st.leakP95 != null ? st.leakP95.toFixed(1) : '—'}</b></span>
+        <span>Time above line <b>${pct != null ? pct.toFixed(1)+'%' : '—'}</b></span>
+      </div>
     `;
   } else {
     Plotly.newPlot(els.plotLeak, [{x:[0,1],y:[0,0],type:'scatter',mode:'lines',hoverinfo:'skip'}],
@@ -4879,10 +5032,12 @@ function renderPlotsAndText(){
     }, plotConfig);
 
     els.pressureNarrative.innerHTML = `
-      <b>Pressure:</b> this is the therapy pressure the machine delivered across the night.<br/>
-      Higher values mean more airway support, but the number still uses the small breathing-pressure unit <b>${friendlyUnit(s.pressure.unit, 'cmH₂O')}</b> rather than household PSI.<br/>
-      Median therapy pressure: <b>${st.p50 != null ? st.p50.toFixed(1) : '—'}</b><br/>
-      95th percentile therapy pressure: <b>${st.p95 != null ? st.p95.toFixed(1) : '—'}</b>
+      <span class="nTitle">Therapy Pressure</span>
+      The pressure the machine delivered across the night. A flat line suggests fixed pressure; gradual drift or step-ups usually mean auto-adjust responding to breathing. Units are <b>${escapeHtml(friendlyUnit(s.pressure.unit, 'cmH₂O'))}</b> — a small breathing-pressure scale, not household PSI.
+      <div class="nStats">
+        <span>Median <b>${st.p50 != null ? st.p50.toFixed(1) : '—'}</b></span>
+        <span>95th pct <b>${st.p95 != null ? st.p95.toFixed(1) : '—'}</b></span>
+      </div>
     `;
   } else {
     Plotly.newPlot(els.plotPressure, [{x:[0,1],y:[0,0],type:'scatter',mode:'lines',hoverinfo:'skip'}],
@@ -4899,7 +5054,7 @@ function renderPlotsAndText(){
       yaxis: { ...CALM_LAYOUT('').yaxis, title: { text: s.flow.unit ? `Flow (${s.flow.unit})` : 'Flow' } }
     }, plotConfig);
 
-    els.flowNarrative.innerHTML = `<b>Flow:</b> this is the breathing waveform. It is the best place to look for shape changes, pauses, flattening, or unusually ragged breathing segments.<br/>Positive and negative swings usually represent inhaling vs exhaling, while bigger swings mean stronger airflow. The exact units depend on the export, but the pattern matters more than any one number.`;
+    els.flowNarrative.innerHTML = `<span class="nTitle">Flow</span>The breathing waveform — upswings are inhale, downswings are exhale. This is the best place to spot pauses, flattening, or unusually ragged segments. The shape of the curve tells you more than any single number; exact units depend on the export.`;
   } else {
     Plotly.newPlot(els.plotFlow, [{x:[0,1],y:[0,0],type:'scatter',mode:'lines',hoverinfo:'skip'}],
       {...CALM_LAYOUT('Flow (not mapped)')}, plotConfig);
@@ -4915,7 +5070,7 @@ function renderPlotsAndText(){
       ...CALM_LAYOUT('Snore'),
       yaxis: { ...CALM_LAYOUT('').yaxis, title: { text: s.snore.unit ? `Snore (${s.snore.unit})` : 'Snore' } }
     }, plotConfig);
-    els.snoreNarrative.innerHTML = `<b>Snore:</b> this is a vibration-style signal. Think of it as a snore activity meter rather than a volume meter.<br/>A low baseline with only short bumps usually means quieter breathing. Longer raised stretches suggest more upper-airway vibration than your usual calm baseline.`;
+    els.snoreNarrative.innerHTML = `<span class="nTitle">Snore</span>A vibration-style activity meter, not a volume meter. Short bumps are normal. Long raised stretches suggest more upper-airway vibration than your calm baseline — useful as a trend signal, not a verdict.`;
   } else {
     Plotly.newPlot(els.plotSnore, [{x:[0,1],y:[0,0],type:'scatter',mode:'lines',hoverinfo:'skip'}],
       {...CALM_LAYOUT('Snore (not mapped)')}, plotConfig);
@@ -4930,7 +5085,7 @@ function renderPlotsAndText(){
       ...CALM_LAYOUT('Respiratory Rate'),
       yaxis: { ...CALM_LAYOUT('').yaxis, title: { text: s.respRate.unit ? `Respiratory Rate (${s.respRate.unit})` : 'Respiratory Rate' } }
     }, plotConfig);
-    els.respRateNarrative.innerHTML = `<b>Respiratory Rate:</b> this is breaths per minute over time.<br/>It helps answer whether the night stayed calm and steady or drifted into faster, slower, or more erratic breathing. Many adults sleep in the low-to-mid teens, but your own baseline matters more than any generic number.`;
+    els.respRateNarrative.innerHTML = `<span class="nTitle">Respiratory Rate</span>Breaths per minute over time. A steady line means calm, even breathing; drift into faster, slower, or erratic patterns is worth a second look. Many adults settle in the low-to-mid teens while sleeping, but your own baseline matters more than any population number.`;
   } else {
     Plotly.newPlot(els.plotRespRate, [{x:[0,1],y:[0,0],type:'scatter',mode:'lines',hoverinfo:'skip'}],
       {...CALM_LAYOUT('Respiratory Rate (not mapped)')}, plotConfig);
@@ -4942,19 +5097,25 @@ function renderPlotsAndText(){
     const asLiters = unitN.includes('l') && !unitN.includes('ml');
     const maleBase = asLiters ? 0.5 : 500;
     const femaleBase = asLiters ? 0.4 : 400;
+    const maleBaseLabel = asLiters ? `~0.5 L` : `~500 mL`;
+    const femaleBaseLabel = asLiters ? `~0.4 L` : `~400 mL`;
     const layTv = {
       ...CALM_LAYOUT('Tidal Volume'),
       yaxis: { ...CALM_LAYOUT('').yaxis, title: { text: s.tidalVolume.unit ? `Tidal Volume (${s.tidalVolume.unit})` : 'Tidal Volume (mL)' } },
       shapes:[
-        {type:'line', xref:'paper', x0:0, x1:1, yref:'y', y0:maleBase, y1:maleBase, line:{color:'rgba(122,167,255,.75)', width:2, dash:'dot'}},
-        {type:'line', xref:'paper', x0:0, x1:1, yref:'y', y0:femaleBase, y1:femaleBase, line:{color:'rgba(255,204,102,.75)', width:2, dash:'dot'}}
+        {type:'line', xref:'paper', x0:0, x1:1, yref:'y', y0:maleBase, y1:maleBase, line:{color:'rgba(138,180,255,.95)', width:2.6, dash:'dash'}},
+        {type:'line', xref:'paper', x0:0, x1:1, yref:'y', y0:femaleBase, y1:femaleBase, line:{color:'rgba(255,214,132,.95)', width:2.6, dash:'dash'}}
+      ],
+      annotations:[
+        {x:1, xref:'paper', xanchor:'left', y:maleBase, yref:'y', text:` Male baseline ${maleBaseLabel}`, showarrow:false, font:{size:10, color:'rgba(138,180,255,.95)'}, align:'left'},
+        {x:1, xref:'paper', xanchor:'left', y:femaleBase, yref:'y', text:` Female baseline ${femaleBaseLabel}`, showarrow:false, font:{size:10, color:'rgba(255,214,132,.95)'}, align:'left'}
       ]
     };
     Plotly.newPlot(els.plotTidalVolume, [{
       x:s.tidalVolume.t, y:s.tidalVolume.y, type:'scatter', mode:'lines',
       name:'Tidal Volume', line:{ color:'rgba(186,148,255,.95)', width:2.1 }
     }], layTv, plotConfig);
-    els.tidalNarrative.innerHTML = `<b>Tidal Volume:</b> this is the air moved with each normal breath.<br/>Think of it as “air per breath” rather than “air per minute.” The dotted reference lines are rough resting-ballpark guides. 500mL for men and 400mL for women not pass/fail targets, and your own comfortable baseline matters most.`;
+    els.tidalNarrative.innerHTML = `<span class="nTitle">Tidal Volume</span>Air moved with each breath — "air per breath," not "air per minute." The two dashed reference lines are rough resting ballparks (~500 mL for men in blue, ~400 mL for women in amber), drawn only as orientation. These are population averages, not pass/fail targets; your comfortable baseline matters most.`;
   } else {
     Plotly.newPlot(els.plotTidalVolume, [{x:[0,1],y:[0,0],type:'scatter',mode:'lines',hoverinfo:'skip'}],
       {...CALM_LAYOUT('Tidal Volume (not mapped)')}, plotConfig);
@@ -5001,9 +5162,9 @@ function renderPlotsAndText(){
     const crossCheck = configBits ? `Cross-check from <b>CurrentSettings.json</b>: ${configBits}.` : 'No explicit EPR setting was found in CurrentSettings.json.';
 
     els.eprNarrative.innerHTML = `
-      <b>EPR:</b> in this app, <b>EprPress.2s</b> is treated as <b>absolute exhalation pressure</b>, not as the 0-3 comfort setting itself.<br/>
-      That is why values like <b>${st.exhaleP50 != null ? st.exhaleP50.toFixed(1) : '4-7'}</b> can be correct: they are still real pressure values in <b>${friendlyUnit(s.epr.unit, 'cmH₂O')}</b>, just measured during exhale.<br/>
-      The comfort-relief amount is the difference between therapy pressure and exhalation pressure. ${derivedReliefText}<br/>
+      <span class="nTitle">EPR · Exhalation Pressure</span>
+      In this app, <b>EprPress.2s</b> is treated as <b>absolute exhalation pressure</b>, not the 0–3 comfort setting. That's why values like <b>${st.exhaleP50 != null ? st.exhaleP50.toFixed(1) : '4–7'}</b> are real pressures measured during exhale in <b>${escapeHtml(friendlyUnit(s.epr.unit, 'cmH₂O'))}</b>.<br/>
+      Comfort-relief is the difference between therapy pressure and exhalation pressure. ${derivedReliefText}<br/>
       ${crossCheck}
     `;
   } else {
@@ -5013,10 +5174,22 @@ function renderPlotsAndText(){
   }
 
   if (ev?.t?.length){
+    // Deduplicate by canonical event identity (colorKey) so multiple raw labels
+    // that resolve to the same code (e.g. "10" and "Obstructive Apnea") share
+    // one legend row, one chart row, and one color — while every individual
+    // event timestamp is still plotted as its own marker.
     const counts = {};
-    for (const t of ev.type) counts[t] = (counts[t] || 0) + 1;
-    const ranked = Object.entries(counts).sort((a,b)=>b[1]-a[1] || humanizeEventCategory(a[0]).localeCompare(humanizeEventCategory(b[0])));
-    const topCats = ranked.map(x=>x[0]);
+    const canonicalByKey = {};
+    const keyByRaw = {};
+    for (const t of ev.type){
+      const info = eventInfo(t);
+      const key = info.colorKey || t;
+      keyByRaw[t] = key;
+      counts[key] = (counts[key] || 0) + 1;
+      if (!canonicalByKey[key]) canonicalByKey[key] = t;
+    }
+    const ranked = Object.entries(counts).sort((a,b)=>b[1]-a[1] || humanizeEventCategory(canonicalByKey[a[0]]).localeCompare(humanizeEventCategory(canonicalByKey[b[0]])));
+    const topKeys = ranked.map(x=>x[0]);
 
     const layout = CALM_LAYOUT('Events over time (annotations)');
     layout.showlegend = false;
@@ -5026,16 +5199,17 @@ function renderPlotsAndText(){
       automargin: true,
       title: { text: 'Event Category', standoff: 14 },
       tickmode: 'array',
-      tickvals: topCats.map((_,i)=>i),
-      ticktext: topCats.map(c=>eventCompactLabel(c)),
-      range: [-0.6, Math.max(0, topCats.length - 1) + 0.6]
+      tickvals: topKeys.map((_,i)=>i),
+      ticktext: topKeys.map(k=>eventCompactLabel(canonicalByKey[k])),
+      range: [-0.6, Math.max(0, topKeys.length - 1) + 0.6]
     };
 
-    const buckets = new Map(topCats.map((c, i) => [c, { idx: i, x: [], y: [], text: [], customdata: [] }]));
+    const buckets = new Map(topKeys.map((k, i) => [k, { idx: i, x: [], y: [], text: [], customdata: [] }]));
 
     for (let j=0;j<ev.t.length;j++){
       const raw = ev.type[j];
-      const b = buckets.get(raw);
+      const key = keyByRaw[raw];
+      const b = buckets.get(key);
       if (!b) continue;
       const info = eventInfo(raw);
       b.x.push(ev.t[j]);
@@ -5044,17 +5218,18 @@ function renderPlotsAndText(){
       b.customdata.push([info.glossaryTitle, info.description]);
     }
 
-    const eventTraces = buildSessionBoundaryTraces(sess, -0.6, Math.max(0, topCats.length - 1) + 0.6);
-    for (const rawCat of topCats){
-      const b = buckets.get(rawCat);
+    const eventTraces = buildSessionBoundaryTraces(sess, -0.6, Math.max(0, topKeys.length - 1) + 0.6);
+    for (const key of topKeys){
+      const b = buckets.get(key);
       if (!b || !b.x.length) continue;
+      const rep = canonicalByKey[key];
       eventTraces.push({
         x: b.x,
         y: b.y,
         type:'scatter',
         mode:'markers',
-        marker:{ size:9, color: eventColor(rawCat, b.idx), line:{width:1,color:'rgba(0,0,0,.35)'} },
-        name: eventCompactLabel(rawCat),
+        marker:{ size:9, color: eventColor(rep, b.idx), line:{width:1,color:'rgba(0,0,0,.35)'} },
+        name: eventCompactLabel(rep),
         text: b.text,
         customdata: b.customdata,
         hovertemplate:'%{x|%Y-%m-%d %H:%M:%S}<br><b>%{customdata[0]}</b><br>%{customdata[1]}<extra></extra>'
@@ -5062,18 +5237,15 @@ function renderPlotsAndText(){
     }
     Plotly.newPlot(els.plotEvents, eventTraces, layout, plotConfig);
 
-    renderEventsLegend(counts, sess);
+    renderEventsLegend(counts, canonicalByKey, sess);
 
     const top = ranked.slice(0,5)
-      .map(([k,v])=>`${escapeHtml(humanizeEventCategory(k))}: <b>${v}</b>`).join('<br/>');
+      .map(([k,v])=>`${escapeHtml(humanizeEventCategory(canonicalByKey[k]))}: <b>${v}</b>`).join('<br/>');
     els.eventsNarrative.innerHTML = `
-      <b>Events:</b> each marker is one parsed annotation, grouped by event type. The two vertical dashed markers show when the selected session started and stopped.<br/>
-      The Y-axis is categorical, not severity-based. A higher row means “different type,” not “worse event.”<br/>
-      Session window: <b>${escapeHtml(actualRange)}</b><br/>
-      Total parsed events: <b>${ev.t.length}</b><br/>
-      Raw events per hour: <b>${st.eventsPerHour != null ? st.eventsPerHour.toFixed(2) : '—'}</b><br/>
-      AHI-like events per hour: <b>${st.ahiEst != null ? st.ahiEst.toFixed(2) : '—'}</b><br/><br/>
-      <b>Most common event types</b><br/>
+      <b>Events.</b> Each dot is one parsed annotation from the device log, plotted at the moment it was recorded. Rows on the vertical axis are event <em>types</em>, not severity — a higher row just means “different kind.”<br/>
+      The two dashed vertical lines show when the selected session started and stopped.<br/>
+      Session window: <b>${escapeHtml(actualRange)}</b> · Total events: <b>${ev.t.length}</b> · Raw events/hr: <b>${st.eventsPerHour != null ? st.eventsPerHour.toFixed(2) : '—'}</b> · AHI-like/hr: <b>${st.ahiEst != null ? st.ahiEst.toFixed(2) : '—'}</b><br/><br/>
+      <b>Most common</b><br/>
       ${top || 'No event labels found.'}
     `;
   } else {
@@ -5088,7 +5260,7 @@ function renderPlotsAndText(){
       Plotly.newPlot(els.plotEvents, [{x:[0,1],y:[0,0],type:'scatter',mode:'lines',hoverinfo:'skip'}],
         {...CALM_LAYOUT('Events (not found/mapped)')}, plotConfig);
     }
-    renderEventsLegend({}, sess);
+    renderEventsLegend({}, {}, sess);
     els.eventsNarrative.innerHTML = `<b>No annotations parsed for this selection.</b> The boundary markers still show when the loaded session started and stopped. If your EDF contains event annotations, map them in the panel on the left.`;
   }
 }

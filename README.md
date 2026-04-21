@@ -1,92 +1,90 @@
-# CalmCPAP
+# Connected Patient Analytics Platform
 
-CalmCPAP is a single-file browser app for opening CPAP SD-card ZIP exports, choosing one anchored night at a time, and getting plain-language charts without uploading your data anywhere.
+A local-only browser app for opening CPAP SD-card ZIP exports, picking one anchored night at a time, and reading the results as plain-language charts — without uploading anything anywhere.
+
+**Version 2.0** · Tested on ResMed AirSense 11.
 
 <p align="center">
-  <img src="assets/calmcpap-overview.png" alt="CalmCPAP overview tab with embedded pseudo-random demo data" width="48%" />
-  <img src="assets/calmcpap-pressure.png" alt="CalmCPAP pressure tab with embedded pseudo-random demo data" width="48%" />
+  <img src="assets/cpap-overview.png" alt="Overview tab showing leak and pressure across a session, with embedded demo data" width="48%" />
+  <img src="assets/cpap-pressure.png" alt="Pressure tab showing therapy pressure over time, with embedded demo data" width="48%" />
 </p>
 <p align="center">
-  <img src="assets/calmcpap-compare.png" alt="CalmCPAP compare tab with embedded pseudo-random demo data" width="48%" />
-  <img src="assets/calmcpap-events.png" alt="CalmCPAP events tab with embedded pseudo-random demo data" width="48%" />
+  <img src="assets/cpap-compare.png" alt="Compare tab overlaying multiple signals on one plot, with embedded demo data" width="48%" />
+  <img src="assets/cpap-events.png" alt="Events tab showing parsed annotations and full event glossary, with embedded demo data" width="48%" />
 </p>
 
-The screenshots above come from the built-in demo mode. They are not real patient data.
+Screenshots come from the built-in demo mode. They are not real patient data.
 
-## What CalmCPAP Does
+## What It Does
 
-- Opens CPAP ZIP exports directly in the browser.
-- Keeps the app local-only. No backend, no account, no cloud upload step.
-- Anchors the calendar to raw `DATALOG/YYYYMMDD` folder dates, then loads the full detected night for that anchor date.
-- Shows charts for leak, therapy pressure, flow, snore, respiratory rate, tidal volume, exhalation pressure, events, and comparison overlays.
-- Keeps a raw/debug snapshot in the lower-left sidebar so you can see which file families and signals were used.
-- Ships as one self-contained runtime file: `index.html`.
+- Opens CPAP SD-card ZIP exports directly in your browser.
+- Runs entirely locally — no backend, no account, no cloud upload. Load times depend on your own computer.
+- Anchors the calendar to raw `DATALOG/YYYYMMDD` folder dates, then loads the full detected night for that anchor.
+- Plots leak, therapy pressure, flow, snore, respiratory rate, tidal volume, exhalation pressure, events, and custom signal overlays.
+- Ships as one self-contained file: `index.html`.
 
-## Real ZIP Uploads
+## Using Your Own ZIP
 
-CalmCPAP expects a ZIP made from the root of a CPAP SD card copy.
+This app expects a ZIP made from the root of a CPAP SD-card copy.
 
 1. Power off the CPAP device and safely remove the SD card.
-2. Copy the full card contents to your computer.
-3. If you want a smaller test archive, trim older folders from `DATALOG/`.
-4. ZIP that copied root folder.
+2. Copy the full card contents into a folder on your computer.
+3. Optional: trim older day folders from `DATALOG/` to make a smaller archive.
+4. Create one `.zip` from that folder.
 5. Open `index.html` and load the ZIP.
 
-The app reads the archive in your browser, inventories the source files it finds, and builds a nightly view from the EDF data already inside the ZIP.
+The app reads the archive in your browser, inventories what it finds, and builds a nightly view from the EDF data already inside.
 
 ## Demo Mode
 
-The built-in demo is no longer a hand-written fake chart. CalmCPAP now embeds five transformed demo sessions generated from the provided sample archive.
+The built-in demo embeds five transformed sessions generated from a sample archive.
 
-- `Load demo` randomly picks one of the five embedded demo sessions.
-- Refreshing in normal demo mode also rerolls among those five.
-- All demo-facing identifiers and dates are shifted before display, while session windows still follow real sample timing.
-- Demo chart values remain transformed rather than exposing the original sample values directly.
-- The demo serial uses a same-length fake sequence instead of the real sample serial.
+- `Load demo` randomly picks one of the five.
+- Refreshing re-rolls in normal demo mode.
+- Demo identifiers, dates, and chart values are all shifted before display. The demo serial uses a same-length fake sequence, not the real one.
 
-For documentation and screenshots, the app also supports a pinned demo-set override in the URL hash:
+For documentation and screenshots, a pinned demo-set override is available via URL hash:
 
 ```text
 #demo=1&demoSet=1&skipOnboarding=1&tab=overview
 ```
 
-That override keeps a chosen demo set stable so screenshots can be regenerated consistently.
+That keeps a chosen demo set stable so screenshots stay reproducible.
 
-## Tabs in Plain English
+## Tabs
 
-- `Overview`: quick read on the selected anchored night, especially leak vs pressure.
-- `Leak`: mask-seal behavior and time near the large-leak rule-of-thumb line.
-- `Pressure`: therapy pressure over the full detected session.
-- `Flow`: breathing waveform and shape changes.
-- `Snore`: snore-related vibration trend.
-- `Respiratory Rate`: breaths per minute over time.
-- `Tidal Volume`: air moved per breath.
-- `EPR`: therapy pressure vs exhalation pressure, plus derived relief from the pressure difference.
-- `Events`: parsed annotations, session start/stop markers, a compact on-chart legend, and a collapsed glossary for known event types.
-- `Compare`: overlay several signals on one plot.
+- **Overview** — leak vs pressure at a glance for the selected night.
+- **Leak** — mask-seal behavior and time above the large-leak guide line.
+- **Pressure** — therapy pressure across the detected session.
+- **Flow** — breathing waveform, shape changes, pauses.
+- **Snore** — vibration-based snore activity signal.
+- **Respiratory Rate** — breaths per minute over time.
+- **Tidal Volume** — air moved per breath, with male/female baseline reference lines.
+- **EPR** — therapy vs exhalation pressure, with derived relief.
+- **Events** — parsed annotations, deduplicated per event code, with session-boundary markers and a full glossary.
+- **Compare** — overlay several signals on a single plot, normalized or raw.
 
-For source inventory, mappings, headers, and debug output, use the `Raw / Debug Snapshot` drawer at the bottom of the left sidebar.
+Advanced detail (source inventory, mappings, EDF headers, debug log) lives in the collapsed drawers at the bottom of the left sidebar.
 
 ## EPR Interpretation
 
-CalmCPAP treats `EprPress.2s` as absolute exhalation pressure, not as the `0-3` comfort setting itself.
+This app treats `EprPress.2s` as absolute exhalation pressure, not as the `0–3` comfort setting itself.
 
-That means values like `4-7 cmH2O` can be valid. They are still real pressure values during exhale. The relief amount is derived from the difference between therapy pressure and exhalation pressure. `CurrentSettings.json` is used only as a settings cross-check.
+That means values like `4–7 cmH₂O` can be valid — they are still real pressure values during exhale. The relief amount is derived from the difference between therapy pressure and exhalation pressure. `CurrentSettings.json` is used only as a cross-check.
 
 ## Privacy and Scope
 
-- CalmCPAP runs locally in your browser.
-- It is meant for exploration, education, and for-fun inspection of export data.
-- It is not medical advice.
-- It is not a diagnosis tool.
-- It should not be used for treatment decisions or emergencies.
+- Runs locally in your browser. No data leaves your computer.
+- Tested only on ResMed AirSense 11 SD exports. Other devices may load partially or not at all.
+- Intended for exploration and curiosity, not diagnosis or treatment.
+- Not medical advice. Not a clinical tool. Do not rely on it for treatment decisions.
 
 ## Screenshot Refresh
 
-The screenshot script pins demo set `1` so the README gallery stays reproducible even though normal demo mode is random:
+The capture script pins demo set `1` so the gallery stays reproducible:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts\capture-marketing-screenshots.ps1
 ```
 
-That command refreshes the four README screenshots in `assets/`.
+That refreshes the four `cpap-*.png` files in `assets/`.
