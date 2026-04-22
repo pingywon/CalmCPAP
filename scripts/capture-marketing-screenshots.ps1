@@ -5,10 +5,10 @@ param(
 Add-Type -AssemblyName System.Drawing
 
 $repoRoot = Split-Path -Parent $PSScriptRoot
-$indexPath = Join-Path $repoRoot "index.html"
+$indexPath = Join-Path $repoRoot "CPAP.html"
 
 if (!(Test-Path $indexPath)) {
-  throw "Could not find index.html at $indexPath"
+  throw "Could not find CPAP.html at $indexPath"
 }
 
 $edgePath = @(

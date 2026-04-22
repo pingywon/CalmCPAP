@@ -21,7 +21,7 @@ Screenshots come from the built-in demo mode. They are not real patient data.
 - Runs entirely locally — no backend, no account, no cloud upload. Load times depend on your own computer.
 - Anchors the calendar to raw `DATALOG/YYYYMMDD` folder dates, then loads the full detected night for that anchor.
 - Plots leak, therapy pressure, flow, snore, respiratory rate, tidal volume, exhalation pressure, events, and custom signal overlays.
-- Ships as one self-contained file: `index.html`.
+- Ships as one self-contained file: `CPAP.html`.
 
 ## Using Your Own ZIP
 
@@ -31,7 +31,7 @@ This app expects a ZIP made from the root of a CPAP SD-card copy.
 2. Copy the full card contents into a folder on your computer.
 3. Optional: trim older day folders from `DATALOG/` to make a smaller archive.
 4. Create one `.zip` from that folder.
-5. Open `index.html` and load the ZIP.
+5. Open `CPAP.html` and load the ZIP.
 
 The app reads the archive in your browser, inventories what it finds, and builds a nightly view from the EDF data already inside.
 
