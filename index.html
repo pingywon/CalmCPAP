@@ -464,6 +464,87 @@
       .steps{ grid-template-columns: 1fr; }
     }
 
+    /* --- Compare block --- */
+    .compareTable{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(11,42,49,.55);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      margin-top:16px;
+    }
+    .compareHead,
+    .compareRow{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .compareRow + .compareRow,
+    .compareHead + .compareRow{
+      border-top:1px solid rgba(255,255,255,.06);
+    }
+    .compareHead{
+      background: rgba(7,26,31,.55);
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+    .compareHeadCell{
+      padding:14px 18px;
+      font-size:10.5px;
+      font-weight:800;
+      text-transform:uppercase;
+      letter-spacing:.26em;
+    }
+    .compareHeadCell.muted{ color: var(--muted2); }
+    .compareHeadCell.accent{
+      color: var(--accent);
+      border-left:1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(97,212,195,.08), rgba(122,167,255,.04));
+    }
+    .compareCell{
+      padding:16px 18px;
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      font-size:14px;
+      line-height:1.5;
+    }
+    .compareCell.muted{
+      color: var(--muted);
+    }
+    .compareCell.accent{
+      color: rgba(231,246,246,.96);
+      border-left:1px solid rgba(255,255,255,.06);
+      background: linear-gradient(180deg, rgba(97,212,195,.04), rgba(122,167,255,.02));
+    }
+    .compareCell strong{ color: var(--text); font-weight:700; }
+    .compareBullet{
+      flex-shrink:0;
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      margin-top:3px;
+    }
+    .compareBullet.neg{
+      border:1.5px solid rgba(255,255,255,.26);
+      background: transparent;
+    }
+    .compareBullet.pos{
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border:1px solid rgba(127,212,207,.55);
+      box-shadow: 0 0 0 3px rgba(127,212,207,.12);
+    }
+    @media (max-width: 620px){
+      .compareHead,
+      .compareRow{
+        grid-template-columns: 1fr;
+      }
+      .compareHeadCell.accent,
+      .compareCell.accent{
+        border-left:none;
+        border-top:1px solid rgba(255,255,255,.08);
+      }
+    }
+
     /* --- Privacy panel --- */
     .privacy{
       border:1px solid rgba(127,212,207,.32);
@@ -737,6 +818,45 @@
       <div class="signal"><div class="name">Respiratory Rate</div><div class="desc">Breaths per minute through the night. Central pauses and arousals both leave a fingerprint here.</div></div>
       <div class="signal"><div class="name">Tidal Volume</div><div class="desc">Air moved per breath, overlaid with male and female baseline reference lines so you know where "normal" is.</div></div>
       <div class="signal"><div class="name">EPR</div><div class="desc">Therapy pressure vs. exhalation pressure with derived relief amount — the honest view of what EPR is actually doing on your curve.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Compared to the default app -->
+<section class="section" id="compare">
+  <div class="wrap">
+    <div class="sectionHead centered">
+      <span class="sectionLabel">What you gain</span>
+      <h2 class="sectionTitle">Compared to the <em>default app</em>.</h2>
+      <p class="sectionLead">The app that came with your machine gives you summary numbers. This one gives you the signal those numbers were summarized from.</p>
+    </div>
+
+    <div class="compareTable">
+      <div class="compareHead">
+        <div class="compareHeadCell muted">The default app</div>
+        <div class="compareHeadCell accent">This one</div>
+      </div>
+
+      <div class="compareRow">
+        <div class="compareCell muted"><span class="compareBullet neg"></span>One AHI number for the whole night</div>
+        <div class="compareCell accent"><span class="compareBullet pos"></span>Every annotation the machine logged, grouped by code and decoded in plain English</div>
+      </div>
+      <div class="compareRow">
+        <div class="compareCell muted"><span class="compareBullet neg"></span>A usage badge</div>
+        <div class="compareCell accent"><span class="compareBullet pos"></span>Every sample of leak, pressure, and flow, plotted over the night</div>
+      </div>
+      <div class="compareRow">
+        <div class="compareCell muted"><span class="compareBullet neg"></span>An average or 95th-percentile pressure</div>
+        <div class="compareCell accent"><span class="compareBullet pos"></span>The full pressure curve — ramp-up, holds, and responses to breathing events</div>
+      </div>
+      <div class="compareRow">
+        <div class="compareCell muted"><span class="compareBullet neg"></span>Cloud sync required</div>
+        <div class="compareCell accent"><span class="compareBullet pos"></span>Runs from your own drive — your ZIP never leaves the computer</div>
+      </div>
+      <div class="compareRow">
+        <div class="compareCell muted"><span class="compareBullet neg"></span>Online account required</div>
+        <div class="compareCell accent"><span class="compareBullet pos"></span>No account, no sign-in, no email collected</div>
+      </div>
     </div>
   </div>
 </section>
