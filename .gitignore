@@ -1,8 +1,5 @@
 #SampleTestData
 .SampleTestData/
-scripts/
-/scripts/
-.scripts/
 finaldirectives.txt
 
 # Local Claude Code tooling
