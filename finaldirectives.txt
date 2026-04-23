@@ -65,3 +65,9 @@ we will rewrite it then and then take new screen shots. and get everything ready
 when you start changing name from "CalmCPAP" 
 I want you to update all the screen shot name all the file names that use it and even the relative links toimages and such as well as the name of the images to make it all work. 
 make sure everything links and works correctly under the new name, this is an example of a time you can use "CPAP" sometimes. label the asset images CPAP etc.
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The sidebar is still not right, navigation while showing everything upon load, once you close a drawer, 
+it is almost impossible to open them again. 
+Lets talk about how we can make this work. I want all the info to be available, and still look good visually 
