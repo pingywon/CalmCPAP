@@ -839,7 +839,9 @@
       position:relative;
       width:min(760px, 100%);
       max-height:min(94vh, 820px);
-      overflow:hidden;
+      overflow-x:hidden;
+      overflow-y:auto;
+      overscroll-behavior:contain;
       border:1px solid rgba(255,255,255,.16);
       border-radius:24px;
       background: linear-gradient(180deg, rgba(15,50,58,.98), rgba(8,28,33,.98));
@@ -2308,6 +2310,9 @@ els.onboardingAgree?.addEventListener('change', ()=>{
   if (els.onboardingCloseBtn) els.onboardingCloseBtn.disabled = !els.onboardingAgree.checked;
 });
 els.onboardingCloseBtn?.addEventListener('click', ()=> closeOnboarding({ restoreFocus:true }));
+els.onboardingModal?.addEventListener('mousedown', (e)=>{
+  if (e.target === els.onboardingModal) closeOnboarding({ restoreFocus:true });
+});
 document.addEventListener('keydown', handleOnboardingKeydown, true);
 setTimeout(maybeShowOnboarding, 120);
 
