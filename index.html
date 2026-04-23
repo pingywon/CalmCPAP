@@ -23,22 +23,41 @@
        ========================================================= */
 
     :root,
+    [data-palette="original"]{
+      --paper:       #06161d;
+      --paper-soft:  #0a202a;
+      --paper-band:  #0a2530;
+      --paper-edge:  rgba(255,255,255,.14);
+      --ink:         #e5f1f3;
+      --ink-2:       #b3d0d2;
+      --ink-3:       #87b4b5;
+      --rule:        rgba(255,255,255,.12);
+      --rule-soft:   rgba(255,255,255,.06);
+      --accent:      #7fd4cf;
+      --accent-2:    #8aadff;
+      --warn:        #f3c97c;
+      --highlight:   rgba(127, 212, 207, .28);
+      --shadow:      0 18px 40px rgba(0,0,0,.48);
+      --card-bg:     rgba(15,50,58,.55);
+      --pos:         #7ce3a8;
+    }
+
     [data-palette="parchment"]{
-      --paper:       #f4ecd8;
-      --paper-soft:  #ebe2c6;
-      --paper-band:  #e4d8b4;
-      --paper-edge:  #d6c898;
+      --paper:       #faf4e2;
+      --paper-soft:  #f3ecd0;
+      --paper-band:  #ebe0b8;
+      --paper-edge:  #dccfa0;
       --ink:         #1c2520;
       --ink-2:       #4a5550;
       --ink-3:       #7a8078;
-      --rule:        rgba(30,37,32,.18);
-      --rule-soft:   rgba(30,37,32,.10);
+      --rule:        rgba(30,37,32,.16);
+      --rule-soft:   rgba(30,37,32,.08);
       --accent:      #0f6a62;
       --accent-2:    #a16322;
       --warn:        #9a5017;
       --highlight:   rgba(232, 198, 112, .55);
-      --shadow:      0 20px 40px rgba(80,60,24,.12);
-      --card-bg:     #faf3de;
+      --shadow:      0 20px 40px rgba(80,60,24,.10);
+      --card-bg:     #fef9ec;
       --pos:         #3d7a4e;
     }
 
@@ -86,31 +105,32 @@
     body{
       font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
       color: var(--ink);
-      background: var(--paper);
-      background-image:
-        radial-gradient(1200px 600px at 10% -10%, rgba(161,99,34,.05), transparent 55%),
-        radial-gradient(1000px 500px at 90% 0%, rgba(15,106,98,.06), transparent 55%),
-        repeating-linear-gradient(
-          0deg,
-          rgba(30,37,32,.015) 0,
-          rgba(30,37,32,.015) 1px,
-          transparent 1px,
-          transparent 3px
-        );
+      background:
+        radial-gradient(1100px 520px at 20% 10%, rgba(97,212,195,.18), transparent 60%),
+        radial-gradient(1000px 620px at 82% 12%, rgba(122,167,255,.14), transparent 60%),
+        linear-gradient(180deg, var(--paper), var(--paper-soft));
       background-attachment: fixed;
       min-height: 100vh;
       line-height: 1.6;
       font-size: 16px;
     }
+    [data-palette="parchment"] body{
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(161,99,34,.05), transparent 55%),
+        radial-gradient(1000px 500px at 90% 0%, rgba(15,106,98,.06), transparent 55%),
+        var(--paper);
+    }
     [data-palette="obsidian"] body{
-      background-image:
+      background:
         radial-gradient(1200px 600px at 10% -10%, rgba(230,180,90,.06), transparent 55%),
-        radial-gradient(1000px 500px at 90% 0%, rgba(230,180,90,.04), transparent 55%);
+        radial-gradient(1000px 500px at 90% 0%, rgba(230,180,90,.04), transparent 55%),
+        var(--paper);
     }
     [data-palette="steel"] body{
-      background-image:
+      background:
         radial-gradient(1200px 600px at 10% -10%, rgba(42,74,140,.06), transparent 55%),
-        radial-gradient(1000px 500px at 90% 0%, rgba(107,138,191,.05), transparent 55%);
+        radial-gradient(1000px 500px at 90% 0%, rgba(107,138,191,.05), transparent 55%),
+        var(--paper);
     }
 
     :focus{ outline:none; }
