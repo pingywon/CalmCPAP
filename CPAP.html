@@ -53,7 +53,70 @@
       *{ scroll-behavior:auto !important; transition:none !important; animation:none !important; }
     }
 
-    .app{ height:100%; display:grid; grid-template-rows:auto 1fr; }
+    .app{ height:100%; display:grid; grid-template-rows: auto 1fr auto; }
+
+    .appFoot{
+      padding: 12px 20px;
+      border-top: 1px solid rgba(255,255,255,.08);
+      background:
+        radial-gradient(600px 120px at 50% 0%, rgba(127,212,207,.06), transparent 75%),
+        linear-gradient(180deg, rgba(8,28,33,.55), rgba(5,16,20,.82));
+      backdrop-filter: blur(10px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:18px;
+      flex-wrap:wrap;
+      text-align:center;
+    }
+    .appFoot .footMark{
+      font-family:'Lora', Georgia, serif;
+      font-style:italic;
+      font-weight:500;
+      letter-spacing:.2em;
+      color: var(--accent);
+      font-size:16px;
+      text-transform:uppercase;
+      line-height:1;
+      padding:0 0.08em;
+      background: linear-gradient(transparent 66%, rgba(127,212,207,.18) 66%, rgba(127,212,207,.18) 92%, transparent 92%);
+    }
+    .appFoot .footTagline{
+      font-size:11px;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color: rgba(231,246,246,.5);
+      font-weight:600;
+    }
+    .appFoot .footLink{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      padding:5px 12px;
+      border:1px solid rgba(127,212,207,.32);
+      border-radius:999px;
+      color: rgba(231,246,246,.78);
+      text-decoration:none;
+      font-size:11.5px;
+      letter-spacing:.06em;
+      background: rgba(127,212,207,.04);
+      transition: color .18s ease, border-color .18s ease, background .18s ease, transform .18s ease;
+    }
+    .appFoot .footLink:hover{
+      color: var(--accent);
+      border-color: rgba(127,212,207,.6);
+      background: rgba(127,212,207,.1);
+      transform: translateY(-1px);
+    }
+    .appFoot .footLink svg{
+      width:14px;
+      height:14px;
+      fill: currentColor;
+    }
+    @media (max-width: 720px){
+      .appFoot{ padding:10px 14px; gap:12px; }
+      .appFoot .footMark{ font-size:14px; }
+    }
 
     header{
       position:relative;
@@ -93,6 +156,22 @@
       font-size:clamp(28px, 3.6vw, 38px);
       letter-spacing:-0.008em;
     }
+    .wordmarkLink{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:2px;
+      text-decoration:none;
+      color:inherit;
+      transition: filter .2s ease, transform .2s ease;
+    }
+    .wordmarkLink:hover{ filter: brightness(1.1); }
+    .wordmarkLink:active{ transform: translateY(1px); }
+    .wordmarkLink:focus-visible{
+      outline:2px solid rgba(127,212,207,.55);
+      outline-offset:6px;
+      border-radius:6px;
+    }
     .wordmark .wm-a{ font-weight:300; color:var(--text); }
     .wordmark .wm-b em{
       font-style:italic;
@@ -121,20 +200,20 @@
     }
     .wordmark::before{ margin-bottom:6px; }
     .wordmark::after{ margin-top:4px; }
-    .headerMeta{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
     .versionTag{
       display:inline-flex;
       align-items:center;
-      gap:8px;
-      padding:6px 12px;
+      justify-content:center;
+      height:22px;
+      padding:0 10px;
       border-radius:999px;
       border:1px solid rgba(97,212,195,.42);
-      background: linear-gradient(135deg, rgba(97,212,195,.18), rgba(122,167,255,.20));
-      color: rgba(231,246,246,.98);
-      font-size:12.5px;
-      font-weight:900;
-      letter-spacing:.18px;
-      box-shadow: inset 0 0 0 1px rgba(122,167,255,.08);
+      background: linear-gradient(135deg, rgba(97,212,195,.14), rgba(122,167,255,.16));
+      color: rgba(231,246,246,.9);
+      font-size:10px;
+      font-weight:800;
+      letter-spacing:.14em;
+      text-transform:uppercase;
     }
     .subtitle{ margin:0; color:var(--muted); font-size:12.5px; line-height:1.35; max-width:640px; }
 
@@ -143,7 +222,8 @@
       top:14px;
       right:16px;
       display:flex;
-      gap:10px;
+      flex-direction:column;
+      gap:8px;
       align-items:center;
     }
     .headerLink{
@@ -236,7 +316,7 @@
     body.left-collapsed main{ grid-template-columns: 1fr; }
     body.left-collapsed #leftPanelCard{ display:none; }
 
-    #leftPanelCard{ position:sticky; top:0; align-self:start; max-height:calc(100vh - 28px); }
+    #leftPanelCard{ position:sticky; top:0; align-self:start; max-height:100%; }
 
     @media (max-width: 1320px){
       main{ grid-template-columns: clamp(400px, 40vw, 540px) minmax(0, 1fr); }
@@ -663,13 +743,140 @@
     }
     .kv .row b{ color: rgba(231,246,246,.93); font-weight:850; }
 
-    .drawer{ margin-top:12px; border:1px solid rgba(122,167,255,.35); border-radius:16px; background:rgba(11,42,49,.52); overflow:hidden; box-shadow:0 12px 24px rgba(0,0,0,.18); }
-    .drawer > summary{ cursor:pointer; list-style:none; padding:15px 16px; font-size:15px; color:rgba(231,246,246,.98); font-weight:900; display:flex; align-items:center; justify-content:space-between; letter-spacing:.2px; background:rgba(18,58,68,.68); border-bottom:1px solid rgba(255,255,255,.12); }
-    .drawer > summary::-webkit-details-marker{ display:none; }
-    .drawer > summary::after{ content:'▾'; color:rgba(231,246,246,.92); font-size:14px; }
-    .drawer:not([open]) > summary::after{ content:'▸'; }
-    .drawerBody{ padding:10px 13px 14px; font-size:14px; }
-    .mappingDrawerBody{ display:flex; flex-direction:column; gap:12px; }
+    /* Sidebar icon rail + single-panel switcher */
+    #leftPanelCard .bd{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      overflow:hidden;
+      padding:12px;
+    }
+    .rail{
+      display:grid;
+      grid-template-columns: 60px minmax(0, 1fr);
+      border:1px solid rgba(122,167,255,.28);
+      border-radius:14px;
+      background: linear-gradient(180deg, rgba(11,42,49,.62), rgba(8,28,33,.5));
+      box-shadow: 0 12px 24px rgba(0,0,0,.18), inset 0 1px 0 rgba(255,255,255,.04);
+      overflow:hidden;
+      flex:1 1 auto;
+      min-height:0;
+    }
+    .railNav{
+      display:flex;
+      flex-direction:column;
+      border-right:1px solid rgba(122,167,255,.18);
+      background:
+        linear-gradient(180deg, rgba(5,16,20,.55), rgba(8,28,33,.35));
+      padding:6px 0;
+      gap:2px;
+    }
+    .railBtn{
+      position:relative;
+      width:100%;
+      height:54px;
+      border:0;
+      background:transparent;
+      color: rgba(231,246,246,.55);
+      cursor:pointer;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:3px;
+      padding:4px 0;
+      transition: color .2s ease, background .2s ease;
+      font-family: inherit;
+    }
+    .railBtn:hover{
+      color: rgba(231,246,246,.95);
+      background: rgba(255,255,255,.03);
+    }
+    .railBtn:focus-visible{
+      outline:none;
+      background: rgba(127,212,207,.08);
+      color: rgba(231,246,246,.95);
+    }
+    .railBtn[aria-selected="true"]{
+      color: var(--accent);
+      background: linear-gradient(90deg, rgba(127,212,207,.14), rgba(127,212,207,0) 82%);
+    }
+    .railBtn[aria-selected="true"]::before{
+      content:'';
+      position:absolute;
+      left:0; top:10px; bottom:10px;
+      width:2px;
+      border-radius:0 3px 3px 0;
+      background: linear-gradient(180deg, var(--accent), var(--accent2));
+      box-shadow: 0 0 10px rgba(127,212,207,.55);
+    }
+    .railBtn svg{
+      width:20px;
+      height:20px;
+      stroke: currentColor;
+      stroke-width: 1.6;
+      fill:none;
+      stroke-linecap:round;
+      stroke-linejoin:round;
+      opacity:.95;
+    }
+    .railBtn .railLabel{
+      font-size:8.5px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      font-weight:700;
+      color:inherit;
+      opacity:.88;
+    }
+
+    .railPanels{
+      position:relative;
+      min-height:0;
+      display:flex;
+      flex-direction:column;
+    }
+    .railPanel{
+      display:none;
+      flex-direction:column;
+      min-height:0;
+      flex:1 1 auto;
+    }
+    .railPanel.active{
+      display:flex;
+      animation: railFade .22s ease-out;
+    }
+    @keyframes railFade{
+      from{ opacity:0; transform: translateY(3px); }
+      to{ opacity:1; transform:none; }
+    }
+    .panelHd{
+      padding:10px 14px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      font-size:10.5px;
+      letter-spacing:.3em;
+      text-transform:uppercase;
+      color: var(--muted2);
+      font-weight:700;
+      background: linear-gradient(180deg, rgba(18,58,68,.3), rgba(18,58,68,.12));
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+    }
+    .panelHd .panelHdMeta{
+      font-size:10px;
+      letter-spacing:.22em;
+      color: rgba(231,246,246,.4);
+      font-weight:600;
+    }
+    .panelBody{
+      padding:12px 14px 14px;
+      overflow-y:auto;
+      overflow-x:hidden;
+      overscroll-behavior:contain;
+      flex:1 1 auto;
+      min-height:0;
+    }
     .mappingActions{
       position:sticky;
       bottom:-14px;
@@ -677,16 +884,6 @@
       margin-top:auto;
       background: linear-gradient(180deg, rgba(11,42,49,0), rgba(11,42,49,.96) 46%);
     }
-    .debugDrawer{ margin-top:10px; opacity:.82; border-color: rgba(122,167,255,.18); }
-    .debugDrawer:hover{ opacity:1; }
-    .debugDrawer > summary{
-      padding:10px 14px;
-      font-size:12.5px;
-      font-weight:700;
-      letter-spacing:.14px;
-      background:rgba(11,42,49,.5);
-    }
-    .debugDrawer .drawerBody{ font-size:11.5px; }
 
     .picker{
       display:flex; gap:10px; align-items:center; flex-wrap:wrap;
@@ -1487,16 +1684,14 @@
     <div class="brand">
       <div class="brandStack">
         <h1 class="wordmark">
-          <span class="wm-main">
-            <span class="wm-a">Connected</span>
-            <span class="wm-b"><em>Patient</em></span>
-          </span>
-          <span class="wm-c">Analytics Platform</span>
+          <a class="wordmarkLink" href="https://github.com/pingywon/Connected-Patient-Analytics-Platform" target="_blank" rel="noreferrer" aria-label="Connected Patient Analytics Platform — view source on GitHub">
+            <span class="wm-main">
+              <span class="wm-a">Connected</span>
+              <span class="wm-b"><em>Patient</em></span>
+            </span>
+            <span class="wm-c">Analytics Platform</span>
+          </a>
         </h1>
-        <div class="headerMeta">
-          <span class="versionTag" id="headerVersion">Version 2.0</span>
-        </div>
-        <div class="subtitle">Runs entirely on your PC. No data is uploaded anywhere — processing and load times depend on your computer's ability to process the files.</div>
       </div>
     </div>
 
@@ -1505,6 +1700,7 @@
         <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
         <span class="hlLabel">GitHub</span>
       </a>
+      <span class="versionTag" id="headerVersion">v2.0</span>
     </div>
   </header>
 
@@ -1531,89 +1727,107 @@
               <button class="btn ghost breathing" id="demoBtn" type="button">Load Demo</button>
             </div>
           </div>
-          <p>
-            Runs completely in your browser.
-          </p>
+          <p>Runs completely in your browser.</p>
         </div>
 
-        <details class="drawer" id="calendarDrawer" open><summary>Calendar</summary><div class="drawerBody drawerScroll calendarDrawerBody"><div class="rangeControls disabled" id="rangeControls">
-          <div class="calendarWrap">
-            <div class="calHead">
-              <div class="calNav">
-                <button type="button" id="calPrev" aria-label="Previous month">◀</button>
-                <button type="button" id="calToday" aria-label="Jump to selected month">Today</button>
+        <div class="rail" id="sidebarRail">
+          <nav class="railNav" role="tablist" aria-label="Sidebar sections">
+            <button class="railBtn" role="tab" id="railBtn-calendar" data-panel="calendar" aria-controls="panel-calendar" aria-selected="true" title="Calendar">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17"/><path d="M8 3v4"/><path d="M16 3v4"/></svg>
+              <span class="railLabel">Calendar</span>
+            </button>
+            <button class="railBtn" role="tab" id="railBtn-stats" data-panel="stats" aria-controls="panel-stats" aria-selected="false" tabindex="-1" title="Session Stats">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 20V11"/><path d="M12 20V4"/><path d="M19 20v-6"/></svg>
+              <span class="railLabel">Stats</span>
+            </button>
+            <button class="railBtn" role="tab" id="railBtn-device" data-panel="device" aria-controls="panel-device" aria-selected="false" tabindex="-1" title="Device &amp; Profile">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M6.5 10h5.5"/><path d="M6.5 14h3.5"/><circle cx="17" cy="12" r="1.2"/></svg>
+              <span class="railLabel">Device</span>
+            </button>
+            <button class="railBtn" role="tab" id="railBtn-settings" data-panel="settings" aria-controls="panel-settings" aria-selected="false" tabindex="-1" title="Current Settings">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h8"/><path d="M16 7h4"/><circle cx="14" cy="7" r="2"/><path d="M4 12h4"/><path d="M12 12h8"/><circle cx="10" cy="12" r="2"/><path d="M4 17h8"/><path d="M16 17h4"/><circle cx="14" cy="17" r="2"/></svg>
+              <span class="railLabel">Settings</span>
+            </button>
+          </nav>
+          <div class="railPanels">
+
+            <section class="railPanel active" id="panel-calendar" role="tabpanel" aria-labelledby="railBtn-calendar">
+              <div class="panelHd">Calendar<span class="panelHdMeta" id="calendarPanelMeta"></span></div>
+              <div class="panelBody">
+                <div class="rangeControls disabled" id="rangeControls">
+                  <div class="calendarWrap">
+                    <div class="calHead">
+                      <div class="calNav">
+                        <button type="button" id="calPrev" aria-label="Previous month">◀</button>
+                        <button type="button" id="calToday" aria-label="Jump to selected month">Today</button>
+                      </div>
+                      <select id="calMonthSelect" class="calMonthSelect" aria-label="Choose month"></select>
+                      <div class="calNav">
+                        <button type="button" id="calNext" aria-label="Next month">▶</button>
+                      </div>
+                    </div>
+                    <div class="dow"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
+                    <div class="calGrid" id="calGrid"></div>
+                  </div>
+                  <div class="rangeHint" id="rangeHint">Upload ZIP to enable.</div>
+                </div>
               </div>
-              <select id="calMonthSelect" class="calMonthSelect" aria-label="Choose month"></select>
-              <div class="calNav">
-                <button type="button" id="calNext" aria-label="Next month">▶</button>
+            </section>
+
+            <section class="railPanel" id="panel-stats" role="tabpanel" aria-labelledby="railBtn-stats" hidden>
+              <div class="panelHd">Session Stats</div>
+              <div class="panelBody">
+                <div class="kpiGrid">
+                  <div class="kpi">
+                    <div class="label">Usage (hours)</div>
+                    <div class="value" id="kpiUsage">—</div>
+                    <div class="note" id="kpiUsageNote">Select a day.</div>
+                  </div>
+                  <div class="kpi">
+                    <div class="label">Leak (95th %)</div>
+                    <div class="value" id="kpiLeak95">—</div>
+                    <div class="note" id="kpiLeak95Note">Needs leak signal.</div>
+                  </div>
+                  <div class="kpi">
+                    <div class="label">Pressure (median)</div>
+                    <div class="value" id="kpiP50">—</div>
+                    <div class="note" id="kpiP50Note">Needs pressure signal.</div>
+                  </div>
+                  <div class="kpi">
+                    <div class="label">AHI (estimate)</div>
+                    <div class="value" id="kpiAHI">—</div>
+                    <div class="note" id="kpiAHINote">From annotations if found.</div>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="dow"><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div></div>
-            <div class="calGrid" id="calGrid"></div>
-          </div>
-          <div class="rangeHint" id="rangeHint">Upload ZIP to enable.</div>
-        </div></div></details>
+            </section>
 
-        <div class="hr"></div>
-
-        <details class="drawer" id="statsDrawer" open><summary>Session Stats</summary><div class="drawerBody">
-
-        <div class="kpiGrid">
-          <div class="kpi">
-            <div class="label">Usage (hours)</div>
-            <div class="value" id="kpiUsage">—</div>
-            <div class="note" id="kpiUsageNote">Select a day.</div>
-          </div>
-          <div class="kpi">
-            <div class="label">Leak (95th %)</div>
-            <div class="value" id="kpiLeak95">—</div>
-            <div class="note" id="kpiLeak95Note">Needs leak signal.</div>
-          </div>
-          <div class="kpi">
-            <div class="label">Pressure (median)</div>
-            <div class="value" id="kpiP50">—</div>
-            <div class="note" id="kpiP50Note">Needs pressure signal.</div>
-          </div>
-          <div class="kpi">
-            <div class="label">AHI (estimate)</div>
-            <div class="value" id="kpiAHI">—</div>
-            <div class="note" id="kpiAHINote">From annotations if found.</div>
-          </div>
-        </div>
-
-        </div></details>
-
-        <details class="drawer" id="deviceDrawer" open>
-          <summary>Device & Profile (Identification.json)</summary>
-          <div class="drawerBody">
-            <div class="kv" id="idArea" style="margin-top:0;">
-              <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
-            </div>
-          </div>
-        </details>
-
-        <details class="drawer" id="settingsDrawer" open>
-          <summary>Current Settings (CurrentSettings.json)</summary>
-          <div class="drawerBody">
-            <div class="kv" id="settingsArea" style="margin-top:0;">
-              <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
-            </div>
-          </div>
-        </details>
-
-        <div id="mappingSection" hidden>
-          <div class="hr"></div>
-
-          <details class="drawer" id="mappingDrawer" open>
-            <summary>Manual Signal Mapping</summary>
-            <div class="drawerBody drawerScroll mappingDrawerBody">
-              <div class="mapHint">If auto-mapping misses labels, pick one entry per signal type here from the deduplicated signal list.</div>
-              <div class="mapGrid" id="mapGrid"></div>
-              <div class="mappingActions">
-                <button class="btn ghost" id="applyMappingBtn" disabled>Apply mapping</button>
+            <section class="railPanel" id="panel-device" role="tabpanel" aria-labelledby="railBtn-device" hidden>
+              <div class="panelHd">Device &amp; Profile<span class="panelHdMeta">Identification.json</span></div>
+              <div class="panelBody">
+                <div class="kv" id="idArea" style="margin-top:0;">
+                  <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
+                </div>
               </div>
-            </div>
-          </details>
+            </section>
+
+            <section class="railPanel" id="panel-settings" role="tabpanel" aria-labelledby="railBtn-settings" hidden>
+              <div class="panelHd">Current Settings<span class="panelHdMeta">CurrentSettings.json</span></div>
+              <div class="panelBody">
+                <div class="kv" id="settingsArea" style="margin-top:0;">
+                  <div class="row"><span>Waiting for upload…</span><span class="badge">—</span></div>
+                </div>
+                <div id="mappingSection" hidden>
+                  <div class="mapHint" style="margin-top:14px;">If auto-mapping misses labels, pick one entry per signal type from the signal list.</div>
+                  <div class="mapGrid" id="mapGrid"></div>
+                  <div class="mappingActions">
+                    <button class="btn ghost" id="applyMappingBtn" disabled>Apply mapping</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+          </div>
         </div>
 
       </div>
@@ -1699,6 +1913,15 @@
       </div>
     </section>
   </main>
+
+  <footer class="appFoot" role="contentinfo">
+    <span class="footMark">CPAP</span>
+    <span class="footTagline">Free and open source</span>
+    <a class="footLink" href="https://github.com/pingywon/Connected-Patient-Analytics-Platform" target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span>View on GitHub</span>
+    </a>
+  </footer>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -1976,24 +2199,46 @@ function summarizeSeries(series){
     source: series._source || ''
   };
 }
-function setDrawerOpen(drawer, open=true){
-  const el = typeof drawer === 'string' ? document.getElementById(drawer) : drawer;
-  if (!el) return;
-  if (open) el.setAttribute('open', '');
-  else el.removeAttribute('open');
+function setDrawerOpen(){ /* legacy — rail has no open/closed state */ }
+function openAllSidebarDrawers(){ /* legacy no-op */ }
+function collapseSidebarDrawers(){ /* legacy no-op */ }
+function autoOpenLoadStart(){ /* legacy no-op */ }
+function autoOpenLoadComplete(){ /* legacy no-op */ }
+
+const railButtons = Array.from(document.querySelectorAll('#sidebarRail .railBtn'));
+const railPanels = Array.from(document.querySelectorAll('#sidebarRail .railPanel'));
+function switchSidebarPanel(key){
+  let found = false;
+  railButtons.forEach(btn => {
+    const on = btn.dataset.panel === key;
+    btn.setAttribute('aria-selected', on ? 'true' : 'false');
+    btn.tabIndex = on ? 0 : -1;
+    if (on) found = true;
+  });
+  if (!found) return;
+  railPanels.forEach(panel => {
+    const on = panel.id === `panel-${key}`;
+    panel.classList.toggle('active', on);
+    if (on) panel.removeAttribute('hidden');
+    else panel.setAttribute('hidden', '');
+  });
 }
-function openAllSidebarDrawers(){
-  document.querySelectorAll('#leftPanelCard details.drawer').forEach(drawer => drawer.setAttribute('open', ''));
-}
-function collapseSidebarDrawers(){
-  openAllSidebarDrawers();
-}
-function autoOpenLoadStart(){
-  openAllSidebarDrawers();
-}
-function autoOpenLoadComplete(){
-  openAllSidebarDrawers();
-}
+railButtons.forEach(btn => {
+  btn.addEventListener('click', () => switchSidebarPanel(btn.dataset.panel));
+});
+document.querySelector('#sidebarRail .railNav')?.addEventListener('keydown', (e)=>{
+  if (!['ArrowUp','ArrowDown','Home','End'].includes(e.key)) return;
+  e.preventDefault();
+  const curIdx = railButtons.findIndex(b => b.getAttribute('aria-selected') === 'true');
+  let next = curIdx;
+  if (e.key === 'ArrowDown') next = (curIdx + 1) % railButtons.length;
+  else if (e.key === 'ArrowUp') next = (curIdx - 1 + railButtons.length) % railButtons.length;
+  else if (e.key === 'Home') next = 0;
+  else if (e.key === 'End') next = railButtons.length - 1;
+  const target = railButtons[next];
+  switchSidebarPanel(target.dataset.panel);
+  target.focus();
+});
 
 const progressState = { step:'Idle', pct:0, detail:'', raf:0 };
 function progress(step, pct, detail=''){
